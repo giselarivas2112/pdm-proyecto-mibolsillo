@@ -1,14 +1,13 @@
 import supabase from '../config/supabase.js'
 
-//Crear una categoría
 export const createCategory = async (req, res) => {
-  const { name, icon } = req.body
-  const user_id = req.user.id
+  const { nombre, icono } = req.body
+  const usuario_id = req.user.id
 
   try {
     const { data, error } = await supabase
-      .from('categories')
-      .insert([{ user_id, name, icon }])
+      .from('categorias')
+      .insert([{ usuario_id, nombre, icono }])
       .select()
       .single()
 
@@ -21,16 +20,14 @@ export const createCategory = async (req, res) => {
   }
 }
 
-
-// Obtener todas las categorías del usuario
 export const getCategories = async (req, res) => {
-  const user_id = req.user.id
+  const usuario_id = req.user.id
 
   try {
     const { data, error } = await supabase
-      .from('categories')
+      .from('categorias')
       .select('*')
-      .eq('user_id', user_id)
+      .eq('usuario_id', usuario_id)
 
     if (error) throw error
 
@@ -41,18 +38,17 @@ export const getCategories = async (req, res) => {
   }
 }
 
-// Actualizar categoría
 export const updateCategory = async (req, res) => {
   const { id } = req.params
-  const { name, icon } = req.body
-  const user_id = req.user.id
+  const { nombre, icono } = req.body
+  const usuario_id = req.user.id
 
   try {
     const { data, error } = await supabase
-      .from('categories')
-      .update({ name, icon })
+      .from('categorias')
+      .update({ nombre, icono })
       .eq('id', id)
-      .eq('user_id', user_id)
+      .eq('usuario_id', usuario_id)
       .select()
       .single()
 
@@ -65,17 +61,16 @@ export const updateCategory = async (req, res) => {
   }
 }
 
-// Eliminar categoría
 export const deleteCategory = async (req, res) => {
   const { id } = req.params
-  const user_id = req.user.id
+  const usuario_id = req.user.id
 
   try {
     const { error } = await supabase
-      .from('categories')
+      .from('categorias')
       .delete()
       .eq('id', id)
-      .eq('user_id', user_id)
+      .eq('usuario_id', usuario_id)
 
     if (error) throw error
 
