@@ -10,4 +10,6 @@ sealed class Route : NavKey {
 
     @Serializable
     data object  PantallaRegister : Route()
+        @Serializable
+        data object PantallaHome : Route()
 }
