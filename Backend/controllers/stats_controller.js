@@ -45,7 +45,7 @@ export const getResumenMensual = async (req, res) => {
             const gastado = gastosPorCategoria[p.categoria_id] || 0
             const limite = parseFloat(p.monto_limite)
             const disponible = limite - gastado
-            const porcentaje = parseFloat((gastado / limite) * 100)
+            const porcentaje = parseFloat(((gastado / limite) * 100).toFixed(2))
 
             let estado
             if (porcentaje >= 100) estado = 'excedido'
@@ -84,7 +84,7 @@ export const getResumenMensual = async (req, res) => {
                 total_presupuestado,
                 total_gastado,
                 total_disponible: total_presupuestado - total_gastado,
-                porcentaje_global:parseFloat((total_gastado / total_presupuestado) * 100)
+                porcentaje_global: parseFloat(((total_gastado / total_presupuestado) * 100).toFixed(2))
             },
             categorias
         })
