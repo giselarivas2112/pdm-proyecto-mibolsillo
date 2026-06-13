@@ -5,25 +5,100 @@ export const createExpense = async (req, res) => {
   const usuario_id = req.user.id
 
   if (!monto || !fecha) {
-    return res.status(400).json({ error: 'El monto y la fecha son requeridos' })
+    return res.status(400).json({
+      error: 'El monto y la fecha son requeridos'
+    })
   }
 
   try {
     const { data, error } = await supabase
       .from('gastos')
-      .insert([{ usuario_id, categoria_id, monto, fecha, descripcion }])
-      .select(`
-        *,
-        categorias (id, nombre, icono)
-      `)
+      .insert([
+        {
+          usuario_id: usuario_id,
+          categoria_id: categoria_id,
+          monto: monto,
+          fecha: fecha,
+          descripcion: descripcion
+        }
+      ])
+      .select(`*,categorias (id, nombre, icono)`)
       .single()
 
-    if (error) throw error
+    if (error) {
+      throw error
+    }
 
-    res.status(201).json({ message: 'Gasto registrado exitosamente', expense: data })
+    let alerta = null
+
+    if (categoria_id) {
+
+      const fechaGasto = new Date(fecha)
+
+      const mes = fechaGasto.getMonth() + 1
+      const anio = fechaGasto.getFullYear()
+
+      const { data: presupuesto } = await supabase
+        .from('presupuestos')
+        .select('*')
+        .eq('usuario_id', usuario_id)
+        .eq('categoria_id', categoria_id)
+        .eq('mes', mes)
+        .eq('anio', anio)
+        .single()
+
+      if (presupuesto) {
+
+        const mesFormateado = String(mes).padStart(2, '0')
+
+        const primerDiaMes = `${anio}-${mesFormateado}-01`
+
+        const ultimoDiaMes = `${anio}-${mesFormateado}-${new Date(anio, mes, 0).getDate()}`
+
+        const { data: gastos } = await supabase
+          .from('gastos')
+          .select('monto')
+          .eq('usuario_id', usuario_id)
+          .eq('categoria_id', categoria_id)
+          .gte('fecha', primerDiaMes)
+          .lte('fecha', ultimoDiaMes)
+
+        let totalGastado = 0
+
+        for (const gasto of gastos) {
+          totalGastado += parseFloat(gasto.monto)
+        }
+
+        const montoLimite = parseFloat(presupuesto.monto_limite)
+
+        const porcentajeUsado =
+          (totalGastado / montoLimite) * 100
+
+        if (porcentajeUsado >= presupuesto.alerta_porcentaje) {
+          alerta = {
+            mensaje:
+              `Has usado el ${porcentajeUsado.toFixed(1)}% de tu presupuesto de ${presupuesto.categorias?.nombre || 'esta categoría'}`,
+
+            porcentaje_usado: porcentajeUsado.toFixed(1),
+
+            monto_limite: presupuesto.monto_limite,
+
+            total_gastado: totalGastado
+          }
+        }
+      }
+    }
+
+    return res.status(201).json({
+      message: 'Gasto registrado exitosamente',
+      expense: data,
+      alerta: alerta
+    })
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      error: error.message
+    })
   }
 }
 
@@ -34,9 +109,7 @@ export const getExpenses = async (req, res) => {
   try {
     let query = supabase
       .from('gastos')
-      .select(`
-        *,
-        categorias (id, nombre, icono)
+      .select(`*, categorias (id, nombre, icono)
       `)
       .eq('usuario_id', usuario_id)
       .order('fecha', { ascending: false })
@@ -72,9 +145,7 @@ export const updateExpense = async (req, res) => {
       .update({ categoria_id, monto, fecha, descripcion })
       .eq('id', id)
       .eq('usuario_id', usuario_id)
-      .select(`
-        *,
-        categorias (id, nombre, icono)
+      .select(`*, categorias (id, nombre, icono)
       `)
       .single()
 
