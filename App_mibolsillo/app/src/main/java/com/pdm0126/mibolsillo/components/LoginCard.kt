@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoginCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit) {
+fun LoginCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit, navegationToDashboard:()-> Unit) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -127,7 +127,7 @@ fun LoginCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit) {
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = navigationToHome,
+                onClick = navegationToDashboard,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp),

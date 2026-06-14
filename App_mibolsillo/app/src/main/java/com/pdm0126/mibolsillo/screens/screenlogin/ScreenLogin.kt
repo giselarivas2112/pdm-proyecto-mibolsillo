@@ -21,7 +21,8 @@ import androidx.compose.ui.zIndex
 import com.pdm0126.mibolsillo.components.LoginCard
 
 @Composable
-fun ScreenLogin(navigationToHome: () -> Unit, navegationToRegister: () -> Unit) {
+fun ScreenLogin(navigationToHome: () -> Unit, navegationToRegister: () -> Unit,
+                navegationToDashboard: () -> Unit) {
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -101,6 +102,7 @@ fun ScreenLogin(navigationToHome: () -> Unit, navegationToRegister: () -> Unit) 
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
                     navigationToHome = navigationToHome,
+                    navegationToDashboard = navegationToDashboard
                 )
             }
 
