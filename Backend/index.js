@@ -5,8 +5,10 @@ import categoriesRoutes from './routes/categories_routes.js'
 import expensesRoutes from './routes/expenses_routes.js'
 import budgetsRoutes from './routes/budgets_routes.js'
 import statsRoutes from './routes/stats_routes.js'
+import fixedPaymentsRoutes from './routes/fixed_payments_routes.js'
 
 dotenv.config()
+
 
 
 
@@ -19,6 +21,7 @@ app.use('/api/categories', categoriesRoutes)
 app.use('/api/expenses', expensesRoutes)
 app.use('/api/presupuestos', budgetsRoutes)
 app.use('/api/estadisticas', statsRoutes)
+app.use('/api/pagos-fijos', fixedPaymentsRoutes)
 
 app.get('/', (req, res) => {
     res.json({ message: 'MiBolsillo API funcionando :D' })
