@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.pdm0126.mibolsillo.screens.screendashboard.ScreenDashboard
 import com.pdm0126.mibolsillo.screens.screenhome.ScreenHome
 import com.pdm0126.mibolsillo.screens.screenlogin.ScreenLogin
 import com.pdm0126.mibolsillo.screens.screenregister.ScreenRegister
@@ -23,7 +24,9 @@ fun MainNavegation() {
 
                 ScreenLogin(navigationToHome = { backStack.clear()
                     backStack.add(Route.PantallaHome) },
-                    navegationToRegister = { backStack.add(Route.PantallaRegister) }
+                    navegationToRegister = { backStack.add(Route.PantallaRegister) },
+                   navegationToDashboard = { backStack.add(Route.PantallaDashboard)
+                    }
                 )
             }
 
@@ -38,6 +41,12 @@ fun MainNavegation() {
                 ScreenHome(
                     navigationToLogin = { backStack.add(Route.PantallaLogin) },
                     navigationToRegister = { backStack.add(Route.PantallaRegister) }
+                )
+            }
+            entry<Route.PantallaDashboard> {
+                ScreenDashboard(
+                    navigationToLogin = { backStack.clear()
+                        backStack.add(Route.PantallaLogin) }
                 )
             }
         }
