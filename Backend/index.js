@@ -6,14 +6,17 @@ import expensesRoutes from './routes/expenses_routes.js'
 import budgetsRoutes from './routes/budgets_routes.js'
 import statsRoutes from './routes/stats_routes.js'
 import fixedPaymentsRoutes from './routes/fixed_payments_routes.js'
+import swaggerUi from 'swagger-ui-express'
+import swaggerSpec from './swagger.js'
+import cors from 'cors'
+
 
 dotenv.config()
 
-
-
-
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 4000
+app.use(cors())
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.use(express.json())
 app.use('/api/auth', authRoutes)
