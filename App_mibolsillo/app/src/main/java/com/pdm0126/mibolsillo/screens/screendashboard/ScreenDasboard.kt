@@ -134,7 +134,7 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                         navegationToBudget()
                     },
                     onFixedPayment = {
-                        //Navegar a pago fijo
+                        //Navegar a pago fijo pronto
                     },
                     onExpense = {
                         navigationToExpense()
