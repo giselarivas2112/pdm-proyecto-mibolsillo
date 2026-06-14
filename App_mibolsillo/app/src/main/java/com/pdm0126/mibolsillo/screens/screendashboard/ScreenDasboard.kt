@@ -32,7 +32,7 @@ import com.pdm0126.mibolsillo.components.SummaryCardsSection
 
 @Composable
 fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Unit,
-                    navegationToBudget: () -> Unit, navegationToCategory: () -> Unit) {
+                    navegationToBudget: () -> Unit) {
 
     var expanded by remember { mutableStateOf(false) }
 
@@ -128,7 +128,7 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                 FabExpandedMenu(
                     visible = expanded,
                     onCategory = {
-                        navegationToCategory()
+                        //Navegar a categoria
                     },
                     onBudget = {
                         navegationToBudget()
