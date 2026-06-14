@@ -37,8 +37,7 @@ fun CategorySection(
         "Renta",
         "Servicios",
         "Ocio",
-        "Compras",
-        "Otros"
+        "Compras"
     )
 
     var expanded by remember { mutableStateOf(false) }
