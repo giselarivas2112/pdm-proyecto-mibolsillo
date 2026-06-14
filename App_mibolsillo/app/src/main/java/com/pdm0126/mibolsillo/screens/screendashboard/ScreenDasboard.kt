@@ -31,7 +31,8 @@ import com.pdm0126.mibolsillo.components.RecentExpensesSection
 import com.pdm0126.mibolsillo.components.SummaryCardsSection
 
 @Composable
-fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Unit) {
+fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Unit,
+                    navegationToBudget: () -> Unit) {
 
     var expanded by remember { mutableStateOf(false) }
 
@@ -127,16 +128,16 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                 FabExpandedMenu(
                     visible = expanded,
                     onCategory = {
-                        navigationToExpense()
+                        //Navegar a categoria
                     },
                     onBudget = {
-                        // Navegar a Presupuesto
+                        navegationToBudget()
                     },
                     onFixedPayment = {
                         //Navegar a pago fijo
                     },
                     onExpense = {
-                        // Navegar a Gasto
+                        navigationToExpense()
                     }
                 )
             }
