@@ -31,15 +31,18 @@ fun DateSection(
     val calendar = Calendar.getInstance()
     val datePickerDialog = DatePickerDialog(context, { _, year, month, dayOfMonth ->
     val selectedCalendar = Calendar.getInstance()
+
             selectedCalendar.set(
                 year,
                 month,
                 dayOfMonth
             )
+
             val formatter = SimpleDateFormat(
                 "dd/MM/yyyy",
                 Locale.getDefault()
             )
+
             onDateSelected(
                 formatter.format(
                     selectedCalendar.time
@@ -52,7 +55,9 @@ fun DateSection(
         calendar.get(Calendar.DAY_OF_MONTH)
     )
 
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
 
         Text(
             text = "FECHA",

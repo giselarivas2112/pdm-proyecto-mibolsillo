@@ -130,8 +130,7 @@ fun ScreenExpense(navigationBack: () -> Unit) {
         item {
             Spacer(modifier = Modifier.height(40.dp))
             SaveExpenseButton(onSave = {
-                Toast.makeText(context, "¡Gasto guardado exitosamente!", Toast.LENGTH_SHORT).show()
-            })
-        }
+                Toast.makeText(context, "¡Gasto guardado exitosamente!", Toast.LENGTH_SHORT).show()})
+            }
     }
 }
