@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.pdm0126.mibolsillo.screens.screendashboard.ScreenDashboard
+import com.pdm0126.mibolsillo.screens.screenexpense.ScreenExpense
 import com.pdm0126.mibolsillo.screens.screenhome.ScreenHome
 import com.pdm0126.mibolsillo.screens.screenlogin.ScreenLogin
 import com.pdm0126.mibolsillo.screens.screenregister.ScreenRegister
@@ -46,8 +47,15 @@ fun MainNavegation() {
             entry<Route.PantallaDashboard> {
                 ScreenDashboard(
                     navigationToLogin = { backStack.clear()
-                        backStack.add(Route.PantallaLogin) }
+                        backStack.add(Route.PantallaLogin) },
+                    navigationToExpense = { backStack.add(Route.PantallaExpense) }
                 )
+            }
+            entry<Route.PantallaExpense> {
+                ScreenExpense(
+                    navigationBack = { backStack.removeLastOrNull() }
+                )
+
             }
         }
     )
