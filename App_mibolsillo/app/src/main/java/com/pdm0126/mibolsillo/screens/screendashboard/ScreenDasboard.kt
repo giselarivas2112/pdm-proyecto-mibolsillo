@@ -60,22 +60,7 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                     Box {
 
                         HeaderSection()
-
-                        IconButton(
-                            onClick = { navigationToLogin() },
-                            modifier = Modifier
-                                .padding(
-                                    start = 16.dp,
-                                    top = 55.dp
-                                )
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Volver",
-                                tint = Color.White
-                            )
-                        }
-
+                        
                         Column(
                             modifier = Modifier
                                 .padding(

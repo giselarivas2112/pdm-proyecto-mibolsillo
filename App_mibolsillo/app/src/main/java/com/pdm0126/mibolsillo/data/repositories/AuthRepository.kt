@@ -1,5 +1,6 @@
 package com.pdm0126.mibolsillo.data.repositories
 
+import com.pdm0126.mibolsillo.data.model.Session
 import com.pdm0126.mibolsillo.data.model.User
 
 interface AuthRepository {
@@ -9,4 +10,9 @@ interface AuthRepository {
         email: String,
         password: String
     ): Result<User>
+
+    suspend fun login(
+        email: String,
+        password: String
+    ): Result<Session>
 }

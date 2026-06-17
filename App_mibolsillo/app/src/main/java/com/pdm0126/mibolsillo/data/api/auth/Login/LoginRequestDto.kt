@@ -1,10 +1,9 @@
-package com.pdm0126.mibolsillo.data.api.auth
+package com.pdm0126.mibolsillo.data.api.auth.Login
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RegisterRequestDto(
-    val nombre: String,
+data class LoginRequestDto(
     val email: String,
     val password: String
 )
