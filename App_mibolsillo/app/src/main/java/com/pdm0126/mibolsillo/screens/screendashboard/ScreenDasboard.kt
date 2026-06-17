@@ -32,7 +32,8 @@ import com.pdm0126.mibolsillo.components.SummaryCardsSection
 
 @Composable
 fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Unit,
-                    navegationToBudget: () -> Unit, navegationToCategory: () -> Unit) {
+                    navegationToBudget: () -> Unit, navegationToCategory: () -> Unit,
+                    navegationToFixedPayment: () -> Unit) {
 
     var expanded by remember { mutableStateOf(false) }
 
@@ -134,7 +135,7 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                         navegationToBudget()
                     },
                     onFixedPayment = {
-                        //Navegar a pago fijo pronto
+                        navegationToFixedPayment()
                     },
                     onExpense = {
                         navigationToExpense()
