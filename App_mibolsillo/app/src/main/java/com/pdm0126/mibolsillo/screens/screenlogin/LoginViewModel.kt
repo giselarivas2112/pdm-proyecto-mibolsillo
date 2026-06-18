@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel // 👈 cambia ViewModel por AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.pdm0126.mibolsillo.data.model.Session
-import com.pdm0126.mibolsillo.data.repositories.AuthApiRepository
-import com.pdm0126.mibolsillo.data.repositories.AuthRepository
+import com.pdm0126.mibolsillo.data.repositories.auth.AuthApiRepository
+import com.pdm0126.mibolsillo.data.repositories.auth.AuthRepository
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
