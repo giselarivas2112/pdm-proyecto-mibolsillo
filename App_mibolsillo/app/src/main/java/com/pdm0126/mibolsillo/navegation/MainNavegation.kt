@@ -41,15 +41,19 @@ fun MainNavegation() {
                 ScreenLogin(navigationToHome = { backStack.clear()
                     backStack.add(Route.PantallaHome) },
                     navegationToRegister = { backStack.add(Route.PantallaRegister) },
-                    navegationToDashboard = { backStack.add(Route.PantallaDashboard)
+                    navegationToDashboard = {
+                        backStack.clear()
+                        backStack.add(Route.PantallaAuthCheck)
                     }
                 )
             }
 
             entry<Route.PantallaRegister> {
-                ScreenRegister(navigationToHome = { backStack.clear()
-                    backStack.add(Route.PantallaHome)
-                },
+                ScreenRegister(
+                    navigationToHome = {
+                        backStack.clear()
+                        backStack.add(Route.PantallaAuthCheck)
+                    },
                     navigationToLogin = { backStack.removeLastOrNull() }
                 )
             }
@@ -61,8 +65,6 @@ fun MainNavegation() {
             }
             entry<Route.PantallaDashboard> {
                 ScreenDashboard(
-                    navigationToLogin = { backStack.clear()
-                        backStack.add(Route.PantallaLogin) },
                     navigationToExpense = { backStack.add(Route.PantallaExpense) },
                     navegationToBudget = { backStack.add(Route.PantallaBudget) },
                     navegationToCategory = { backStack.add(Route.PantallaCategory) }

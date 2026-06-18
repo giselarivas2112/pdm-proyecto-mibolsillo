@@ -13,18 +13,15 @@ fun ScreenAuthCheck(
 
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        scope.launch {
 
-            val token = sessionManager.getToken()
+        val token = sessionManager.getToken()
 
-            if (token != null) {
-                navigateToDashboard()
-            } else {
-                navigateToHome()
-            }
+        if (token != null) {
+            navigateToDashboard()
+        } else {
+            navigateToHome()
         }
     }
 }

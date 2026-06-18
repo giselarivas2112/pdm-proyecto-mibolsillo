@@ -31,8 +31,10 @@ import com.pdm0126.mibolsillo.components.RecentExpensesSection
 import com.pdm0126.mibolsillo.components.SummaryCardsSection
 
 @Composable
-fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Unit,
-                    navegationToBudget: () -> Unit, navegationToCategory: () -> Unit) {
+fun ScreenDashboard(
+    navigationToExpense: () -> Unit,
+    navegationToBudget: () -> Unit,
+    navegationToCategory: () -> Unit) {
 
     var expanded by remember { mutableStateOf(false) }
 

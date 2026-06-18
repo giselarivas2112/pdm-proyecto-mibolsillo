@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.pdm0126.mibolsillo.data.model.Session
 import com.pdm0126.mibolsillo.data.repositories.AuthApiRepository
 import com.pdm0126.mibolsillo.data.repositories.AuthRepository
-import com.pdm0126.mibolsillo.data.session.SessionManager // 👈 nuevo import
+import com.pdm0126.mibolsillo.data.session.SessionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) { // 👈 cambia esta línea
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: AuthRepository =
         AuthApiRepository()
@@ -58,7 +58,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         session
                 }
                 .onFailure { error ->
-
+                    sessionManager.clearToken()
                     _error.value =
                         error.message
                 }
