@@ -24,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,6 +32,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,16 +45,38 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.components.HeaderSection
+import androidx.compose.runtime.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenCategory(navigationBack: () -> Unit) {
+fun ScreenCategory(
+    navigationBack: () -> Unit,
+    viewModel: CategoryViewModel = viewModel()
+) {
 
-    var categoryName by remember { mutableStateOf("Comida") }
+    var categoryName by remember { mutableStateOf("") }
     var selectedIcon by remember { mutableStateOf("🍔") }
     val context = LocalContext.current
     val iconList = listOf("🍔", "🚗", "🏠", "⚡", "🎬", "🛒", "💊", "📚", "✈️", "🐾")
+
+    val error by viewModel.error.collectAsState()
+    val success by viewModel.success.collectAsState()
+    val loading by viewModel.loading.collectAsState()
+
+    LaunchedEffect(success) {
+        if (success) {
+            Toast.makeText(context, "Categoría '$categoryName' creada con éxito", Toast.LENGTH_SHORT).show()
+            viewModel.resetState()
+            categoryName = ""
+            selectedIcon = "🍔"
+        }
+    }
+
+    LaunchedEffect(error) {
+        error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -107,7 +131,7 @@ fun ScreenCategory(navigationBack: () -> Unit) {
                         .background(Color(0xFF8A2BE2), shape = CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = selectedIcon, fontSize = 32.sp) // Cambia según lo que toques
+                    Text(text = selectedIcon, fontSize = 32.sp)
                 }
             }
 
@@ -141,6 +165,7 @@ fun ScreenCategory(navigationBack: () -> Unit) {
                 OutlinedTextField(
                     value = categoryName,
                     onValueChange = { categoryName = it },
+                    placeholder = { Text("Ingresar nombre categoría") },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -225,9 +250,8 @@ fun ScreenCategory(navigationBack: () -> Unit) {
 
         item {
             Button(
-                onClick = {
-                    Toast.makeText(context, "Categoría '$categoryName' creada con éxito", Toast.LENGTH_SHORT).show()
-                },
+                onClick = { viewModel.createCategory(categoryName, selectedIcon) },
+                enabled = !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -235,7 +259,15 @@ fun ScreenCategory(navigationBack: () -> Unit) {
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8A2BE2))
             ) {
-                Text(text = "Crear categoría", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                if (loading) {
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        modifier = Modifier.size(24.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text(text = "Crear categoría", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
             }
             Spacer(modifier = Modifier.height(24.dp))
         }

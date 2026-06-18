@@ -1,6 +1,6 @@
 package com.pdm0126.mibolsillo.data.repositories.auth
 
-import com.pdm0126.mibolsillo.data.api.auth.ErrorResponseDto
+import com.pdm0126.mibolsillo.data.api.ErrorResponseDto
 import com.pdm0126.mibolsillo.data.api.auth.Login.LoginRequestDto
 import com.pdm0126.mibolsillo.data.api.auth.Login.LoginResponseDto
 import com.pdm0126.mibolsillo.data.api.auth.Registrarse.RegisterRequestDto

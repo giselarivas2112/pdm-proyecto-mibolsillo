@@ -1,4 +1,4 @@
-package com.pdm0126.mibolsillo.data.api.auth
+package com.pdm0126.mibolsillo.data.api
 
 import kotlinx.serialization.Serializable
 
