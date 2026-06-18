@@ -1,18 +1,22 @@
 package com.pdm0126.mibolsillo.screens.screenlogin
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel // 👈 cambia ViewModel por AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.pdm0126.mibolsillo.data.model.Session
 import com.pdm0126.mibolsillo.data.repositories.AuthApiRepository
 import com.pdm0126.mibolsillo.data.repositories.AuthRepository
+import com.pdm0126.mibolsillo.data.session.SessionManager // 👈 nuevo import
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(application: Application) : AndroidViewModel(application) { // 👈 cambia esta línea
 
     private val repository: AuthRepository =
         AuthApiRepository()
+
+    private val sessionManager = SessionManager(application)
 
     private val _session =
         MutableStateFlow<Session?>(null)
@@ -48,6 +52,8 @@ class LoginViewModel : ViewModel() {
             )
                 .onSuccess { session ->
 
+                    sessionManager.saveToken(session.token)
+
                     _session.value =
                         session
                 }
@@ -60,6 +66,4 @@ class LoginViewModel : ViewModel() {
             _loading.value = false
         }
     }
-
-
 }

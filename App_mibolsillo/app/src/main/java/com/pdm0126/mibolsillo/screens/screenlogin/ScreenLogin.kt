@@ -23,6 +23,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.components.LoginCard
+import androidx.compose.ui.platform.LocalContext
+import com.pdm0126.mibolsillo.data.session.SessionManager
+import android.util.Log
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+
 
 @Composable
 fun ScreenLogin(
@@ -37,15 +44,18 @@ fun ScreenLogin(
     val error by viewModel.error.collectAsState()
 
     val loading by viewModel.loading.collectAsState()
+    val context = LocalContext.current
+
+    val sessionManager = remember { SessionManager(context) }
 
     LaunchedEffect(session) {
+        session?.let {
 
-        if (session != null) {
+            sessionManager.saveToken(it.token)
 
             navegationToDashboard()
         }
     }
-
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFF6F3FA))

@@ -60,7 +60,7 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                     Box {
 
                         HeaderSection()
-                        
+
                         Column(
                             modifier = Modifier
                                 .padding(

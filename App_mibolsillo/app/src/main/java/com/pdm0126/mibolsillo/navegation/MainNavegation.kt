@@ -9,13 +9,14 @@ import com.pdm0126.mibolsillo.screens.screencategory.ScreenCategory
 import com.pdm0126.mibolsillo.screens.screendashboard.ScreenDashboard
 import com.pdm0126.mibolsillo.screens.screenexpense.ScreenExpense
 import com.pdm0126.mibolsillo.screens.screenhome.ScreenHome
+import com.pdm0126.mibolsillo.screens.screenlogin.ScreenAuthCheck
 import com.pdm0126.mibolsillo.screens.screenlogin.ScreenLogin
 import com.pdm0126.mibolsillo.screens.screenregister.ScreenRegister
 
 @Composable
 fun MainNavegation() {
 
-    val backStack = rememberNavBackStack(Route.PantallaHome)
+    val backStack = rememberNavBackStack(Route.PantallaAuthCheck)
 
     NavDisplay(
         backStack = backStack,
@@ -23,12 +24,24 @@ fun MainNavegation() {
 
         entryProvider = entryProvider {
 
-            entry<Route.PantallaLogin> {
+            entry<Route.PantallaAuthCheck> {
+                ScreenAuthCheck(
+                    navigateToHome = {
+                        backStack.clear()
+                        backStack.add(Route.PantallaHome)
+                    },
+                    navigateToDashboard = {
+                        backStack.clear()
+                        backStack.add(Route.PantallaDashboard)
+                    }
+                )
+            }
 
+            entry<Route.PantallaLogin> {
                 ScreenLogin(navigationToHome = { backStack.clear()
                     backStack.add(Route.PantallaHome) },
                     navegationToRegister = { backStack.add(Route.PantallaRegister) },
-                   navegationToDashboard = { backStack.add(Route.PantallaDashboard)
+                    navegationToDashboard = { backStack.add(Route.PantallaDashboard)
                     }
                 )
             }
