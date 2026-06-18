@@ -1,4 +1,4 @@
-package com.pdm0126.mibolsillo.data.repositories
+package com.pdm0126.mibolsillo.data.repositories.auth
 
 import com.pdm0126.mibolsillo.data.model.Session
 import com.pdm0126.mibolsillo.data.model.User
