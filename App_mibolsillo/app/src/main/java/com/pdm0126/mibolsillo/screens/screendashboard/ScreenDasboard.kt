@@ -33,13 +33,28 @@ import com.pdm0126.mibolsillo.components.SummaryCardsSection
 @Composable
 fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Unit,
                     navegationToBudget: () -> Unit, navegationToCategory: () -> Unit,
-                    navegationToFixedPayment: () -> Unit) {
+                    navegationToFixedPayment: () -> Unit,
+                    navigationToDashboard: () -> Unit,
+                    navigationToExpenses: () -> Unit){
 
     var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
         bottomBar = {
             HomeBottomBar(
+                pantallaActual = "inicio",
+                onInicioClick = {
+                    navigationToDashboard()
+                },
+                onMisGastosClick = {
+                        navigationToExpenses ()
+                },
+                onReportesClick = {
+                    // navegar a Reportes
+                },
+                onPerfilClick = {
+                    // navegar a Perfil
+                },
                 expanded = expanded,
                 onFabClick = {
                     expanded = !expanded

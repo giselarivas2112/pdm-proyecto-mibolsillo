@@ -20,15 +20,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HomeBottomBar(expanded: Boolean, onFabClick: () -> Unit) {
-
+fun HomeBottomBar(
+    pantallaActual: String,
+    onInicioClick: () -> Unit,
+    onMisGastosClick: () -> Unit,
+    onReportesClick: () -> Unit,
+    onPerfilClick: () -> Unit,
+    expanded: Boolean,
+    onFabClick: () -> Unit
+) {
     Box {
-
         NavigationBar {
-
             NavigationBarItem(
-                selected = true,
-                onClick = {},
+                selected = pantallaActual == "inicio",
+                onClick = onInicioClick,
                 icon = {
                     Icon(Icons.Default.Home, null)
                 },
@@ -38,8 +43,8 @@ fun HomeBottomBar(expanded: Boolean, onFabClick: () -> Unit) {
             )
 
             NavigationBarItem(
-                selected = false,
-                onClick = {},
+                selected = pantallaActual == "mis_gastos",
+                onClick = onMisGastosClick,
                 icon = {
                     Icon(Icons.Default.List, null)
                 },
@@ -49,8 +54,8 @@ fun HomeBottomBar(expanded: Boolean, onFabClick: () -> Unit) {
             )
 
             NavigationBarItem(
-                selected = false,
-                onClick = {},
+                selected = pantallaActual == "reportes",
+                onClick = onReportesClick,
                 icon = {
                     Icon(Icons.Default.BarChart, null)
                 },
@@ -60,8 +65,8 @@ fun HomeBottomBar(expanded: Boolean, onFabClick: () -> Unit) {
             )
 
             NavigationBarItem(
-                selected = false,
-                onClick = {},
+                selected = pantallaActual == "perfil",
+                onClick = onPerfilClick,
                 icon = {
                     Icon(Icons.Default.Person, null)
                 },
@@ -77,13 +82,8 @@ fun HomeBottomBar(expanded: Boolean, onFabClick: () -> Unit) {
                 .align(Alignment.TopCenter)
                 .offset(y = (-25).dp)
         ) {
-
             Icon(
-                imageVector =
-                    if (expanded)
-                        Icons.Default.Close
-                    else
-                        Icons.Default.Add,
+                imageVector = if (expanded) Icons.Default.Close else Icons.Default.Add,
                 contentDescription = null
             )
         }
