@@ -98,6 +98,7 @@ fun ScreenExpense(navigationBack: () -> Unit) {
         }
 
         item {
+            /*
             Spacer(modifier = Modifier.height(20.dp))
             CategorySection(
                 selectedCategory = selectedCategory,
@@ -105,6 +106,8 @@ fun ScreenExpense(navigationBack: () -> Unit) {
                     selectedCategory = it
                 }
             )
+
+             */
         }
 
         item {

@@ -40,7 +40,7 @@ fun ScreenDashboard(
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
 ) {
-    
+
     var expanded by remember { mutableStateOf(false) }
 
     Scaffold(

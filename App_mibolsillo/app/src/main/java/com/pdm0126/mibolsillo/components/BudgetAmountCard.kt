@@ -40,6 +40,7 @@ fun BudgetAmountCard(amount: String, onAmountChange: (String) -> Unit) {
                 value = amount,
                 onValueChange = onAmountChange,
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                placeholder = { Text("Escribe el monto", color = Color.Gray) }, // 👈 nuevo
                 prefix = { Text("$ ", fontWeight = FontWeight.Bold, color = Color.Gray) },
                 textStyle = TextStyle(
                     fontSize = 22.sp,

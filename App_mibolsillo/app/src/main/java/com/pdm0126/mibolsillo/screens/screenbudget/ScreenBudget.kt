@@ -1,7 +1,7 @@
 package com.pdm0126.mibolsillo.screens.screenbudget
 
-import android.icu.text.SimpleDateFormat
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +18,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,33 +32,57 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.components.AlertSliderSection
 import com.pdm0126.mibolsillo.components.BudgetAmountCard
 import com.pdm0126.mibolsillo.components.CategorySection
-import com.pdm0126.mibolsillo.components.DateSection
 import com.pdm0126.mibolsillo.components.DescriptionSection
 import com.pdm0126.mibolsillo.components.HeaderSection
+import com.pdm0126.mibolsillo.components.MesAnio
+import com.pdm0126.mibolsillo.components.MonthYearSection
 import com.pdm0126.mibolsillo.components.SaveExpenseButton
-import java.util.Date
-import java.util.Locale
+import com.pdm0126.mibolsillo.data.model.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenBudget(navigationBack: () -> Unit) {
+fun ScreenBudget(
+    navigationBack: () -> Unit,
+    viewModel: BudgetViewModel = viewModel()
+) {
 
-    var budgetAmount by remember { mutableStateOf("2000.00") }
-    var selectedCategory by remember { mutableStateOf("Comida") }
+    var budgetAmount by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf<Category?>(null) }
     var alertThreshold by remember { mutableStateOf(0.8f) }
     var budgetNotes by remember { mutableStateOf("") }
-    var selectedDate by remember { mutableStateOf(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())) }
+    var selectedMesAnio by remember { mutableStateOf<MesAnio?>(null) }
     val context = LocalContext.current
+
+    val categories by viewModel.categories.collectAsState()
+    val loading by viewModel.loading.collectAsState()
+    val error by viewModel.error.collectAsState()
+    val success by viewModel.success.collectAsState()
+
+    LaunchedEffect(success) {
+        if (success) {
+            Toast.makeText(context, "Presupuesto guardado con éxito", Toast.LENGTH_SHORT).show()
+            viewModel.resetState()
+            budgetAmount = ""
+            selectedCategory = null
+            selectedMesAnio = null
+            alertThreshold = 0.8f
+            budgetNotes = ""
+        }
+    }
+
+    LaunchedEffect(error) {
+        error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+    }
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
 
         item {
             Box(modifier = Modifier.fillMaxWidth()) {
                 HeaderSection()
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -88,7 +114,6 @@ fun ScreenBudget(navigationBack: () -> Unit) {
 
         item {
             Spacer(modifier = Modifier.height(16.dp))
-
             Text(
                 text = "Define cuánto puedes gastar este mes",
                 color = Color.Gray,
@@ -101,26 +126,33 @@ fun ScreenBudget(navigationBack: () -> Unit) {
 
         item {
             CategorySection(
+                categories = categories,
                 selectedCategory = selectedCategory,
                 onCategorySelected = { selectedCategory = it }
             )
+            if (categories.isEmpty()) {
+                Text(
+                    text = "No se pudieron cargar las categorías. Toca para reintentar.",
+                    color = Color(0xFF8A2BE2),
+                    fontSize = 13.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .clickable { viewModel.loadCategories() }
+                )
+            }
             Spacer(modifier = Modifier.height(20.dp))
         }
 
         item {
-            BudgetAmountCard(
-                amount = budgetAmount,
-                onAmountChange = { budgetAmount = it }
-            )
+            BudgetAmountCard(amount = budgetAmount, onAmountChange = { budgetAmount = it })
             Spacer(modifier = Modifier.height(20.dp))
         }
 
         item {
-            DateSection(
-                selectedDate = selectedDate,
-                onDateSelected = { fechaNueva ->
-                    selectedDate = fechaNueva
-                }
+            MonthYearSection(
+                selected = selectedMesAnio,
+                onSelected = { selectedMesAnio = it }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -137,15 +169,32 @@ fun ScreenBudget(navigationBack: () -> Unit) {
         item {
             DescriptionSection(
                 description = budgetNotes,
-                onDescriptionChange = { nuevoTexto -> budgetNotes = nuevoTexto
-                }
+                onDescriptionChange = { nuevoTexto -> budgetNotes = nuevoTexto }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
 
         item {
             SaveExpenseButton(onSave = {
-                Toast.makeText(context, "Presupuesto del $selectedDate guardado", Toast.LENGTH_SHORT).show()
+                val categoria = selectedCategory
+                val monto = budgetAmount.toDoubleOrNull()
+                val mesAnio = selectedMesAnio
+
+                when {
+                    categoria == null -> Toast.makeText(context, "Selecciona una categoría", Toast.LENGTH_SHORT).show()
+                    mesAnio == null -> Toast.makeText(context, "Selecciona el mes", Toast.LENGTH_SHORT).show()
+                    monto == null || monto <= 0 -> Toast.makeText(context, "Ingresa un monto válido", Toast.LENGTH_SHORT).show()
+                    else -> {
+                        viewModel.createBudget(
+                            categoriaId = categoria.id,
+                            montoLimite = monto,
+                            mes = mesAnio.mes,
+                            anio = mesAnio.anio,
+                            alertaPorcentaje = (alertThreshold * 100).toInt(),
+                            notas = budgetNotes.ifBlank { null }
+                        )
+                    }
+                }
             })
             Spacer(modifier = Modifier.height(40.dp))
         }

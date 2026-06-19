@@ -91,11 +91,14 @@ fun ScreenRegisterFixedPayment(navigationBack: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
         }
         item {
+            /*
             CategorySection(
                 selectedCategory = categoriaSeleccionada,
                 onCategorySelected = { categoriaSeleccionada = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
+
+             */
         }
         item {
             ExpenseAmountCard(

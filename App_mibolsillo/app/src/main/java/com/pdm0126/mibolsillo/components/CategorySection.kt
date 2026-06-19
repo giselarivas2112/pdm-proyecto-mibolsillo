@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -24,23 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.pdm0126.mibolsillo.data.model.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategorySection(
-    selectedCategory: String,
-    onCategorySelected: (String) -> Unit
+    categories: List<Category>,
+    selectedCategory: Category?,
+    onCategorySelected: (Category) -> Unit
 ) {
-    val categories = listOf(
-        "Comida",
-        "Transporte",
-        "Renta",
-        "Servicios",
-        "Ocio",
-        "Compras",
-        "Otros"
-    )
-
     var expanded by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -61,24 +54,17 @@ fun CategorySection(
                     .fillMaxWidth()
                     .menuAnchor(),
                 shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(
-                    1.dp,
-                    Color(0xFFD7B7F9)
-                )
+                border = BorderStroke(1.dp, Color(0xFFD7B7F9))
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 18.dp
-                        ),
+                        .padding(horizontal = 16.dp, vertical = 18.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
                     Text(
-                        text = selectedCategory.ifEmpty { "Selecciona una categoría" },
-                        color = if (selectedCategory.isEmpty()) Color.Gray else Color.Unspecified,
+                        text = selectedCategory?.let { "${it.icono} ${it.nombre}" } ?: "Selecciona una categoría",
+                        color = if (selectedCategory == null) Color.Gray else Color.Unspecified,
                         modifier = Modifier.weight(1f)
                     )
 
@@ -88,11 +74,12 @@ fun CategorySection(
 
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.heightIn(max = 280.dp)
             ) {
                 categories.forEach { category ->
                     DropdownMenuItem(
-                        text = { Text(text = category) },
+                        text = { Text(text = "${category.icono} ${category.nombre}") },
                         onClick = {
                             onCategorySelected(category)
                             expanded = false
