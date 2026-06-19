@@ -27,7 +27,7 @@ class CategoryApiRepository(
         return try {
             val token = sessionManager.getToken()
 
-            val response = KtorClient.client.post("categories") {
+            val response = KtorClient.client.post("categorias") {
                 header("Authorization", "Bearer $token")
                 contentType(ContentType.Application.Json)
                 setBody(CategoryRequestDto(nombre = nombre, icono = icono))
@@ -47,7 +47,7 @@ class CategoryApiRepository(
         return try {
             val token = sessionManager.getToken()
 
-            val response = KtorClient.client.get("categories") {
+            val response = KtorClient.client.get("categorias") {
                 header("Authorization", "Bearer $token")
             }
 
@@ -65,7 +65,7 @@ class CategoryApiRepository(
         return try {
             val token = sessionManager.getToken()
 
-            val response = KtorClient.client.put("categories/$id") {
+            val response = KtorClient.client.put("categorias/$id") {
                 header("Authorization", "Bearer $token")
                 contentType(ContentType.Application.Json)
                 setBody(CategoryRequestDto(nombre = nombre, icono = icono))
@@ -85,7 +85,7 @@ class CategoryApiRepository(
         return try {
             val token = sessionManager.getToken()
 
-            val response = KtorClient.client.delete("categories/$id") {
+            val response = KtorClient.client.delete("categorias/$id") {
                 header("Authorization", "Bearer $token")
             }
 
