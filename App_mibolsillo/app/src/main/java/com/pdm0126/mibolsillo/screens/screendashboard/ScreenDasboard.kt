@@ -34,14 +34,13 @@ import com.pdm0126.mibolsillo.components.SummaryCardsSection
 fun ScreenDashboard(
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
-    navegationToCategory: () -> Unit) {
-fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Unit,
-                    navegationToBudget: () -> Unit, navegationToCategory: () -> Unit,
-                    navegationToFixedPayment: () -> Unit,
-                    navigationToDashboard: () -> Unit,
-                    navigationToExpenses: () -> Unit,
-                    navigationToPerfil: ()-> Unit){
-
+    navegationToCategory: () -> Unit,
+    navegationToFixedPayment: () -> Unit,
+    navigationToPerfil: ()-> Unit,
+    navigationToDashboard: () -> Unit,
+    navigationToExpenses: () -> Unit,
+) {
+    
     var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
