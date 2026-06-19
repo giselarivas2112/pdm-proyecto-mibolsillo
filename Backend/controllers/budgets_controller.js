@@ -25,6 +25,24 @@ export const createBudget = async (req, res) => {
     })
   }
 
+  // Verificar si ya existe un presupuesto para esa categoría en ese mes/año
+  const { data: existente } = await supabase
+    .from('presupuestos')
+    .select('id')
+    .eq('usuario_id', usuario_id)
+    .eq('categoria_id', categoria_id)
+    .eq('mes', mes)
+    .eq('anio', anio)
+    .single()
+
+  if (existente) {
+    return res.status(400).json({
+      error: 'Ya existe un presupuesto para esta categoría en este mes'
+    })
+  }
+
+
+
   try {
     const { data, error } = await supabase
       .from('presupuestos')
