@@ -31,6 +31,10 @@ import com.pdm0126.mibolsillo.components.RecentExpensesSection
 import com.pdm0126.mibolsillo.components.SummaryCardsSection
 
 @Composable
+fun ScreenDashboard(
+    navigationToExpense: () -> Unit,
+    navegationToBudget: () -> Unit,
+    navegationToCategory: () -> Unit) {
 fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Unit,
                     navegationToBudget: () -> Unit, navegationToCategory: () -> Unit,
                     navegationToFixedPayment: () -> Unit,
@@ -79,21 +83,6 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                     Box {
 
                         HeaderSection()
-
-                        IconButton(
-                            onClick = { navigationToLogin() },
-                            modifier = Modifier
-                                .padding(
-                                    start = 16.dp,
-                                    top = 55.dp
-                                )
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Volver",
-                                tint = Color.White
-                            )
-                        }
 
                         Column(
                             modifier = Modifier

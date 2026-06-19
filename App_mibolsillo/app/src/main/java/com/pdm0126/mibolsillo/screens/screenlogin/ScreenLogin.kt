@@ -11,6 +11,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,12 +21,41 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.components.LoginCard
+import androidx.compose.ui.platform.LocalContext
+import com.pdm0126.mibolsillo.data.session.SessionManager
+import android.util.Log
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+
 
 @Composable
-fun ScreenLogin(navigationToHome: () -> Unit, navegationToRegister: () -> Unit,
-                navegationToDashboard: () -> Unit) {
+fun ScreenLogin(
+    navigationToHome: () -> Unit,
+    navegationToRegister: () -> Unit,
+    navegationToDashboard: () -> Unit,
+    viewModel: LoginViewModel = viewModel()
+){
 
+    val session by viewModel.session.collectAsState()
+
+    val error by viewModel.error.collectAsState()
+
+    val loading by viewModel.loading.collectAsState()
+    val context = LocalContext.current
+
+    val sessionManager = remember { SessionManager(context) }
+
+    LaunchedEffect(session) {
+        session?.let {
+
+            sessionManager.saveToken(it.token)
+
+            navegationToDashboard()
+        }
+    }
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFF6F3FA))
@@ -98,11 +130,22 @@ fun ScreenLogin(navigationToHome: () -> Unit, navegationToRegister: () -> Unit,
 
             item {
 
-                LoginCard(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                    navigationToHome = navigationToHome,
-                    navegationToDashboard = navegationToDashboard
+                LoginCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+
+                    error = error,
+
+                    loading = loading,
+
+                    onLogin = { email, password ->
+
+                        viewModel.login(
+                            email,
+                            password
+                        )
+                    }
                 )
             }
 

@@ -18,11 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -30,21 +26,32 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.ui.Alignment
 
 @Composable
-fun RegisterCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit,
-                 navigationToLogin: () -> Unit
+fun RegisterCard(
+    modifier: Modifier = Modifier,
+    error: String?,
+    loading: Boolean,
+    onRegister: (
+        nombre: String,
+        email: String,
+        password: String
+    ) -> Unit
 ) {
 
     var nombre by remember { mutableStateOf("") }
     var correo by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var passwordError by remember { mutableStateOf<String?>(null) }
 
     var visiblePassword by remember { mutableStateOf(false) }
     var visibleConfirm by remember { mutableStateOf(false) }
 
-    Card(modifier = modifier,
+    Card(
+        modifier = modifier,
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(8.dp),
         colors = CardDefaults.cardColors(
@@ -52,9 +59,10 @@ fun RegisterCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit,
         )
     ) {
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp)
         ) {
 
             Text(
@@ -183,9 +191,53 @@ fun RegisterCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit,
                 )
             )
 
+            if (error != null) {
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = error,
+                    color = Color.Red
+                )
+            }
+
+            if (passwordError != null) {
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = passwordError!!,
+                    color = Color.Red
+                )
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(onClick = navigationToHome,
+            Button(
+                onClick = {
+                    if (password != confirmPassword) {
+
+                        passwordError = "Las contraseñas no coinciden"
+                        return@Button
+
+                    }
+
+                    passwordError = null
+
+                    if (
+                        nombre.isNotBlank() &&
+                        correo.isNotBlank() &&
+                        password.isNotBlank()
+                    ) {
+
+                        onRegister(
+                            nombre,
+                            correo,
+                            password
+                        )
+                    }
+                },
+                enabled = !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp),
@@ -194,11 +246,20 @@ fun RegisterCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit,
                     containerColor = Color(0xFFA020F0)
                 )
             ) {
-                Text( text = "Crear mi cuenta",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold)
-            }
 
+                if (loading) {
+
+                    CircularProgressIndicator()
+
+                } else {
+
+                    Text(
+                        text = "Crear mi cuenta",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     }
 }

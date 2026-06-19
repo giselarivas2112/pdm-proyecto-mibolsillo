@@ -17,7 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoginCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit, navegationToDashboard:()-> Unit) {
+fun LoginCard(
+    modifier: Modifier = Modifier,
+    error: String?,
+    loading: Boolean,
+    onLogin: (String, String) -> Unit
+) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -127,7 +132,13 @@ fun LoginCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit, naveg
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = navegationToDashboard,
+                onClick = {
+                    onLogin(
+                        email,
+                        password
+                    )
+                },
+                enabled = !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp),
@@ -136,10 +147,30 @@ fun LoginCard(modifier: Modifier = Modifier, navigationToHome: () -> Unit, naveg
                     containerColor = Color(0xFFA020F0)
                 )
             ) {
+                if (loading) {
+
+                    CircularProgressIndicator(
+                        strokeWidth = 2.dp
+                    )
+
+                } else {
+
                 Text(
                     text = "Entrar",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
+                )
+            }
+            }
+            if (error != null) {
+
+                Spacer(
+                    modifier = Modifier.height(8.dp)
+                )
+
+                Text(
+                    text = error,
+                    color = Color.Red
                 )
             }
 

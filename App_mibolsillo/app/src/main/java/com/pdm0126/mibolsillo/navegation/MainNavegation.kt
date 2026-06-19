@@ -10,6 +10,7 @@ import com.pdm0126.mibolsillo.screens.screencategory.ScreenCategory
 import com.pdm0126.mibolsillo.screens.screendashboard.ScreenDashboard
 import com.pdm0126.mibolsillo.screens.screenexpense.ScreenExpense
 import com.pdm0126.mibolsillo.screens.screenhome.ScreenHome
+import com.pdm0126.mibolsillo.screens.screenlogin.ScreenAuthCheck
 import com.pdm0126.mibolsillo.screens.screenlogin.ScreenLogin
 import com.pdm0126.mibolsillo.screens.screenmyexpenses.ScreenMyExpenses
 import com.pdm0126.mibolsillo.screens.screenperfil.ScreenProfile
@@ -18,7 +19,7 @@ import com.pdm0126.mibolsillo.screens.screenregister.ScreenRegister
 @Composable
 fun MainNavegation() {
 
-    val backStack = rememberNavBackStack(Route.PantallaHome)
+    val backStack = rememberNavBackStack(Route.PantallaAuthCheck)
 
     NavDisplay(
         backStack = backStack,
@@ -26,16 +27,26 @@ fun MainNavegation() {
 
         entryProvider = entryProvider {
 
-            entry<Route.PantallaLogin> {
-
-                ScreenLogin(
-                    navigationToHome = {
+            entry<Route.PantallaAuthCheck> {
+                ScreenAuthCheck(
+                    navigateToHome = {
                         backStack.clear()
                         backStack.add(Route.PantallaHome)
                     },
+                    navigateToDashboard = {
+                        backStack.clear()
+                        backStack.add(Route.PantallaDashboard)
+                    }
+                )
+            }
+
+            entry<Route.PantallaLogin> {
+                ScreenLogin(navigationToHome = { backStack.clear()
+                    backStack.add(Route.PantallaHome) },
                     navegationToRegister = { backStack.add(Route.PantallaRegister) },
                     navegationToDashboard = {
-                        backStack.add(Route.PantallaDashboard)
+                        backStack.clear()
+                        backStack.add(Route.PantallaAuthCheck)
                     }
                 )
             }
@@ -44,7 +55,7 @@ fun MainNavegation() {
                 ScreenRegister(
                     navigationToHome = {
                         backStack.clear()
-                        backStack.add(Route.PantallaHome)
+                        backStack.add(Route.PantallaAuthCheck)
                     },
                     navigationToLogin = { backStack.removeLastOrNull() }
                 )
@@ -57,10 +68,6 @@ fun MainNavegation() {
             }
             entry<Route.PantallaDashboard> {
                 ScreenDashboard(
-                    navigationToLogin = {
-                        backStack.clear()
-                        backStack.add(Route.PantallaLogin)
-                    },
                     navigationToExpense = { backStack.add(Route.PantallaExpense) },
                     navegationToBudget = { backStack.add(Route.PantallaBudget) },
                     navegationToCategory = { backStack.add(Route.PantallaCategory) },
