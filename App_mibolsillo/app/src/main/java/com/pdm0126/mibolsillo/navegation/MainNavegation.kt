@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.pdm0126.mibolsillo.screens.ScreenRegisterFixed.ScreenRegisterFixedPayment
 import com.pdm0126.mibolsillo.screens.screenbudget.ScreenBudget
 import com.pdm0126.mibolsillo.screens.screencategory.ScreenCategory
 import com.pdm0126.mibolsillo.screens.screendashboard.ScreenDashboard
@@ -11,6 +12,8 @@ import com.pdm0126.mibolsillo.screens.screenexpense.ScreenExpense
 import com.pdm0126.mibolsillo.screens.screenhome.ScreenHome
 import com.pdm0126.mibolsillo.screens.screenlogin.ScreenAuthCheck
 import com.pdm0126.mibolsillo.screens.screenlogin.ScreenLogin
+import com.pdm0126.mibolsillo.screens.screenmyexpenses.ScreenMyExpenses
+import com.pdm0126.mibolsillo.screens.screenperfil.ScreenProfile
 import com.pdm0126.mibolsillo.screens.screenregister.ScreenRegister
 
 @Composable
@@ -67,7 +70,11 @@ fun MainNavegation() {
                 ScreenDashboard(
                     navigationToExpense = { backStack.add(Route.PantallaExpense) },
                     navegationToBudget = { backStack.add(Route.PantallaBudget) },
-                    navegationToCategory = { backStack.add(Route.PantallaCategory) }
+                    navegationToCategory = { backStack.add(Route.PantallaCategory) },
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
+                    navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
+                    navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile) }
                 )
             }
             entry<Route.PantallaExpense> {
@@ -83,6 +90,36 @@ fun MainNavegation() {
             entry<Route.PantallaCategory> {
                 ScreenCategory(
                     navigationBack = { backStack.removeLastOrNull() }
+                )
+            }
+            entry<Route.PantallaRegisterFixedPayment> {
+
+                ScreenRegisterFixedPayment(
+                    navigationBack = { backStack.removeLastOrNull() }
+                )
+            }
+            entry<Route.PantallaExpenses> {
+                ScreenMyExpenses(
+                    navigationBack = { backStack.removeLastOrNull() },
+                    navigationToExpense = { backStack.add(Route.PantallaExpense) },
+                    navegationToBudget = { backStack.add(Route.PantallaBudget) },
+                    navegationToCategory = { backStack.add(Route.PantallaCategory) },
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
+                    navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
+                    navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile) }
+                )
+            }
+            entry<Route.PantallaProfile> {
+                ScreenProfile(
+                    navigationBack = { backStack.removeLastOrNull() },
+                    navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
+                    navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile) },
+                    navigationToExpense = { backStack.add(Route.PantallaExpense) },
+                    navegationToBudget = { backStack.add(Route.PantallaBudget) },
+                    navegationToCategory = { backStack.add(Route.PantallaCategory) },
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
                 )
             }
         }
