@@ -41,12 +41,14 @@ import com.pdm0126.mibolsillo.components.MonthSelectorComponent
 import com.pdm0126.mibolsillo.components.StatsCardComponent
 
 @Composable
-fun ScreenMyExpenses( navigationBack: () -> Unit,navegationToFixedPayment: () -> Unit,
+fun ScreenMyExpenses( navigationBack: () -> Unit,
+    navegationToFixedPayment: () -> Unit,
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
     navegationToCategory: () -> Unit,
     navigationToDashboard: () -> Unit,
-    navigationToExpenses: () -> Unit
+    navigationToExpenses: () -> Unit,
+    navigationToPerfil: ()-> Unit
 ) {
     var categoriaFiltro by remember { mutableStateOf("Todos") }
     var expanded by remember { mutableStateOf(false) }
@@ -67,7 +69,7 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,navegationToFixedPayment: () ->
                     // navegar a Reportes
                 },
                 onPerfilClick = {
-                    // navegar a Perfil
+                    navigationToPerfil()
                 },
                 expanded = expanded,
                 onFabClick = {

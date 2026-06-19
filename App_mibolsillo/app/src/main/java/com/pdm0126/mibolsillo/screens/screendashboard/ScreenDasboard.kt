@@ -35,11 +35,14 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                     navegationToBudget: () -> Unit, navegationToCategory: () -> Unit,
                     navegationToFixedPayment: () -> Unit,
                     navigationToDashboard: () -> Unit,
-                    navigationToExpenses: () -> Unit){
+                    navigationToExpenses: () -> Unit,
+                    navigationToPerfil: ()-> Unit){
 
     var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
+        containerColor = Color(0xFFF7F9FC),
+
         bottomBar = {
             HomeBottomBar(
                 pantallaActual = "inicio",
@@ -53,7 +56,7 @@ fun ScreenDashboard(navigationToLogin: () -> Unit,navigationToExpense: () -> Uni
                     // navegar a Reportes
                 },
                 onPerfilClick = {
-                    // navegar a Perfil
+                    navigationToPerfil()
                 },
                 expanded = expanded,
                 onFabClick = {
