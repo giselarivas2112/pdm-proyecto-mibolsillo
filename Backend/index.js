@@ -20,7 +20,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.use(express.json())
 app.use('/api/auth', authRoutes)
-app.use('/api/categories', categoriesRoutes)
+app.use('/api/categorias', categoriesRoutes)
 app.use('/api/gastos', expensesRoutes)
 app.use('/api/presupuestos', budgetsRoutes)
 app.use('/api/estadisticas', statsRoutes)
