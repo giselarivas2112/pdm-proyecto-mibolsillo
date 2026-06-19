@@ -34,13 +34,33 @@ import com.pdm0126.mibolsillo.components.SummaryCardsSection
 fun ScreenDashboard(
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
-    navegationToCategory: () -> Unit) {
-
+    navegationToCategory: () -> Unit,
+    navegationToFixedPayment: () -> Unit,
+    navigationToPerfil: ()-> Unit,
+    navigationToDashboard: () -> Unit,
+    navigationToExpenses: () -> Unit,
+) {
+    
     var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
+        containerColor = Color(0xFFF7F9FC),
+
         bottomBar = {
             HomeBottomBar(
+                pantallaActual = "inicio",
+                onInicioClick = {
+                    navigationToDashboard()
+                },
+                onMisGastosClick = {
+                        navigationToExpenses ()
+                },
+                onReportesClick = {
+                    // navegar a Reportes
+                },
+                onPerfilClick = {
+                    navigationToPerfil()
+                },
                 expanded = expanded,
                 onFabClick = {
                     expanded = !expanded
@@ -121,7 +141,7 @@ fun ScreenDashboard(
                         navegationToBudget()
                     },
                     onFixedPayment = {
-                        //Navegar a pago fijo pronto
+                        navegationToFixedPayment()
                     },
                     onExpense = {
                         navigationToExpense()

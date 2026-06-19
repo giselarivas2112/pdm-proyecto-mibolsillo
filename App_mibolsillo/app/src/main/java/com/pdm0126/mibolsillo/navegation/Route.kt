@@ -24,5 +24,12 @@ sealed class Route : NavKey {
     data object PantallaBudget : Route()
     @Serializable
     data object PantallaCategory : Route()
+    @Serializable
+    data object PantallaRegisterFixedPayment : Route()
+    @Serializable
+    data object PantallaExpenses : Route()
+    @Serializable
+    data object PantallaProfile : Route()
 }
+
 
