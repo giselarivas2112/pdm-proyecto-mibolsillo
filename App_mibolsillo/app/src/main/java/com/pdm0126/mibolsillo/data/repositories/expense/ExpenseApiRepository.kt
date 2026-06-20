@@ -6,8 +6,8 @@ import com.pdm0126.mibolsillo.data.api.expense.ExpenseRequestDto
 import com.pdm0126.mibolsillo.data.api.expense.ExpenseResponseDto
 import com.pdm0126.mibolsillo.data.api.expense.ExpenseUpdateResponseDto
 import com.pdm0126.mibolsillo.data.api.expense.toModel
-import com.pdm0126.mibolsillo.data.model.Expense
-import com.pdm0126.mibolsillo.data.model.ExpenseCreationResult
+import com.pdm0126.mibolsillo.model.Expense
+import com.pdm0126.mibolsillo.model.ExpenseCreationResult
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import com.tupaquete.mibolsillo.data.api.KtorClient
 import io.ktor.client.call.body

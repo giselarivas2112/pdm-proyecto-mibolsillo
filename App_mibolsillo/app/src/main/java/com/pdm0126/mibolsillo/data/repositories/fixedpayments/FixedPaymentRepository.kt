@@ -1,0 +1,27 @@
+package com.pdm0126.mibolsillo.data.repositories.fixedpayments
+
+import com.pdm0126.mibolsillo.model.FixedPayment
+
+interface FixedPaymentRepository {
+
+    suspend fun createFixedPayment(
+        nombre: String,
+        categoriaId: String,
+        monto: Double,
+        diaVencimiento: Int,
+        diasRecordatorio: Int
+    ): Result<FixedPayment>
+
+    suspend fun getFixedPayments(): Result<List<FixedPayment>>
+
+    suspend fun updateFixedPayment(
+        id: String,
+        nombre: String,
+        categoriaId: String,
+        monto: Double,
+        diaVencimiento: Int,
+        diasRecordatorio: Int
+    ): Result<FixedPayment>
+
+    suspend fun deleteFixedPayment(id: String): Result<Unit>
+}

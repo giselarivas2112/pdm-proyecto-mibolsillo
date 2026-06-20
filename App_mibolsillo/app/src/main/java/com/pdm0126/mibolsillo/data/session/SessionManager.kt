@@ -39,7 +39,7 @@ class SessionManager(
         println("TOKEN: $token")
 
         return token
-        //return preferences[TOKEN_KEY]
+
     }
 
     suspend fun clearToken() {
