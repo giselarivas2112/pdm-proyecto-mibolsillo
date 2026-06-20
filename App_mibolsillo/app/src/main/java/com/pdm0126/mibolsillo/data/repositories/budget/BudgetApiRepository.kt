@@ -5,7 +5,7 @@ import com.pdm0126.mibolsillo.data.api.budget.BudgetDto
 import com.pdm0126.mibolsillo.data.api.budget.BudgetRequestDto
 import com.pdm0126.mibolsillo.data.api.budget.BudgetResponseDto
 import com.pdm0126.mibolsillo.data.api.budget.toModel
-import com.pdm0126.mibolsillo.data.model.Budget
+import com.pdm0126.mibolsillo.model.Budget
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import com.tupaquete.mibolsillo.data.api.KtorClient
 import io.ktor.client.call.body

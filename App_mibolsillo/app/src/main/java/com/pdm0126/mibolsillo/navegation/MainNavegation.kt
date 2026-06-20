@@ -4,17 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.pdm0126.mibolsillo.screens.ScreenRegisterFixed.ScreenRegisterFixedPayment
-import com.pdm0126.mibolsillo.screens.screenbudget.ScreenBudget
-import com.pdm0126.mibolsillo.screens.screencategory.ScreenCategory
-import com.pdm0126.mibolsillo.screens.screendashboard.ScreenDashboard
-import com.pdm0126.mibolsillo.screens.screenexpense.ScreenExpense
-import com.pdm0126.mibolsillo.screens.screenhome.ScreenHome
-import com.pdm0126.mibolsillo.screens.screenlogin.ScreenAuthCheck
-import com.pdm0126.mibolsillo.screens.screenlogin.ScreenLogin
-import com.pdm0126.mibolsillo.screens.screenmyexpenses.ScreenMyExpenses
-import com.pdm0126.mibolsillo.screens.screenperfil.ScreenProfile
-import com.pdm0126.mibolsillo.screens.screenregister.ScreenRegister
+import com.pdm0126.mibolsillo.view.screens.ScreenRegisterFixed.ScreenRegisterFixedPayment
+import com.pdm0126.mibolsillo.view.screens.screenbudget.ScreenBudget
+import com.pdm0126.mibolsillo.view.screens.screencategory.ScreenCategory
+import com.pdm0126.mibolsillo.view.screens.screendashboard.ScreenDashboard
+import com.pdm0126.mibolsillo.view.screens.screenexpense.ScreenExpense
+import com.pdm0126.mibolsillo.view.screens.screenhome.ScreenHome
+import com.pdm0126.mibolsillo.view.screens.screenlogin.ScreenAuthCheck
+import com.pdm0126.mibolsillo.view.screens.screenlogin.ScreenLogin
+import com.pdm0126.mibolsillo.view.screens.screenmyexpenses.ScreenMyExpenses
+import com.pdm0126.mibolsillo.view.screens.screenperfil.ScreenProfile
+import com.pdm0126.mibolsillo.view.screens.screenregister.ScreenRegister
 
 @Composable
 fun MainNavegation() {
@@ -41,8 +41,11 @@ fun MainNavegation() {
             }
 
             entry<Route.PantallaLogin> {
-                ScreenLogin(navigationToHome = { backStack.clear()
-                    backStack.add(Route.PantallaHome) },
+                ScreenLogin(
+                    navigationToHome = {
+                        backStack.clear()
+                        backStack.add(Route.PantallaHome)
+                    },
                     navegationToRegister = { backStack.add(Route.PantallaRegister) },
                     navegationToDashboard = {
                         backStack.clear()

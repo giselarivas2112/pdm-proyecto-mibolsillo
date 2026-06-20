@@ -1,15 +1,14 @@
 package com.pdm0126.mibolsillo.data.repositories.auth
 
 import com.pdm0126.mibolsillo.data.api.ErrorResponseDto
-import com.pdm0126.mibolsillo.data.api.auth.Login.LoginRequestDto
-import com.pdm0126.mibolsillo.data.api.auth.Login.LoginResponseDto
-import com.pdm0126.mibolsillo.data.api.auth.Registrarse.RegisterRequestDto
-import com.pdm0126.mibolsillo.data.api.auth.Registrarse.RegisterResponseDto
+import com.pdm0126.mibolsillo.data.api.auth.login.LoginRequestDto
+import com.pdm0126.mibolsillo.data.api.auth.login.LoginResponseDto
+import com.pdm0126.mibolsillo.data.api.auth.register.RegisterRequestDto
+import com.pdm0126.mibolsillo.data.api.auth.register.RegisterResponseDto
 import com.pdm0126.mibolsillo.data.api.auth.toModel
 import com.pdm0126.mibolsillo.data.api.auth.toSession
-import com.pdm0126.mibolsillo.data.model.Session
-import com.pdm0126.mibolsillo.data.model.User
-import com.pdm0126.mibolsillo.data.repositories.auth.AuthRepository
+import com.pdm0126.mibolsillo.model.Session
+import com.pdm0126.mibolsillo.model.User
 import com.tupaquete.mibolsillo.data.api.KtorClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post

@@ -1,6 +1,6 @@
 package com.pdm0126.mibolsillo.data.api.budget
 
-import com.pdm0126.mibolsillo.data.model.Budget
+import com.pdm0126.mibolsillo.model.Budget
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
