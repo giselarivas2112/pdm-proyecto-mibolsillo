@@ -1,8 +1,5 @@
-package com.pdm0126.mibolsillo.screens.screenperfil
+package com.pdm0126.mibolsillo.screens.viewscreencategory
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,14 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,24 +26,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pdm0126.mibolsillo.newcomponents.CategoryFilterChip
+import com.pdm0126.mibolsillo.newcomponents.CategoryRowCard
+import com.pdm0126.mibolsillo.newcomponents.CategorySearchInputField
 import com.pdm0126.mibolsillo.components.FabExpandedMenu
 import com.pdm0126.mibolsillo.components.HeaderSection
 import com.pdm0126.mibolsillo.components.HomeBottomBar
-import com.pdm0126.mibolsillo.components.ProfileActionsList
-import com.pdm0126.mibolsillo.components.ProfileStatsRow
 
 @Composable
-fun ScreenProfile(navigationBack: () -> Unit,
+fun ScreenViewCategory(
+    navigationBack: () -> Unit,
 
-    nombreUsuario: String = "Emily Orellana",
-    gastosTotales: String = "142",
     totalCategorias: String = "8",
-    totalPresupuestos: String = "6",
 
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
@@ -60,17 +52,17 @@ fun ScreenProfile(navigationBack: () -> Unit,
     navegationToCategory: () -> Unit,
     navegationToFixedPayment: () -> Unit,
 
-    navegationToViewCategory: () -> Unit,
-
 ) {
     var expanded by remember { mutableStateOf(false) }
+    var searchInput by remember { mutableStateOf("") }
+    var selectedFilter by remember { mutableStateOf("Todas") }
 
     Scaffold(
         containerColor = Color(0xFFF7F9FC),
 
         bottomBar = {
             HomeBottomBar(
-                pantallaActual = "Perfil",
+                pantallaActual = "Categorías",
                 onInicioClick = {
                     navigationToDashboard()
                 },
@@ -78,7 +70,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                    //navegacion a reportes
+                    // Navegación a reportes en el futuro
                 },
                 onPerfilClick = {
                     navigationToPerfil()
@@ -110,7 +102,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
             )
         },
         floatingActionButtonPosition = FabPosition.Center
-    ) { padding->
+    ) { padding ->
 
         LazyColumn(
             modifier = Modifier
@@ -126,7 +118,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
                             .fillMaxWidth()
                             .statusBarsPadding()
                             .padding(horizontal = 4.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         IconButton(onClick = navigationBack) {
                             Icon(
@@ -139,78 +131,108 @@ fun ScreenProfile(navigationBack: () -> Unit,
 
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 55.dp),
+                            .align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Mi perfil",
+                            text = "Mis categorías",
                             color = Color.White,
-                            fontSize = 22.sp,
+                            fontSize = 30.sp,
                             fontWeight = FontWeight.Bold
                         )
 
-                        Spacer(modifier = Modifier.height(14.dp))
-
-                        Box(
-                            modifier = Modifier
-                                .size(85.dp)
-                                .clip(CircleShape)
-                                .background(Color(0xFFE1BEE7))
-                                .border(3.dp,Color.White, CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Person,
-                                contentDescription = null,
-                                tint = Color(0xFF8A2BE2),
-                                modifier = Modifier.size(50.dp)
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
-                            text = nombreUsuario,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                            text = "$totalCategorias categorías creadas",
+                            color = Color.White.copy(alpha = 0.7f),
+                            fontSize = 15.sp
                         )
                     }
                 }
             }
 
             item {
-                ProfileStatsRow(
-                    gastosTotales = gastosTotales,
-                    totalCategorias = totalCategorias,
-                    totalPresupuestos = totalPresupuestos
-                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    CategorySearchInputField(
+                        value = searchInput,
+                        onValueChange = { searchInput = it }
+                    )
+                }
             }
 
             item {
-                ProfileActionsList(
-
-                    onVerPresupuestos = {
-                        // Navegar a la lista de presupuestos
-                    },
-
-                    onVerCategorias = {
-                        navegationToViewCategory()
-                    },
-
-                    onVerPagosFijos = {
-                        //Navegar a la lista de pagos fijos
-                    },
-
-                    onCerrarSesion = {
-                        //Cerrar sesión
+                Spacer(modifier = Modifier.height(8.dp))
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    item {
+                        CategoryFilterChip(
+                            text = "Todas",
+                            isActive = selectedFilter == "Todas",
+                            onClick = { selectedFilter = "Todas" }
+                        )
                     }
-                )
+                    item {
+                        CategoryFilterChip(
+                            text = "Recientes",
+                            isActive = selectedFilter == "Recientes",
+                            onClick = { selectedFilter = "Recientes" }
+                        )
+                    }
+                    item {
+                        CategoryFilterChip(
+                            text = "Con Gastos",
+                            isActive = selectedFilter == "Con Gastos",
+                            onClick = { selectedFilter = "Con Gastos" }
+                        )
+                    }
+                }
+            }
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    CategoryRowCard(
+                        emojiIcon = "🍔",
+                        iconBgColor = Color(0x268A2BE2),
+                        title = "Comida",
+                        subtitle = "12 gastos",
+                    )
 
+                    CategoryRowCard(
+                        emojiIcon = "🚌",
+                        iconBgColor = Color(0x26B39DDB),
+                        title = "Transporte",
+                        subtitle = "8 gastos",
+                    )
+
+
+                    CategoryRowCard(
+                        emojiIcon = "🏠",
+                        iconBgColor = Color(0x265C6BC0),
+                        title = "Renta",
+                        subtitle = "",
+                    )
+
+                    CategoryRowCard(
+                        emojiIcon = "⚡",
+                        iconBgColor = Color(0x26EF5350),
+                        title = "Servicios",
+                        subtitle = "",
+                    )
+                }
             }
 
-            item { Spacer(modifier = Modifier.height(80.dp)) }
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
+            }
         }
     }
 }
