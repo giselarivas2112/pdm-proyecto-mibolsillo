@@ -32,6 +32,8 @@ sealed class Route : NavKey {
     data object PantallaProfile : Route()
     @Serializable
     data object PantallaViewCategory : Route()
+    @Serializable
+    data object PantallaViewFixedPayment : Route()
 }
 
 
