@@ -15,7 +15,7 @@ import com.pdm0126.mibolsillo.view.screens.screenlogin.ScreenLogin
 import com.pdm0126.mibolsillo.view.screens.screenmyexpenses.ScreenMyExpenses
 import com.pdm0126.mibolsillo.view.screens.screenperfil.ScreenProfile
 import com.pdm0126.mibolsillo.view.screens.screenregister.ScreenRegister
-import com.pdm0126.mibolsillo.screens.viewscreencategory.ScreenViewCategory
+import com.pdm0126.mibolsillo.view.screens.viewscreencategory.ScreenViewCategory
 
 @Composable
 fun MainNavegation() {

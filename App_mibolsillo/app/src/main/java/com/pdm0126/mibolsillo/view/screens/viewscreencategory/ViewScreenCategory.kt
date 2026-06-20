@@ -1,4 +1,4 @@
-package com.pdm0126.mibolsillo.screens.viewscreencategory
+package com.pdm0126.mibolsillo.view.screens.viewscreencategory
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.sp
 import com.pdm0126.mibolsillo.newcomponents.CategoryFilterChip
 import com.pdm0126.mibolsillo.newcomponents.CategoryRowCard
 import com.pdm0126.mibolsillo.newcomponents.CategorySearchInputField
-import com.pdm0126.mibolsillo.components.FabExpandedMenu
-import com.pdm0126.mibolsillo.components.HeaderSection
-import com.pdm0126.mibolsillo.components.HomeBottomBar
+import com.pdm0126.mibolsillo.view.components.common.HeaderSection
+import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
+import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
 
 @Composable
 fun ScreenViewCategory(
