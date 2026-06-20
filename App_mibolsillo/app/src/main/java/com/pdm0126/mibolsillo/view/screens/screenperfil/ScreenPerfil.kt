@@ -58,6 +58,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
     navegationToFixedPayment: () -> Unit,
 
     navegationToViewCategory: () -> Unit,
+    navegationToViewFixedPayment: () -> Unit,
 
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -197,7 +198,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
                     },
 
                     onVerPagosFijos = {
-                        //Navegar a la lista de pagos fijos
+                        navegationToViewFixedPayment()
                     },
 
                     onCerrarSesion = {

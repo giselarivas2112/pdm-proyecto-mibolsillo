@@ -16,6 +16,7 @@ import com.pdm0126.mibolsillo.view.screens.screenmyexpenses.ScreenMyExpenses
 import com.pdm0126.mibolsillo.view.screens.screenperfil.ScreenProfile
 import com.pdm0126.mibolsillo.view.screens.screenregister.ScreenRegister
 import com.pdm0126.mibolsillo.screens.viewscreencategory.ScreenViewCategory
+import com.pdm0126.mibolsillo.view.screens.screenviewfixedpayments.ScreenViewFixedPayment
 
 @Composable
 fun MainNavegation() {
@@ -121,12 +122,25 @@ fun MainNavegation() {
                     navegationToBudget = { backStack.add(Route.PantallaBudget) },
                     navegationToCategory = { backStack.add(Route.PantallaCategory) },
                     navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
-                    navegationToViewCategory = { backStack.add(Route.PantallaViewCategory) }
+                    navegationToViewCategory = { backStack.add(Route.PantallaViewCategory) },
+                    navegationToViewFixedPayment = { backStack.add(Route.PantallaViewFixedPayment) }
                 )
             }
 
             entry<Route.PantallaViewCategory> {
                 ScreenViewCategory(
+                    navigationBack = { backStack.removeLastOrNull() },
+                    navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
+                    navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile) },
+                    navigationToExpense = { backStack.add(Route.PantallaExpense) },
+                    navegationToBudget = { backStack.add(Route.PantallaBudget) },
+                    navegationToCategory = { backStack.add(Route.PantallaCategory) },
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) }
+                )
+            }
+            entry<Route.PantallaViewFixedPayment> {
+                ScreenViewFixedPayment(
                     navigationBack = { backStack.removeLastOrNull() },
                     navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
                     navigationToExpenses = { backStack.add(Route.PantallaExpenses) },

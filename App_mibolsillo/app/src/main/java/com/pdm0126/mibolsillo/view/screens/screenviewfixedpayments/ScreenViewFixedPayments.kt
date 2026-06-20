@@ -1,4 +1,4 @@
-package com.pdm0126.mibolsillo.screens.viewscreencategory
+package com.pdm0126.mibolsillo.view.screens.screenviewfixedpayments
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,20 +30,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pdm0126.mibolsillo.newcomponents.CategoryFilterChip
-import com.pdm0126.mibolsillo.newcomponents.CategoryRowCard
-import com.pdm0126.mibolsillo.newcomponents.CategorySearchInputField
+import com.pdm0126.mibolsillo.newcomponents.FixedPaymentRowCard
+import com.pdm0126.mibolsillo.newcomponents.FixedPaymentTotalBanner
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
 
 @Composable
-fun ScreenViewCategory(
-    navigationBack: () -> Unit,
-
-    totalCategorias: String = "8",
+fun ScreenViewFixedPayment(navigationBack: () -> Unit,
 
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
@@ -52,17 +51,15 @@ fun ScreenViewCategory(
     navegationToCategory: () -> Unit,
     navegationToFixedPayment: () -> Unit,
 
-) {
+    ) {
     var expanded by remember { mutableStateOf(false) }
-    var searchInput by remember { mutableStateOf("") }
-    var selectedFilter by remember { mutableStateOf("Todas") }
 
     Scaffold(
         containerColor = Color(0xFFF7F9FC),
 
         bottomBar = {
             HomeBottomBar(
-                pantallaActual = "Categorías",
+                pantallaActual = "Perfil",
                 onInicioClick = {
                     navigationToDashboard()
                 },
@@ -70,7 +67,7 @@ fun ScreenViewCategory(
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                    // Navegación a reportes en el futuro
+                    // Navegación futura a reportes
                 },
                 onPerfilClick = {
                     navigationToPerfil()
@@ -127,105 +124,71 @@ fun ScreenViewCategory(
                                 tint = Color.White
                             )
                         }
-                    }
-
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
                         Text(
-                            text = "Mis categorías",
+                            text = "Pagos fijos",
                             color = Color.White,
                             fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            text = "$totalCategorias categorías creadas",
-                            color = Color.White.copy(alpha = 0.7f),
-                            fontSize = 15.sp
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(top = 40.dp)
+                                .padding(end = 48.dp)
                         )
                     }
                 }
+
             }
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
-                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
-                    CategorySearchInputField(
-                        value = searchInput,
-                        onValueChange = { searchInput = it }
-                    )
-                }
             }
 
             item {
-                Spacer(modifier = Modifier.height(8.dp))
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    item {
-                        CategoryFilterChip(
-                            text = "Todas",
-                            isActive = selectedFilter == "Todas",
-                            onClick = { selectedFilter = "Todas" }
-                        )
-                    }
-                    item {
-                        CategoryFilterChip(
-                            text = "Recientes",
-                            isActive = selectedFilter == "Recientes",
-                            onClick = { selectedFilter = "Recientes" }
-                        )
-                    }
-                    item {
-                        CategoryFilterChip(
-                            text = "Con Gastos",
-                            isActive = selectedFilter == "Con Gastos",
-                            onClick = { selectedFilter = "Con Gastos" }
-                        )
-                    }
-                }
-            }
-            item {
-                Spacer(modifier = Modifier.height(12.dp))
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    CategoryRowCard(
-                        emojiIcon = "🍔",
-                        iconBgColor = Color(0x268A2BE2),
-                        title = "Comida",
-                        subtitle = "12 gastos",
+
+                    FixedPaymentRowCard(
+                        icon = Icons.Default.PlayArrow,
+                        iconColor = Color(0xFFE50914),
+                        iconBgColor = Color(0x26E50914),
+                        title = "Netflix",
+                        subtitle = "Vence el día 20 • Entretenimiento",
+                        monto = "$199"
                     )
 
-                    CategoryRowCard(
-                        emojiIcon = "🚌",
-                        iconBgColor = Color(0x26B39DDB),
-                        title = "Transporte",
-                        subtitle = "8 gastos",
+                    FixedPaymentRowCard(
+                        icon = Icons.Default.MusicNote,
+                        iconColor = Color(0xFF1DB954),
+                        iconBgColor = Color(0x261DB954),
+                        title = "Spotify",
+                        subtitle = "Vence el día 23 • Entretenimiento",
+                        monto = "$99"
                     )
 
-
-                    CategoryRowCard(
-                        emojiIcon = "🏠",
-                        iconBgColor = Color(0x265C6BC0),
+                    FixedPaymentRowCard(
+                        icon = Icons.Default.Home,
+                        iconColor = Color(0xFFFF9800),
+                        iconBgColor = Color(0x26FFFF9800),
                         title = "Renta",
-                        subtitle = "",
+                        subtitle = "Vence el día 1 • Vivienda",
+                        monto = "$3,500"
                     )
+                }
+            }
 
-                    CategoryRowCard(
-                        emojiIcon = "⚡",
-                        iconBgColor = Color(0x26EF5350),
-                        title = "Servicios",
-                        subtitle = "",
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            item {
+                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    FixedPaymentTotalBanner(
+                        title = "Total mensual en pagos fijos",
+                        totalAmount = "$5,026"
                     )
                 }
             }
