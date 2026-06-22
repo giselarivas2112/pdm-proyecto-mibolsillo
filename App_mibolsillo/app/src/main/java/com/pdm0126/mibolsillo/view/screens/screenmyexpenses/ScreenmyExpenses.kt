@@ -87,7 +87,6 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
         ) {
 
             item {
@@ -100,6 +99,7 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
 
                     MonthSelectorComponent(
                         navigationBack = navigationBack,
+                        titulo = "Mis gastos",
                         mesActual = "Mayo 2026",
                         onAnteriorMes = { },
                         onSiguienteMes = { }

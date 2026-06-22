@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun MonthSelectorComponent(navigationBack: () -> Unit,
+    titulo: String = "Mis gastos",
     mesActual: String = "Mayo 2026",
     onAnteriorMes: () -> Unit,
     onSiguienteMes: () -> Unit
@@ -53,7 +54,7 @@ fun MonthSelectorComponent(navigationBack: () -> Unit,
             }
 
             Text(
-                text = "Mis gastos",
+                text = titulo,
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,

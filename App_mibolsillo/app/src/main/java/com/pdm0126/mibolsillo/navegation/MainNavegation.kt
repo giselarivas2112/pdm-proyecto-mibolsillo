@@ -15,6 +15,7 @@ import com.pdm0126.mibolsillo.view.screens.screenlogin.ScreenLogin
 import com.pdm0126.mibolsillo.view.screens.screenmyexpenses.ScreenMyExpenses
 import com.pdm0126.mibolsillo.view.screens.screenperfil.ScreenProfile
 import com.pdm0126.mibolsillo.view.screens.screenregister.ScreenRegister
+import com.pdm0126.mibolsillo.view.screens.viewscreenbudgets.ScreenViewBudgets
 import com.pdm0126.mibolsillo.view.screens.viewscreencategory.ScreenViewCategory
 import com.pdm0126.mibolsillo.view.screens.viewscreenfixedpayments.ViewScreenFixedPayments
 
@@ -123,7 +124,8 @@ fun MainNavegation() {
                     navegationToCategory = { backStack.add(Route.PantallaCategory) },
                     navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
                     navegationToViewCategory = { backStack.add(Route.PantallaViewCategory) },
-                    navegationToViewFixedPayment = { backStack.add(Route.PantallaViewFixedPayment) }
+                    navegationToViewFixedPayment = { backStack.add(Route.PantallaViewFixedPayment) },
+                    navegationToViewbudgets = { backStack.add(Route.PantallaViewbudgets) }
                 )
             }
 
@@ -141,6 +143,18 @@ fun MainNavegation() {
             }
             entry<Route.PantallaViewFixedPayment> {
                 ViewScreenFixedPayments(
+                    navigationBack = { backStack.removeLastOrNull() },
+                    navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
+                    navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile) },
+                    navigationToExpense = { backStack.add(Route.PantallaExpense) },
+                    navegationToBudget = { backStack.add(Route.PantallaBudget) },
+                    navegationToCategory = { backStack.add(Route.PantallaCategory) },
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) }
+                )
+            }
+            entry<Route.PantallaViewbudgets> {
+                ScreenViewBudgets(
                     navigationBack = { backStack.removeLastOrNull() },
                     navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
                     navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
