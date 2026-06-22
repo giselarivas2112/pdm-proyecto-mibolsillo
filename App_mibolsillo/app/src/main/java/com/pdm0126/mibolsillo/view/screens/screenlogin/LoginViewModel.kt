@@ -3,6 +3,7 @@ package com.pdm0126.mibolsillo.view.screens.screenlogin
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.onesignal.OneSignal
 import com.pdm0126.mibolsillo.model.Session
 import com.pdm0126.mibolsillo.data.repositories.auth.AuthApiRepository
 import com.pdm0126.mibolsillo.data.repositories.auth.AuthRepository
@@ -53,6 +54,34 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 .onSuccess { session ->
 
                     sessionManager.saveToken(session.token)
+
+                    val oneSignalId =
+                        OneSignal.User.pushSubscription.id
+
+                    android.util.Log.d(
+                        "OneSignalTest",
+                        "ID OBTENIDO: $oneSignalId"
+                    )
+
+                    if (!oneSignalId.isNullOrBlank()) {
+
+                        repository.saveOneSignalId(
+                            token = session.token,
+                            oneSignalId = oneSignalId
+                        )
+                            .onSuccess {
+                                android.util.Log.d(
+                                    "OneSignalTest",
+                                    "ONESIGNAL GUARDADO"
+                                )
+                            }
+                            .onFailure {
+                                android.util.Log.e(
+                                    "OneSignalTest",
+                                    "ERROR: ${it.message}"
+                                )
+                            }
+                    }
 
                     _session.value =
                         session

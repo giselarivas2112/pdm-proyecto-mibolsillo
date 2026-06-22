@@ -1,6 +1,6 @@
 import express from 'express'
-import { register, login } from '../controllers/auth_controller.js'
-
+import {register, login, saveOneSignalId} from '../controllers/auth_controller.js'
+import { verifyToken } from '../middlewares/auth_middleware.js'
 const router = express.Router()
 
 /**
@@ -77,5 +77,7 @@ router.post('/register', register)
  *         description: Error del servidor
  */
 router.post('/login', login)
+
+router.put('/onesignal', verifyToken, saveOneSignalId)
 
 export default router

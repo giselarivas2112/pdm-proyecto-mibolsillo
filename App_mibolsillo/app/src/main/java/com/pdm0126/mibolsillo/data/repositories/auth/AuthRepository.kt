@@ -15,4 +15,9 @@ interface AuthRepository {
         email: String,
         password: String
     ): Result<Session>
+
+    suspend fun saveOneSignalId(
+        token: String,
+        oneSignalId: String
+    ): Result<Unit>
 }

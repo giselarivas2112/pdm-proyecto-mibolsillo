@@ -72,3 +72,35 @@ export const login = async (req, res) => {
     res.status(500).json({ error: error.message })
   }
 }
+
+export const saveOneSignalId = async (req, res) => {
+  const usuario_id = req.user.id
+  const { onesignal_id } = req.body
+
+  if (!onesignal_id) {
+    return res.status(400).json({
+      error: 'onesignal_id es requerido'
+    })
+  }
+
+  try {
+
+    const { error } = await supabase
+      .from('usuarios')
+      .update({
+        onesignal_id
+      })
+      .eq('id', usuario_id)
+
+    if (error) throw error
+
+    res.json({
+      message: 'OneSignal ID guardado correctamente'
+    })
+
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    })
+  }
+}
