@@ -59,6 +59,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
 
     navegationToViewCategory: () -> Unit,
     navegationToViewFixedPayment: () -> Unit,
+    navegationToViewbudgets: () -> Unit,
 
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -190,7 +191,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
                 ProfileActionsList(
 
                     onVerPresupuestos = {
-                        // Navegar a la lista de presupuestos
+                        navegationToViewbudgets()
                     },
 
                     onVerCategorias = {
