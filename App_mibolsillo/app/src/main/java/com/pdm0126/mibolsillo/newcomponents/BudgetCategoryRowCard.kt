@@ -149,7 +149,7 @@ fun BudgetCategoryRowCard(
             }
 
             Spacer(modifier = Modifier.height(4.dp))
-            
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
