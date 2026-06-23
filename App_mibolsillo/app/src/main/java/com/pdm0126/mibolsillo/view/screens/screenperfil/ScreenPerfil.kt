@@ -23,6 +23,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,11 +47,6 @@ import com.pdm0126.mibolsillo.view.screenspecific.ProfileStatsRow
 @Composable
 fun ScreenProfile(navigationBack: () -> Unit,
 
-    nombreUsuario: String = "Emily Orellana",
-    gastosTotales: String = "142",
-    totalCategorias: String = "8",
-    totalPresupuestos: String = "6",
-
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToPerfil: () -> Unit,
@@ -67,6 +64,14 @@ fun ScreenProfile(navigationBack: () -> Unit,
 
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val nombreUsuario by viewModel.nombreUsuario.collectAsState()
+    val totalCategorias by viewModel.totalCategorias.collectAsState()
+    val totalGastos by viewModel.totalGastos.collectAsState()
+    val totalPresupuestos by viewModel.totalPresupuestos.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadProfileData()
+    }
 
     Scaffold(
         containerColor = Color(0xFFF7F9FC),
@@ -185,9 +190,9 @@ fun ScreenProfile(navigationBack: () -> Unit,
 
             item {
                 ProfileStatsRow(
-                    gastosTotales = gastosTotales,
-                    totalCategorias = totalCategorias,
-                    totalPresupuestos = totalPresupuestos
+                    gastosTotales = totalGastos.toString(),
+                    totalCategorias = totalCategorias.toString(),
+                    totalPresupuestos = totalPresupuestos.toString()
                 )
             }
 
