@@ -26,6 +26,7 @@ import com.pdm0126.mibolsillo.view.screenspecific.LoginCard
 import androidx.compose.ui.platform.LocalContext
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import androidx.compose.runtime.remember
+import com.onesignal.OneSignal
 
 
 @Composable
@@ -51,6 +52,8 @@ fun ScreenLogin(
             sessionManager.saveToken(it.token)
 
             navegationToDashboard()
+            OneSignal.Notifications.requestPermission(false)
+
         }
     }
     Box(modifier = Modifier
