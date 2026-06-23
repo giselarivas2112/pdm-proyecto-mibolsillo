@@ -125,7 +125,8 @@ fun MainNavegation() {
                     navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
                     navegationToViewCategory = { backStack.add(Route.PantallaViewCategory) },
                     navegationToViewFixedPayment = { backStack.add(Route.PantallaViewFixedPayment) },
-                    navegationToViewbudgets = { backStack.add(Route.PantallaViewbudgets) }
+                    navegationToViewbudgets = { backStack.add(Route.PantallaViewbudgets) },
+                    navigationToHome = { backStack.add(Route.PantallaHome) }
                 )
             }
 

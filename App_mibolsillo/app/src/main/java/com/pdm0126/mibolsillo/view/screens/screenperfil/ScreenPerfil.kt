@@ -34,11 +34,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
 import com.pdm0126.mibolsillo.view.screenspecific.ProfileActionsList
 import com.pdm0126.mibolsillo.view.screenspecific.ProfileStatsRow
+
 
 @Composable
 fun ScreenProfile(navigationBack: () -> Unit,
@@ -60,6 +62,8 @@ fun ScreenProfile(navigationBack: () -> Unit,
     navegationToViewCategory: () -> Unit,
     navegationToViewFixedPayment: () -> Unit,
     navegationToViewbudgets: () -> Unit,
+    navigationToHome: () -> Unit,
+    viewModel: ProfileViewModel = viewModel()
 
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -203,7 +207,8 @@ fun ScreenProfile(navigationBack: () -> Unit,
                     },
 
                     onCerrarSesion = {
-                        //Cerrar sesión
+                        viewModel.logout()
+                        navigationToHome()
                     }
                 )
 
