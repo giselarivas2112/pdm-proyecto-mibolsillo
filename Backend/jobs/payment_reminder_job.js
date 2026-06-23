@@ -1,6 +1,6 @@
 import supabase from "../config/supabase.js";
-import { sendPushNotification } 
-from "../services/notification_service.js";
+import { sendPushNotification }
+    from "../services/notification_service.js";
 
 
 export const checkFixedPayments = async () => {
@@ -20,7 +20,7 @@ export const checkFixedPayments = async () => {
 
 
 
-    if(error){
+    if (error) {
 
         console.error(
             "Error buscando pagos:",
@@ -33,28 +33,46 @@ export const checkFixedPayments = async () => {
 
 
 
-    for(const payment of payments){
+    for (const payment of payments) {
 
 
         const currentDay = today.getDate();
 
 
 
-        const daysUntilPayment =
-        payment.dia_vencimiento - currentDay;
+        let daysUntilPayment;
+
+        if (payment.dia_vencimiento >= currentDay) {
+
+            daysUntilPayment =
+                payment.dia_vencimiento - currentDay;
+
+        } else {
+
+            const daysInMonth =
+                new Date(
+                    today.getFullYear(),
+                    today.getMonth() + 1,
+                    0
+                ).getDate();
+
+            daysUntilPayment =
+                (daysInMonth - currentDay)
+                + payment.dia_vencimiento;
+        }
 
 
 
-        if(daysUntilPayment === payment.dias_recordatorio){
+        if (daysUntilPayment === payment.dias_recordatorio) {
 
 
 
             const playerId =
-            payment.usuarios?.onesignal_id;
+                payment.usuarios?.onesignal_id;
 
 
 
-            if(playerId){
+            if (playerId) {
 
 
                 await sendPushNotification(
