@@ -178,26 +178,5 @@ router.put('/:id', verifyToken, updateFixedPayment)
 router.delete('/:id', verifyToken, deleteFixedPayment)
 
 
-router.get('/test-notification', async (req, res) => {
-    try {
-
-        await sendPushNotification(
-            'd11fd0bd-7426-4e36-84ff-361df198145a',
-            'Prueba',
-            'Hola desde el backend 🚀'
-        )
-
-        res.status(200).json({
-            message: 'Notificación enviada'
-        })
-
-    } catch (error) {
-
-        res.status(500).json({
-            error: error.message
-        })
-
-    }
-})
 
 export default router

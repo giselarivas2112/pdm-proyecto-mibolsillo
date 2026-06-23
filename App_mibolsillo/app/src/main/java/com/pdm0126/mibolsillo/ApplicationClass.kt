@@ -34,19 +34,6 @@ class ApplicationClass : Application() {
             )
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-
-            OneSignal.Notifications.requestPermission(false)
-
-            kotlinx.coroutines.delay(5000)
-
-            println(
-                "ONESIGNAL_ID = ${
-                    OneSignal.User.pushSubscription.id
-                }"
-            )
-        }
-
         // Prompt user for push notification permission
         // In production, consider using an in-app message instead for better opt-in rates
         CoroutineScope(Dispatchers.IO).launch {
