@@ -5,7 +5,7 @@ import { sendPushNotification }
 
 export const checkFixedPayments = async () => {
 
-
+    /*
     const today = new Date(
         new Date().toLocaleString(
             "en-US",
@@ -14,7 +14,9 @@ export const checkFixedPayments = async () => {
             }
         )
     );
+    */
 
+    const today = new Date(2026, 5, 28);
     const currentDay = today.getDate();
 
     const { data: payments, error } = await supabase

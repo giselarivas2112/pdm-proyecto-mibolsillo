@@ -50,9 +50,9 @@ fun ScreenLogin(
         session?.let {
 
             sessionManager.saveToken(it.token)
-
-            navegationToDashboard()
             OneSignal.Notifications.requestPermission(false)
+            navegationToDashboard()
+
 
         }
     }
