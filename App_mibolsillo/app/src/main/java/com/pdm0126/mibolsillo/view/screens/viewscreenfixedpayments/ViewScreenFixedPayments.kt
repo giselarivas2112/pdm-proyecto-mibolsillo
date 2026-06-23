@@ -11,17 +11,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.newcomponents.FixedPaymentRowCard
 import com.pdm0126.mibolsillo.newcomponents.FixedPaymentTotalBanner
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
@@ -42,6 +48,7 @@ import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
 @Composable
 fun ViewScreenFixedPayments(
     navigationBack: () -> Unit,
+    viewModel: FixedPaymentViewModel = viewModel(),
 
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
@@ -54,13 +61,21 @@ fun ViewScreenFixedPayments(
 
     ) {
     var expanded by remember { mutableStateOf(false) }
+    val fixedPayments by viewModel.fixedPayments.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
+    val error by viewModel.error.collectAsState()
+    val total = fixedPayments.sumOf { it.monto }
+
+    LaunchedEffect(Unit) {
+        viewModel.getFixedPayments()
+    }
 
     Scaffold(
         containerColor = Color(0xFFF7F9FC),
 
         bottomBar = {
             HomeBottomBar(
-                pantallaActual = "Perfil",
+                pantallaActual = "Pagos fijos",
                 onInicioClick = {
                     navigationToDashboard()
                 },
@@ -146,50 +161,36 @@ fun ViewScreenFixedPayments(
             }
 
             item {
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-
-                    FixedPaymentRowCard(
-                        icon = Icons.Default.PlayArrow,
-                        iconColor = Color(0xFFE50914),
-                        iconBgColor = Color(0x26E50914),
-                        title = "Netflix",
-                        subtitle = "Vence el día 20 • Entretenimiento",
-                        monto = "$199"
-                    )
-
-                    FixedPaymentRowCard(
-                        icon = Icons.Default.MusicNote,
-                        iconColor = Color(0xFF1DB954),
-                        iconBgColor = Color(0x261DB954),
-                        title = "Spotify",
-                        subtitle = "Vence el día 23 • Entretenimiento",
-                        monto = "$99"
-                    )
-
-                    FixedPaymentRowCard(
-                        icon = Icons.Default.Home,
-                        iconColor = Color(0xFFFF9800),
-                        iconBgColor = Color(0x26FFFF9800),
-                        title = "Renta",
-                        subtitle = "Vence el día 1 • Vivienda",
-                        monto = "$3,500"
-                    )
+                when {
+                    isLoading -> {
+                        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    error != null -> {
+                        Text(text = "Error: $error", color = Color.Red)
+                    }
                 }
             }
 
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
+            items(fixedPayments) { payment ->
+                Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
+                    FixedPaymentRowCard(
+                        icon = Icons.Default.Payment,
+                        iconColor = Color(0xFF8A2BE2),
+                        iconBgColor = Color(0x268A2BE2),
+                        title = payment.nombre,
+                        subtitle = "Vence el día ${payment.diaVencimiento} • ${payment.categoria.nombre}",
+                        monto = "$${payment.monto}"
+                    )
+                }
             }
 
             item {
                 Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                     FixedPaymentTotalBanner(
                         title = "Total mensual en pagos fijos",
-                        totalAmount = "$5,026"
+                        totalAmount = "$${total}"
                     )
                 }
             }
