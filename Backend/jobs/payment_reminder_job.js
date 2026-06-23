@@ -16,7 +16,7 @@ export const checkFixedPayments = async () => {
     );
     */
 
-    const today = new Date(2026, 5, 30);
+    const today = new Date(2026, 5, 31);
     const currentDay = today.getDate();
 
     const { data: payments, error } = await supabase
