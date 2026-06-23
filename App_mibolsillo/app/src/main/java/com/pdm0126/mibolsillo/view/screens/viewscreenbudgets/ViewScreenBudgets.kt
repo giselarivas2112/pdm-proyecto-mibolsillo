@@ -42,12 +42,10 @@ import com.pdm0126.mibolsillo.view.screenspecific.MonthSelectorComponent
 @Composable
 fun ScreenViewBudgets(navigationBack: () -> Unit,
 
-    // Navegación del BottomBar
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToPerfil: () -> Unit,
 
-    // Navegación del Menú Flotante "+"
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
     navegationToCategory: () -> Unit,
@@ -161,7 +159,6 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
                         limitLabel = "límite: $2,000"
                     )
 
-                    // Transporte: En control (Morado corporativo)
                     BudgetCategoryRowCard(
                         icon = Icons.Default.Commute,
                         iconBgColor = Color(0xFFF3E5F5),
@@ -178,7 +175,6 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
                         limitLabel = "límite: $2,000"
                     )
 
-                    // Servicios: En control (Teal/Turquesa)
                     BudgetCategoryRowCard(
                         icon = Icons.Default.FlashOn,
                         iconBgColor = Color(0xFFE0F2F1),
