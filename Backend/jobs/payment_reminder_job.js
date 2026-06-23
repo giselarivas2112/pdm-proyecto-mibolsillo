@@ -6,8 +6,14 @@ import { sendPushNotification }
 export const checkFixedPayments = async () => {
 
 
-    const today = new Date();
-
+    const currentDay = new Date(
+        today.toLocaleString(
+            "en-US",
+            {
+                timeZone: "America/El_Salvador"
+            }
+        )
+    ).getDate();
 
     const { data: payments, error } = await supabase
         .from("pagos_fijos")
@@ -69,7 +75,7 @@ export const checkFixedPayments = async () => {
 
         if (daysUntilPayment === payment.dias_recordatorio) {
 
-             console.log("ENTRO AL IF");
+            console.log("ENTRO AL IF");
 
             const playerId =
                 payment.usuarios?.onesignal_id;
