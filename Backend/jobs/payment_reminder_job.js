@@ -6,14 +6,16 @@ import { sendPushNotification }
 export const checkFixedPayments = async () => {
 
 
-    const currentDay = new Date(
-        today.toLocaleString(
+    const today = new Date(
+        new Date().toLocaleString(
             "en-US",
             {
                 timeZone: "America/El_Salvador"
             }
         )
-    ).getDate();
+    );
+
+    const currentDay = today.getDate();
 
     const { data: payments, error } = await supabase
         .from("pagos_fijos")
@@ -42,8 +44,7 @@ export const checkFixedPayments = async () => {
     for (const payment of payments) {
 
 
-        const currentDay = today.getDate();
-
+        
 
 
         let daysUntilPayment;
