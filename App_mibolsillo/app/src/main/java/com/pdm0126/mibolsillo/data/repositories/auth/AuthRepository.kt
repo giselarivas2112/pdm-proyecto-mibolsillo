@@ -1,5 +1,6 @@
 package com.pdm0126.mibolsillo.data.repositories.auth
 
+import com.pdm0126.mibolsillo.data.api.auth.ProfileResponseDto
 import com.pdm0126.mibolsillo.model.Session
 import com.pdm0126.mibolsillo.model.User
 
@@ -20,4 +21,8 @@ interface AuthRepository {
         token: String,
         oneSignalId: String
     ): Result<Unit>
+
+    suspend fun getProfile(
+        token: String
+    ): Result<ProfileResponseDto>
 }

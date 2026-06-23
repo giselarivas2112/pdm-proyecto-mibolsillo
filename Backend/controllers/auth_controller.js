@@ -104,3 +104,29 @@ export const saveOneSignalId = async (req, res) => {
     })
   }
 }
+
+export const getProfile = async (req, res) => {
+
+  const usuario_id = req.user.id
+
+  try {
+
+    const { data, error } = await supabase
+      .from('usuarios')
+      .select('id, nombre, email')
+      .eq('id', usuario_id)
+      .single()
+
+    if (error) throw error
+
+    res.json(data)
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: error.message
+    })
+
+  }
+
+}
