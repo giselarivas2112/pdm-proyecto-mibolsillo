@@ -46,7 +46,6 @@ fun BudgetCategoryRowCard(
     limitLabel: String,
     onCardClick: () -> Unit = {}
 ) {
-    // Definimos el borde de la tarjeta si tiene un estado de alerta o advertencia
     val borderStroke = if (isAlert) {
         Modifier.border(1.dp, statusColor.copy(alpha = 0.4f), RoundedCornerShape(20.dp))
     } else {
@@ -71,7 +70,6 @@ fun BudgetCategoryRowCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Círculo del icono representativo de Android
                 Box(
                     modifier = Modifier
                         .size(46.dp)
@@ -89,7 +87,6 @@ fun BudgetCategoryRowCard(
 
                 Spacer(modifier = Modifier.width(14.dp))
 
-                // Columna central de la Categoría y su Estado de consumo
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
@@ -134,7 +131,6 @@ fun BudgetCategoryRowCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Barra de progreso interactiva de la categoría
             val progressFraction = (percentage / 100f).coerceIn(0f, 1f)
             Box(
                 modifier = Modifier
@@ -153,8 +149,7 @@ fun BudgetCategoryRowCard(
             }
 
             Spacer(modifier = Modifier.height(4.dp))
-
-            // Textos descriptivos debajo de la barra de progreso
+            
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
