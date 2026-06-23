@@ -61,11 +61,15 @@ export const checkFixedPayments = async () => {
                 + payment.dia_vencimiento;
         }
 
-
+        console.log("Hoy es:", currentDay);
+        console.log("Pago:", payment.nombre);
+        console.log("Vence:", payment.dia_vencimiento);
+        console.log("Recordatorio:", payment.dias_recordatorio);
+        console.log("Faltan:", daysUntilPayment);
 
         if (daysUntilPayment === payment.dias_recordatorio) {
 
-
+             console.log("ENTRO AL IF");
 
             const playerId =
                 payment.usuarios?.onesignal_id;
