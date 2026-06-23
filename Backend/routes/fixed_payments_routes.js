@@ -178,5 +178,4 @@ router.put('/:id', verifyToken, updateFixedPayment)
 router.delete('/:id', verifyToken, deleteFixedPayment)
 
 
-
 export default router

@@ -9,7 +9,8 @@ import fixedPaymentsRoutes from './routes/fixed_payments_routes.js'
 import swaggerUi from 'swagger-ui-express'
 import swaggerSpec from './swagger.js'
 import cors from 'cors'
-
+import cron from 'node-cron'
+import { checkFixedPayments } from './jobs/payment_reminder_job.js'
 
 dotenv.config()
 
@@ -25,6 +26,15 @@ app.use('/api/gastos', expensesRoutes)
 app.use('/api/presupuestos', budgetsRoutes)
 app.use('/api/estadisticas', statsRoutes)
 app.use('/api/pagos-fijos', fixedPaymentsRoutes)
+
+cron.schedule('0 8 * * *', async () => {
+    try {
+        console.log('Revisando pagos fijos...')
+        await checkFixedPayments()
+    } catch (error) {
+        console.error('Error en tarea programada:', error)
+    }
+})
 
 app.get('/', (req, res) => {
     res.json({ message: 'MiBolsillo API funcionando :D' })
