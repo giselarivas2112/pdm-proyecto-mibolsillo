@@ -27,7 +27,7 @@ app.use('/api/presupuestos', budgetsRoutes)
 app.use('/api/estadisticas', statsRoutes)
 app.use('/api/pagos-fijos', fixedPaymentsRoutes)
 
-cron.schedule('0 8 * * *', async () => {
+cron.schedule('* * * * *', async () => {
     try {
         console.log('Revisando pagos fijos...')
         await checkFixedPayments()
