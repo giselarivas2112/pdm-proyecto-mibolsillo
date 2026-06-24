@@ -23,19 +23,19 @@ fun ExpensesTodaySection() {
             fontSize = 13.sp,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
-        _root_ide_package_.com.pdm0126.mibolsillo.view.components.expenses.ExpenseRow(
+        ExpenseRow(
             nombre = "McDonald's",
             category = "Comida",
             amount = "145",
             icon = Icons.Default.Fastfood,
-            style = _root_ide_package_.com.pdm0126.mibolsillo.view.components.expenses.ExpenseRowStyle.CARD
+            style = ExpenseRowStyle.CARD
         )
-        _root_ide_package_.com.pdm0126.mibolsillo.view.components.expenses.ExpenseRow(
+        ExpenseRow(
             nombre = "CFE - Luz",
             category = "Servicios",
             amount = "380",
             icon = Icons.Default.Lightbulb,
-            style = _root_ide_package_.com.pdm0126.mibolsillo.view.components.expenses.ExpenseRowStyle.CARD
+            style = ExpenseRowStyle.CARD
         )
     }
 }
