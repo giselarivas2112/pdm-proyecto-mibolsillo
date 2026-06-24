@@ -1,27 +1,22 @@
 package com.pdm0126.mibolsillo.view.screens.viewscreenbudgets
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Commute
-import androidx.compose.material.icons.filled.Fastfood
-import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,8 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.newcomponents.BudgetCategoryRowCard
 import com.pdm0126.mibolsillo.newcomponents.MonthlyBudgetSummaryCard
+import com.pdm0126.mibolsillo.newcomponents.getNombreMes
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
@@ -41,6 +38,7 @@ import com.pdm0126.mibolsillo.view.screenspecific.MonthSelectorComponent
 
 @Composable
 fun ScreenViewBudgets(navigationBack: () -> Unit,
+    viewModel: BudgetViewModel = viewModel(),
 
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
@@ -54,17 +52,34 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
 
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val summary by viewModel.summary.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
+    val error by viewModel.error.collectAsState()
+    val mes by viewModel.mes.collectAsState()
+    val anio by viewModel.anio.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadData()
+    }
 
     Scaffold(
         containerColor = Color(0xFFF7F9FC),
 
         bottomBar = {
             HomeBottomBar(
-                pantallaActual = "Mis preasupuestos",
-                onInicioClick = { navigationToDashboard() },
-                onMisGastosClick = { navigationToExpenses() },
-                onReportesClick = { /* Futuro a reportes */ },
-                onPerfilClick = { navigationToPerfil() },
+                pantallaActual = "Mis presupuestos",
+                onInicioClick = {
+                    navigationToDashboard()
+                },
+                onMisGastosClick = {
+                    navigationToExpenses()
+                },
+                onReportesClick = {
+                    // Navegación a reportes en el futuro
+                },
+                onPerfilClick = {
+                    navigationToPerfil()
+                },
                 expanded = expanded,
                 onFabClick = { expanded = !expanded }
             )
@@ -106,9 +121,9 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
                     MonthSelectorComponent(
                         navigationBack = navigationBack,
                         titulo = "Mis presupuestos",
-                        mesActual = "Mayo 2026",
-                        onAnteriorMes = { },
-                        onSiguienteMes = { }
+                        mesActual = "${getNombreMes(mes)} $anio",
+                        onAnteriorMes = { viewModel.mesAnterior() },
+                        onSiguienteMes = { viewModel.mesSiguiente() }
                     )
                 }
             }
@@ -117,10 +132,10 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
                 Spacer(modifier = Modifier.height(14.dp))
                 Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                     MonthlyBudgetSummaryCard(
-                        totalBudget = "$12,500.00",
-                        spent = "$7,400",
-                        available = "$5,100",
-                        percentageUsed = 59
+                        totalBudget = "$${summary?.totalPresupuestado ?: 0.0}",
+                        spent = "$${summary?.totalGastado ?: 0.0}",
+                        available = "$${summary?.totalDisponible ?: 0.0}",
+                        percentageUsed = (summary?.porcentajeGlobal ?: 0.0).toInt()
                     )
                 }
             }
@@ -128,7 +143,7 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
             item {
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = "CATEGORÍAS (6)",
+                    text = "CATEGORÍAS (${summary?.categorias?.size ?: 0})",
                     color = Color(0xFF8A2BE2),
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
@@ -137,58 +152,47 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
             }
 
             item {
-                Spacer(modifier = Modifier.height(8.dp))
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(14.dp)
-                ) {
+                when {
+                    isLoading -> {
+                        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    error != null -> {
+                        Text(text = "Error: $error", color = Color.Red,
+                            modifier = Modifier.padding(16.dp))
+                    }
+                }
+            }
 
-                    BudgetCategoryRowCard(
-                        icon = Icons.Default.Fastfood,
-                        iconBgColor = Color(0xFFFFF3E0),
-                        iconColor = Color(0xFFFF9800),
-                        categoryName = "Comida",
-                        statusText = "Cerca del límite",
-                        statusColor = Color(0xFFFF9800),
-                        isAlert = true,
-                        amountProgress = "$1,700 / $2,000",
-                        remainingText = "Quedan $300",
-                        remainingColor = Color.Gray,
-                        percentage = 85,
-                        progressBarColor = Color(0xFFFF9800),
-                        limitLabel = "límite: $2,000"
-                    )
+            items(summary?.categorias ?: emptyList()) { categoria ->
+                val isAlert = categoria.estado == "cerca_del_limite" || categoria.estado == "excedido"
+                val statusText = when (categoria.estado) {
+                    "excedido" -> "Excedido"
+                    "cerca_del_limite" -> "Cerca del límite"
+                    else -> "En control"
+                }
+                val statusColor = when (categoria.estado) {
+                    "excedido" -> Color(0xFFEF5350)
+                    "cerca_del_limite" -> Color(0xFFFF9800)
+                    else -> Color(0xFF4DB6AC)
+                }
 
+                Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
                     BudgetCategoryRowCard(
-                        icon = Icons.Default.Commute,
+                        icon = Icons.Default.AttachMoney,
                         iconBgColor = Color(0xFFF3E5F5),
                         iconColor = Color(0xFF8A2BE2),
-                        categoryName = "Transporte",
-                        statusText = "En control",
-                        statusColor = Color(0xFF4DB6AC),
-                        isAlert = false,
-                        amountProgress = "$900 / $2,000",
-                        remainingText = "Quedan $1,100",
+                        categoryName = categoria.categoriaNombre,
+                        statusText = statusText,
+                        statusColor = statusColor,
+                        isAlert = isAlert,
+                        amountProgress = "$${categoria.gastado} / $${categoria.limite}",
+                        remainingText = "Quedan $${categoria.disponible}",
                         remainingColor = Color.Gray,
-                        percentage = 45,
-                        progressBarColor = Color(0xFF8A2BE2),
-                        limitLabel = "límite: $2,000"
-                    )
-
-                    BudgetCategoryRowCard(
-                        icon = Icons.Default.FlashOn,
-                        iconBgColor = Color(0xFFE0F2F1),
-                        iconColor = Color(0xFF009688),
-                        categoryName = "Servicios",
-                        statusText = "En control",
-                        statusColor = Color(0xFF4DB6AC),
-                        isAlert = false,
-                        amountProgress = "$1,200 / $2,000",
-                        remainingText = "Quedan $800",
-                        remainingColor = Color.Gray,
-                        percentage = 60,
-                        progressBarColor = Color(0xFF4DB6AC),
-                        limitLabel = "límite: $2,000"
+                        percentage = categoria.porcentajeUsado.toInt(),
+                        progressBarColor = statusColor,
+                        limitLabel = "límite: $${categoria.limite}"
                     )
                 }
             }
