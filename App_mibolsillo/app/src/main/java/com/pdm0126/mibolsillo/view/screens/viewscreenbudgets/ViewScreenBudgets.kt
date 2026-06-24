@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.newcomponents.BudgetCategoryRowCard
 import com.pdm0126.mibolsillo.newcomponents.MonthlyBudgetSummaryCard
-import com.pdm0126.mibolsillo.newcomponents.getNombreMes
+import com.pdm0126.mibolsillo.utils.getNombreMes
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar

@@ -1,4 +1,4 @@
-package com.pdm0126.mibolsillo.newcomponents
+package com.pdm0126.mibolsillo.utils
 
 fun getNombreMes(mes: Int): String {
     return when (mes) {
