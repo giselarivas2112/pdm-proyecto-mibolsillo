@@ -58,7 +58,7 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
     val mes by viewModel.mes.collectAsState()
     val anio by viewModel.anio.collectAsState()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(mes, anio) {
         viewModel.loadData()
     }
 
@@ -132,9 +132,9 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
                 Spacer(modifier = Modifier.height(14.dp))
                 Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                     MonthlyBudgetSummaryCard(
-                        totalBudget = "$${summary?.totalPresupuestado ?: 0.0}",
-                        spent = "$${summary?.totalGastado ?: 0.0}",
-                        available = "$${summary?.totalDisponible ?: 0.0}",
+                        totalBudget = "$${"%.2f".format(summary?.totalPresupuestado ?: 0.0)}",
+                        spent = "$${"%.2f".format(summary?.totalGastado ?: 0.0)}",
+                        available = "$${"%.2f".format(summary?.totalDisponible ?: 0.0)}",
                         percentageUsed = (summary?.porcentajeGlobal ?: 0.0).toInt()
                     )
                 }
@@ -187,12 +187,12 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
                         statusText = statusText,
                         statusColor = statusColor,
                         isAlert = isAlert,
-                        amountProgress = "$${categoria.gastado} / $${categoria.limite}",
-                        remainingText = "Quedan $${categoria.disponible}",
+                        amountProgress = "$${"%.2f".format(categoria.gastado)} / $${"%.2f".format(categoria.limite)}",
+                        remainingText = "Quedan $${"%.2f".format(categoria.disponible)}",
                         remainingColor = Color.Gray,
                         percentage = categoria.porcentajeUsado.toInt(),
                         progressBarColor = statusColor,
-                        limitLabel = "límite: $${categoria.limite}"
+                        limitLabel = "límite: $${"%.2f".format(categoria.limite)}"
                     )
                 }
             }
