@@ -38,6 +38,7 @@ fun ScreenDashboard(
     navigationToPerfil: ()-> Unit,
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
+    navigationToViewReports: () -> Unit,
     viewModel: DashboardViewModel = viewModel()
 ) {
 
@@ -65,7 +66,7 @@ fun ScreenDashboard(
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                    // navegar a Reportes
+                    navigationToViewReports()
                 },
                 onPerfilClick = {
                     navigationToPerfil()

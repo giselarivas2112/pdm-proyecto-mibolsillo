@@ -73,4 +73,5 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation("androidx.datastore:datastore-preferences:1.2.1")
     implementation("com.onesignal:OneSignal:[5.6.1, 5.9.99]")
+    implementation("io.github.ehsannarmani:compose-charts:0.2.5")
 }

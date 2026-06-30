@@ -15,6 +15,7 @@ import com.pdm0126.mibolsillo.view.screens.screenlogin.ScreenLogin
 import com.pdm0126.mibolsillo.view.screens.screenmyexpenses.ScreenMyExpenses
 import com.pdm0126.mibolsillo.view.screens.screenperfil.ScreenProfile
 import com.pdm0126.mibolsillo.view.screens.screenregister.ScreenRegister
+import com.pdm0126.mibolsillo.view.screens.screenstats.ScreenReports
 import com.pdm0126.mibolsillo.view.screens.viewscreenbudgets.ScreenViewBudgets
 import com.pdm0126.mibolsillo.view.screens.viewscreencategory.ScreenViewCategory
 import com.pdm0126.mibolsillo.view.screens.viewscreenfixedpayments.ViewScreenFixedPayments
@@ -67,6 +68,7 @@ fun MainNavegation() {
                 ScreenHome(
                     navigationToLogin = { backStack.add(Route.PantallaLogin) },
                     navigationToRegister = { backStack.add(Route.PantallaRegister) }
+
                 )
             }
             entry<Route.PantallaDashboard> {
@@ -77,7 +79,8 @@ fun MainNavegation() {
                     navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
                     navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
                     navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
-                    navigationToPerfil = { backStack.add(Route.PantallaProfile) }
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile) },
+                    navigationToViewReports = { backStack.add(Route.PantallaViewReports) }
                 )
             }
             entry<Route.PantallaExpense> {
@@ -166,6 +169,17 @@ fun MainNavegation() {
                     navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) }
                 )
             }
+            entry<Route.PantallaViewReports> {
+                ScreenReports(
+                    navigationBack = {backStack.removeLastOrNull()},
+                    navigationToDashboard = { backStack.add(Route.PantallaDashboard)},
+                    navigationToExpenses = { backStack.add(Route.PantallaExpenses)},
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile)},
+                    navigationToExpense = { backStack.add(Route.PantallaExpense)},
+                    navegationToBudget = { backStack.add(Route.PantallaBudget)},
+                    navegationToCategory = { backStack.add(Route.PantallaCategory)},
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment)}
+                )
 
         }
     )
