@@ -1,6 +1,7 @@
 package com.pdm0126.mibolsillo.view.screens.screenstats
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -34,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,17 +50,20 @@ import ir.ehsannarmani.compose_charts.ColumnChart
 import ir.ehsannarmani.compose_charts.PieChart
 import ir.ehsannarmani.compose_charts.models.BarProperties
 import ir.ehsannarmani.compose_charts.models.Bars
+import ir.ehsannarmani.compose_charts.models.GridProperties
+import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
+import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.Pie
 
-// Paleta fija para asignar un color a cada categoría (el backend no manda color)
-private val chartColors = listOf(
-    Color(0xFF8A2BE2), // morado (color principal de la app)
-    Color(0xFFBA68C8),
-    Color(0xFFFFA726),
-    Color(0xFF4DB6AC),
-    Color(0xFF64B5F6),
-    Color(0xFFB0BEC5)
-)
+
+private fun generarColores(cantidad: Int): List<Color> {
+    if (cantidad <= 0) return emptyList()
+    val huePrincipal = 271f
+    return List(cantidad) { index ->
+        val hue = (huePrincipal + index * (360f / cantidad)) % 360f
+        Color.hsv(hue = hue, saturation = 0.55f, value = 0.85f)
+    }
+}
 
 @Composable
 fun ScreenReports(
@@ -183,7 +190,7 @@ fun ScreenReports(
                     }
                 }
 
-                // ¿EN QUÉ GASTAS MÁS? -> DONA + LEYENDA
+                // ¿EN QUÉ GASTAS MÁS? -> DONA + LEYENDA (todas las categorías, sin agrupar)
                 item {
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
@@ -210,62 +217,72 @@ fun ScreenReports(
                                 color = Color.Gray
                             )
                         } else {
+                            val colores = generarColores(items.size)
+
                             val pieData = items.mapIndexed { index, item ->
                                 Pie(
                                     label = item.nombre,
                                     data = item.porcentaje,
-                                    color = chartColors[index % chartColors.size],
-                                    selectedColor = chartColors[index % chartColors.size]
+                                    color = colores[index],
+                                    selectedColor = colores[index]
                                 )
                             }
 
-                            Row(
-                                modifier = Modifier.padding(16.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Box(contentAlignment = Alignment.Center) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+
+
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
                                     PieChart(
-                                        modifier = Modifier.size(150.dp),
+                                        modifier = Modifier.size(170.dp),
                                         data = pieData,
-                                        style = Pie.Style.Stroke(width = 34f)
+                                        style = Pie.Style.Stroke(width = 34.dp),
+                                        labelHelperProperties = LabelHelperProperties(enabled = false)
                                     )
                                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                         Text(text = "Total", fontSize = 11.sp, color = Color.Gray)
                                         Text(
                                             text = "$${"%.2f".format(distribution?.totalGastado ?: 0.0)}",
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = 14.sp
+                                            fontSize = 15.sp
                                         )
                                     }
                                 }
 
-                                Spacer(modifier = Modifier.height(0.dp))
+                                Spacer(modifier = Modifier.height(16.dp))
 
-                                Column(modifier = Modifier.padding(start = 16.dp)) {
-                                    items.forEachIndexed { index, item ->
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            modifier = Modifier.padding(vertical = 3.dp)
-                                        ) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .size(10.dp)
-                                                    .clip(CircleShape)
-                                                    .background(chartColors[index % chartColors.size])
-                                            )
-                                            Spacer(modifier = Modifier.height(0.dp))
-                                            Text(
-                                                text = "  ${item.nombre}",
-                                                fontSize = 12.sp,
-                                                color = Color(0xFF333333)
-                                            )
-                                            Text(
-                                                text = "  ${item.porcentaje.toInt()}%",
-                                                fontSize = 12.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color = Color(0xFF8A2BE2)
-                                            )
-                                        }
+                                // Leyenda vertical: escala bien sin importar cuántas categorías sean
+                                items.forEachIndexed { index, item ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 5.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .size(10.dp)
+                                                .clip(CircleShape)
+                                                .background(colores[index])
+                                        )
+                                        Text(
+                                            text = item.nombre,
+                                            fontSize = 13.sp,
+                                            color = Color(0xFF333333),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .padding(start = 8.dp)
+                                        )
+                                        Text(
+                                            text = "${item.porcentaje.toInt()}%",
+                                            fontSize = 13.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = colores[index]
+                                        )
                                     }
                                 }
                             }
@@ -300,6 +317,10 @@ fun ScreenReports(
                                 color = Color.Gray
                             )
                         } else {
+                            val barWidth = 8.dp
+                            val barSpacing = 6.dp
+                            val anchoTotal = (barWidth + barSpacing) * dias.size
+
                             val barsData = dias.map { dia ->
                                 Bars(
                                     label = "",
@@ -312,17 +333,26 @@ fun ScreenReports(
                                 )
                             }
 
-                            ColumnChart(
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(160.dp)
-                                    .padding(12.dp),
-                                data = barsData,
-                                barProperties = BarProperties(
-                                    spacing = 1.dp,
-                                    thickness = 6.dp
+                                    .horizontalScroll(rememberScrollState())
+                                    .padding(12.dp)
+                            ) {
+                                ColumnChart(
+                                    modifier = Modifier
+                                        .width(anchoTotal)
+                                        .height(160.dp),
+                                    data = barsData,
+                                    barProperties = BarProperties(
+                                        spacing = barSpacing,
+                                        thickness = barWidth,
+                                    ),
+                                    gridProperties = GridProperties(enabled = false),
+                                    indicatorProperties = HorizontalIndicatorProperties(enabled = false),
+                                    labelHelperProperties = LabelHelperProperties(enabled = false)
                                 )
-                            )
+                            }
                         }
                     }
                 }
@@ -416,7 +446,14 @@ private fun BudgetProgressRow(nombre: String, porcentaje: Int, color: Color) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = nombre, fontSize = 13.sp, color = Color(0xFF333333))
+            Text(
+                text = nombre,
+                fontSize = 13.sp,
+                color = Color(0xFF333333),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f).padding(end = 8.dp)
+            )
             Text(text = "$porcentaje%", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = color)
         }
         Spacer(modifier = Modifier.height(6.dp))

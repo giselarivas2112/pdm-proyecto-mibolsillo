@@ -171,16 +171,16 @@ fun MainNavegation() {
             }
             entry<Route.PantallaViewReports> {
                 ScreenReports(
-                    navigationBack = {backStack.removeLastOrNull()},
-                    navigationToDashboard = { backStack.add(Route.PantallaDashboard)},
-                    navigationToExpenses = { backStack.add(Route.PantallaExpenses)},
-                    navigationToPerfil = { backStack.add(Route.PantallaProfile)},
-                    navigationToExpense = { backStack.add(Route.PantallaExpense)},
-                    navegationToBudget = { backStack.add(Route.PantallaBudget)},
-                    navegationToCategory = { backStack.add(Route.PantallaCategory)},
-                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment)}
+                    navigationBack = { backStack.removeLastOrNull() },
+                    navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
+                    navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile) },
+                    navigationToExpense = { backStack.add(Route.PantallaExpense) },
+                    navegationToBudget = { backStack.add(Route.PantallaBudget) },
+                    navegationToCategory = { backStack.add(Route.PantallaCategory) },
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) }
                 )
-
+            }
         }
     )
 }
