@@ -10,7 +10,37 @@ export const createExpense = async (req, res) => {
     })
   }
 
+
   try {
+
+    // Verificar que exista presupuesto para la categoría
+    if (categoria_id) {
+
+      const fechaGasto = new Date(fecha)
+
+      const mes = fechaGasto.getMonth() + 1
+      const anio = fechaGasto.getFullYear()
+
+      const { data: presupuesto, error: errorPresupuesto } = await supabase
+        .from('presupuestos')
+        .select('id')
+        .eq('usuario_id', usuario_id)
+        .eq('categoria_id', categoria_id)
+        .eq('mes', mes)
+        .eq('anio', anio)
+        .maybeSingle()
+
+      if (errorPresupuesto) {
+        throw errorPresupuesto
+      }
+
+      if (!presupuesto) {
+        return res.status(400).json({
+          error: 'Debes crear un presupuesto para esta categoría antes de registrar un gasto en este mes.'
+        })
+      }
+    }
+
     const { data, error } = await supabase
       .from('gastos')
       .insert([
@@ -40,7 +70,7 @@ export const createExpense = async (req, res) => {
 
       const { data: presupuesto } = await supabase
         .from('presupuestos')
-        .select('*')
+        .select(`*, categorias(nombre)`)
         .eq('usuario_id', usuario_id)
         .eq('categoria_id', categoria_id)
         .eq('mes', mes)
@@ -140,6 +170,35 @@ export const updateExpense = async (req, res) => {
   const usuario_id = req.user.id
 
   try {
+
+    // Verificar que exista presupuesto para la categoría
+    if (categoria_id) {
+
+      const fechaGasto = new Date(fecha)
+
+      const mes = fechaGasto.getMonth() + 1
+      const anio = fechaGasto.getFullYear()
+
+      const { data: presupuesto, error: errorPresupuesto } = await supabase
+        .from('presupuestos')
+        .select('id')
+        .eq('usuario_id', usuario_id)
+        .eq('categoria_id', categoria_id)
+        .eq('mes', mes)
+        .eq('anio', anio)
+        .maybeSingle()
+
+      if (errorPresupuesto) {
+        throw errorPresupuesto
+      }
+
+      if (!presupuesto) {
+        return res.status(400).json({
+          error: 'Debes crear un presupuesto para esta categoría antes de registrar un gasto en este mes.'
+        })
+      }
+    }
+
     const { data, error } = await supabase
       .from('gastos')
       .update({ categoria_id, monto, fecha, descripcion })
