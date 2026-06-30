@@ -1,5 +1,5 @@
 import express from 'express'
-import { createCategory, getCategories, updateCategory, deleteCategory } from '../controllers/categories_controller.js'
+import { createCategory, getCategories, updateCategory, deleteCategory, getCategoriesByMonth } from '../controllers/categories_controller.js'
 import { verifyToken } from '../middlewares/auth_middleware.js'
 
 const router = express.Router()
@@ -125,5 +125,7 @@ router.put('/:id', verifyToken, updateCategory)
  *         description: Error del servidor
  */
 router.delete('/:id', verifyToken, deleteCategory)
+
+router.get('/month', verifyToken, getCategoriesByMonth)
 
 export default router

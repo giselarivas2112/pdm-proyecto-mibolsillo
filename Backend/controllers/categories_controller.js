@@ -34,6 +34,49 @@ export const createCategory = async (req, res) => {
   }
 }
 
+export const getCategoriesByMonth = async (req, res) => {
+
+  const usuario_id = req.user.id
+  const { mes, anio } = req.query
+
+  if (!mes || !anio) {
+    return res.status(400).json({
+      error: 'El mes y el año son requeridos'
+    })
+  }
+
+  try {
+
+    const { data, error } = await supabase
+      .from('presupuestos')
+      .select(`
+        categorias (
+          id,
+          nombre,
+          icono
+        )
+      `)
+      .eq('usuario_id', usuario_id)
+      .eq('mes', mes)
+      .eq('anio', anio)
+
+    if (error) {
+      throw error
+    }
+
+    const categorias = data.map(item => item.categorias)
+
+    return res.json(categorias)
+
+  } catch (error) {
+
+    return res.status(500).json({
+      error: error.message
+    })
+
+  }
+}
+
 export const getCategories = async (req, res) => {
   const usuario_id = req.user.id
 
