@@ -13,16 +13,21 @@ import androidx.compose.ui.Modifier
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
 import com.pdm0126.mibolsillo.view.screenspecific.RecentExpensesSection
 import com.pdm0126.mibolsillo.view.screenspecific.SummaryCardsSection
+
 
 @Composable
 fun ScreenDashboard(
@@ -33,9 +38,19 @@ fun ScreenDashboard(
     navigationToPerfil: ()-> Unit,
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
+    viewModel: DashboardViewModel = viewModel()
 ) {
 
     var expanded by remember { mutableStateOf(false) }
+    val nombreUsuario by viewModel.nombreUsuario.collectAsState()
+    val summary by viewModel.summary.collectAsState()
+    val recentExpenses by viewModel.recentExpenses.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
+    val error by viewModel.error.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadData()
+    }
 
     Scaffold(
         containerColor = Color(0xFFF7F9FC),
@@ -96,7 +111,7 @@ fun ScreenDashboard(
                             )
 
                             Text(
-                                text = "Pablito Rivas",
+                                text = nombreUsuario.ifEmpty { "Usuario" },
                                 color = Color.White,
                                 fontSize = 28.sp,
                                 fontWeight = FontWeight.Bold
@@ -107,12 +122,38 @@ fun ScreenDashboard(
 
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
-                    SummaryCardsSection()
+                    when {
+                        isLoading -> {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(32.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(color = Color(0xFF8A2BE2))
+                            }
+                        }
+                        error != null -> {
+                            Text(
+                                text = "Error: $error",
+                                color = Color.Red,
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                        else -> {
+                            SummaryCardsSection(
+                                totalGastado = "$${"%.2f".format(summary?.totalGastado ?: 0.0)}",
+                                totalDisponible = "$${"%.2f".format(summary?.totalDisponible ?: 0.0)}"
+                            )
+                        }
+                    }
                 }
 
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
-                    RecentExpensesSection()
+                    RecentExpensesSection(
+                        expenses = recentExpenses
+                    )
                 }
 
                 item {
@@ -126,7 +167,7 @@ fun ScreenDashboard(
                     .padding(bottom = 90.dp)
             ) {
 
-                _root_ide_package_.com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu(
+                FabExpandedMenu(
                     visible = expanded,
                     onCategory = {
                         navegationToCategory()

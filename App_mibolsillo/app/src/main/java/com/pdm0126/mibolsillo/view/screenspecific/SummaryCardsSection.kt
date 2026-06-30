@@ -16,7 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SummaryCardsSection() {
+fun SummaryCardsSection(
+    totalGastado: String,
+    totalDisponible: String
+) {
 
     Row(
         modifier = Modifier
@@ -37,7 +40,7 @@ fun SummaryCardsSection() {
                 Text("Total gastado")
 
                 Text(
-                    "$7,400",
+                    totalGastado,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -58,7 +61,7 @@ fun SummaryCardsSection() {
                 Text("Saldo disponible")
 
                 Text(
-                    "$5,100",
+                    totalDisponible,
                     color = Color(0xFF00B894),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
