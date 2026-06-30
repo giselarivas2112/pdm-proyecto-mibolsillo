@@ -50,7 +50,6 @@ class BudgetViewModel(application: Application) : AndroidViewModel(application) 
         else _mes.value -= 1
         loadData()
     }
-
     fun mesSiguiente() {
         if (_mes.value == 12) { _mes.value = 1; _anio.value += 1 }
         else _mes.value += 1
