@@ -5,6 +5,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import ir.ehsannarmani.compose_charts.models.PopupProperties
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,11 +37,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.utils.getNombreMes
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
@@ -292,6 +293,7 @@ fun ScreenReports(
                 }
 
                 // GASTO DIARIO DEL MES -> BARRAS
+
                 item {
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
@@ -318,7 +320,7 @@ fun ScreenReports(
                                 color = Color.Gray
                             )
                         } else {
-                            val barWidth = 8.dp
+                            val barWidth = 10.dp
                             val barSpacing = 6.dp
                             val anchoTotal = (barWidth + barSpacing) * dias.size
 
@@ -334,13 +336,26 @@ fun ScreenReports(
                                 )
                             }
 
+                            val scrollState = rememberScrollState()
+                            val density = LocalDensity.current
+
+
+                            LaunchedEffect(dias) {
+                                val primerDiaConGasto = dias.indexOfFirst { it.total > 0 }
+                                if (primerDiaConGasto > 0) {
+                                    val pxPorBarra = with(density) { (barWidth + barSpacing).toPx() }
+                                    val offset = (pxPorBarra * (primerDiaConGasto - 1)).coerceAtLeast(0f)
+                                    scrollState.scrollTo(offset.toInt())
+                                }
+                            }
+
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .horizontalScroll(rememberScrollState())
+                                    .horizontalScroll(scrollState)
                                     .padding(12.dp)
                             ) {
-                                CColumnChart(
+                                ColumnChart(
                                     modifier = Modifier
                                         .width(anchoTotal)
                                         .height(160.dp),
@@ -359,13 +374,23 @@ fun ScreenReports(
                                         contentHorizontalPadding = 8.dp,
                                         contentVerticalPadding = 6.dp,
                                         duration = 2000L,
-                                        contentBuilder = { dataIndex, _, value ->
-                                            val dia = dias.getOrNull(dataIndex)?.dia ?: (dataIndex + 1)
-                                            "Día $dia: $${"%.2f".format(value)}"
+                                        contentBuilder = { popup ->
+                                            val dia = dias.getOrNull(popup.dataIndex)?.dia ?: (popup.dataIndex + 1)
+                                            "Día $dia: $${"%.2f".format(popup.value)}"
                                         }
                                     )
                                 )
                             }
+
+                            Text(
+                                text = "↔  Desliza para ver todos los días",
+                                fontSize = 11.sp,
+                                color = Color.Gray,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                            )
                         }
                     }
                 }
