@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.utils.getNombreMes
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
@@ -339,18 +340,30 @@ fun ScreenReports(
                                     .horizontalScroll(rememberScrollState())
                                     .padding(12.dp)
                             ) {
-                                ColumnChart(
+                                CColumnChart(
                                     modifier = Modifier
                                         .width(anchoTotal)
                                         .height(160.dp),
                                     data = barsData,
                                     barProperties = BarProperties(
                                         spacing = barSpacing,
-                                        thickness = barWidth,
+                                        thickness = barWidth
                                     ),
                                     gridProperties = GridProperties(enabled = false),
                                     indicatorProperties = HorizontalIndicatorProperties(enabled = false),
-                                    labelHelperProperties = LabelHelperProperties(enabled = false)
+                                    labelHelperProperties = LabelHelperProperties(enabled = false),
+                                    popupProperties = PopupProperties(
+                                        enabled = true,
+                                        containerColor = Color(0xFF8A2BE2),
+                                        cornerRadius = 8.dp,
+                                        contentHorizontalPadding = 8.dp,
+                                        contentVerticalPadding = 6.dp,
+                                        duration = 2000L,
+                                        contentBuilder = { dataIndex, _, value ->
+                                            val dia = dias.getOrNull(dataIndex)?.dia ?: (dataIndex + 1)
+                                            "Día $dia: $${"%.2f".format(value)}"
+                                        }
+                                    )
                                 )
                             }
                         }
