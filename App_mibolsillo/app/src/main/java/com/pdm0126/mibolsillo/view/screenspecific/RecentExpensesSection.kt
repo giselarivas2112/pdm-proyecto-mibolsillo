@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.DirectionsBus
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material.icons.filled.Movie
@@ -19,11 +20,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pdm0126.mibolsillo.model.Expense
 import com.pdm0126.mibolsillo.view.components.expenses.ExpenseRow
 import com.pdm0126.mibolsillo.view.components.expenses.ExpenseRowStyle
 
 @Composable
-fun RecentExpensesSection() {
+fun RecentExpensesSection(
+    expenses: List<Expense>
+) {
 
     Card(
         modifier = Modifier
@@ -43,29 +47,24 @@ fun RecentExpensesSection() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            ExpenseRow(
-                icon = Icons.Default.Fastfood,
-                category = "Comida",
-                date = "12 Jun 2026",
-                amount = "$25.00",
-                style = ExpenseRowStyle.SIMPLE
-            )
-
-            ExpenseRow(
-                icon = Icons.Default.DirectionsBus,
-                category = "Transporte",
-                date = "11 Jun 2026",
-                amount = "$10.00",
-                style = ExpenseRowStyle.SIMPLE
-            )
-
-            ExpenseRow(
-                icon = Icons.Default.Movie,
-                category = "Entretenimiento",
-                date = "10 Jun 2026",
-                amount = "$18.00",
-                style = ExpenseRowStyle.SIMPLE
-            )
+            if (expenses.isEmpty()) {
+                Text(
+                    text = "No hay gastos recientes este mes",
+                    color = Color.Gray,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            } else {
+                expenses.forEach { expense ->
+                    ExpenseRow(
+                        icon = Icons.Default.AttachMoney,
+                        category = expense.categoryName ?: "Sin categoría",
+                        date = expense.fecha,
+                        amount = "$${"%.2f".format(expense.monto)}",
+                        style = ExpenseRowStyle.SIMPLE
+                    )
+                }
+            }
         }
     }
 }
