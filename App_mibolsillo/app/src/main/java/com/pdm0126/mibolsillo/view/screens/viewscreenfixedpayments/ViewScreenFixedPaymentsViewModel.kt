@@ -10,6 +10,7 @@ import com.pdm0126.mibolsillo.model.FixedPayment
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.onFailure
 
 
 class FixedPaymentViewModel(application: Application) : AndroidViewModel(application) {

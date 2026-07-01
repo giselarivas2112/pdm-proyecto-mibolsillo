@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.model.Category
 import com.pdm0126.mibolsillo.view.components.buttons.LoadingButton
+import com.pdm0126.mibolsillo.view.components.forms.CategoryDropdownLoader
 import com.pdm0126.mibolsillo.view.screenspecific.RecordatorioPrevioSection
 
 @Composable
@@ -27,14 +28,12 @@ fun ScreenRegisterFixedPayment(
 ) {
     val context = LocalContext.current
 
-    // Estados del formulario
     var nombrePago by remember { mutableStateOf("") }
     var montoPago by remember { mutableStateOf("") }
     var categoriaSeleccionada by remember { mutableStateOf<Category?>(null) }
     var diaVencimiento by remember { mutableStateOf<Int?>(null) }
     var diasRecordatorio by remember { mutableStateOf<Int?>(null) }
 
-    // Estados del ViewModel
     val categories by viewModel.categories.collectAsState()
     val loadingCategories by viewModel.loadingCategories.collectAsState()
     val errorCategories by viewModel.errorCategories.collectAsState()
@@ -42,7 +41,6 @@ fun ScreenRegisterFixedPayment(
     val error by viewModel.error.collectAsState()
     val success by viewModel.success.collectAsState()
 
-    // Consumir eventos de éxito/error
     LaunchedEffect(success) {
         if (success) {
             Toast.makeText(context, "Pago fijo registrado exitosamente", Toast.LENGTH_SHORT).show()
@@ -60,7 +58,6 @@ fun ScreenRegisterFixedPayment(
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-        // Header
         item {
             Box(modifier = Modifier.fillMaxWidth()) {
                 _root_ide_package_.com.pdm0126.mibolsillo.view.components.common.HeaderSection()
@@ -93,7 +90,6 @@ fun ScreenRegisterFixedPayment(
             }
         }
 
-        // Nombre
         item {
             _root_ide_package_.com.pdm0126.mibolsillo.view.components.forms.NameSection(
                 name = nombrePago,
@@ -106,7 +102,7 @@ fun ScreenRegisterFixedPayment(
 
 
         item {
-            _root_ide_package_.com.pdm0126.mibolsillo.view.components.forms.CategoryDropdownLoader(
+            CategoryDropdownLoader(
                 categories = categories,
                 loading = loadingCategories,
                 error = errorCategories,

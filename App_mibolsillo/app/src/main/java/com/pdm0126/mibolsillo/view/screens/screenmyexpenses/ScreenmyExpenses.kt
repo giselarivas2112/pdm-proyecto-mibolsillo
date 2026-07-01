@@ -39,6 +39,7 @@ import com.pdm0126.mibolsillo.view.components.expenses.ExpenseRowStyle
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
 import com.pdm0126.mibolsillo.view.screenspecific.MonthSelectorComponent
 import com.pdm0126.mibolsillo.view.screenspecific.StatsCardComponent
+import kotlin.Unit
 
 @Composable
 fun ScreenMyExpenses( navigationBack: () -> Unit,
@@ -49,6 +50,7 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToPerfil: ()-> Unit,
+    navigationToViewReports: () -> Unit,
     viewModel: ScreenMyExpensesViewModel = viewModel()
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -79,7 +81,7 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                    // navegar a Reportes
+                        navigationToViewReports()
                 },
                 onPerfilClick = {
                     navigationToPerfil()

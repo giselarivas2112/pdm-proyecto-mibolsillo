@@ -72,6 +72,7 @@ fun ScreenDashboard(
                     navigationToPerfil()
                 },
                 expanded = expanded,
+
                 onFabClick = {
                     expanded = !expanded
                 }

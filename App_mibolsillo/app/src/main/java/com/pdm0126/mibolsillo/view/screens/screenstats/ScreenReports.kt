@@ -42,6 +42,7 @@ fun ScreenReports(
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToPerfil: () -> Unit,
+    navigationToViewReports: () -> Unit,
 
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
@@ -67,10 +68,18 @@ fun ScreenReports(
         bottomBar = {
             HomeBottomBar(
                 pantallaActual = "Reportes",
-                onInicioClick = { navigationToDashboard() },
-                onMisGastosClick = { navigationToExpenses() },
-                onReportesClick = { /* ya estamos aquí */ },
-                onPerfilClick = { navigationToPerfil() },
+                onInicioClick = {
+                    navigationToDashboard()
+                },
+                onMisGastosClick = {
+                    navigationToExpenses()
+                },
+                onReportesClick = {
+                    navigationToViewReports()
+                },
+                onPerfilClick = {
+                    navigationToPerfil()
+                },
                 expanded = expanded,
                 onFabClick = { expanded = !expanded }
             )
@@ -79,10 +88,22 @@ fun ScreenReports(
         floatingActionButton = {
             FabExpandedMenu(
                 visible = expanded,
-                onCategory = { expanded = false; navegationToCategory() },
-                onBudget = { expanded = false; navegationToBudget() },
-                onFixedPayment = { expanded = false; navegationToFixedPayment() },
-                onExpense = { expanded = false; navigationToExpense() }
+                onCategory = {
+                    expanded = false
+                    navegationToCategory()
+                },
+                onBudget = {
+                    expanded = false
+                    navegationToBudget()
+                },
+                onFixedPayment = {
+                    expanded = false
+                    navegationToFixedPayment()
+                },
+                onExpense = {
+                    expanded = false
+                    navigationToExpense()
+                }
             )
         },
         floatingActionButtonPosition = FabPosition.Center

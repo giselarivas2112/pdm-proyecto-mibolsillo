@@ -1,8 +1,6 @@
 package com.pdm0126.mibolsillo.view.screens.viewscreenfixedpayments
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,10 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Payment
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -44,6 +39,7 @@ import com.pdm0126.mibolsillo.newcomponents.FixedPaymentTotalBanner
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
+import kotlin.Unit
 
 @Composable
 fun ViewScreenFixedPayments(
@@ -53,6 +49,7 @@ fun ViewScreenFixedPayments(
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToPerfil: () -> Unit,
+    navigationToViewReports: () -> Unit,
 
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
@@ -83,7 +80,7 @@ fun ViewScreenFixedPayments(
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                    // Navegación futura a reportes
+                    navigationToViewReports()
                 },
                 onPerfilClick = {
                     navigationToPerfil()

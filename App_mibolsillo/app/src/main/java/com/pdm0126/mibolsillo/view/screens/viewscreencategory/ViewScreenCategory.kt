@@ -38,6 +38,7 @@ import com.pdm0126.mibolsillo.newcomponents.CategorySearchInputField
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
+import kotlin.Unit
 
 @Composable
 fun ScreenViewCategory(
@@ -48,6 +49,7 @@ fun ScreenViewCategory(
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToPerfil: () -> Unit,
+    navigationToViewReports: () -> Unit,
 
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
@@ -82,7 +84,7 @@ fun ScreenViewCategory(
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                    // Navegación a reportes en el futuro
+                    navigationToViewReports()
                 },
                 onPerfilClick = {
                     navigationToPerfil()

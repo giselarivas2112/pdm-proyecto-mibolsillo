@@ -113,7 +113,8 @@ fun MainNavegation() {
                     navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
                     navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
                     navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
-                    navigationToPerfil = { backStack.add(Route.PantallaProfile) }
+                    navigationToPerfil = { backStack.add(Route.PantallaProfile) },
+                    navigationToViewReports = { backStack.add(Route.PantallaViewReports) }
                 )
             }
             entry<Route.PantallaProfile> {
@@ -129,7 +130,8 @@ fun MainNavegation() {
                     navegationToViewCategory = { backStack.add(Route.PantallaViewCategory) },
                     navegationToViewFixedPayment = { backStack.add(Route.PantallaViewFixedPayment) },
                     navegationToViewbudgets = { backStack.add(Route.PantallaViewbudgets) },
-                    navigationToHome = { backStack.add(Route.PantallaHome) }
+                    navigationToHome = { backStack.add(Route.PantallaHome) },
+                    navigationToViewReports = {backStack.add(Route.PantallaViewReports)}
                 )
             }
 
@@ -142,7 +144,8 @@ fun MainNavegation() {
                     navigationToExpense = { backStack.add(Route.PantallaExpense) },
                     navegationToBudget = { backStack.add(Route.PantallaBudget) },
                     navegationToCategory = { backStack.add(Route.PantallaCategory) },
-                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) }
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
+                    navigationToViewReports = {backStack.add(Route.PantallaViewReports)}
                 )
             }
             entry<Route.PantallaViewFixedPayment> {
@@ -154,7 +157,8 @@ fun MainNavegation() {
                     navigationToExpense = { backStack.add(Route.PantallaExpense) },
                     navegationToBudget = { backStack.add(Route.PantallaBudget) },
                     navegationToCategory = { backStack.add(Route.PantallaCategory) },
-                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) }
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
+                    navigationToViewReports = {backStack.add(Route.PantallaViewReports)}
                 )
             }
             entry<Route.PantallaViewbudgets> {
@@ -166,7 +170,8 @@ fun MainNavegation() {
                     navigationToExpense = { backStack.add(Route.PantallaExpense) },
                     navegationToBudget = { backStack.add(Route.PantallaBudget) },
                     navegationToCategory = { backStack.add(Route.PantallaCategory) },
-                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) }
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
+                    navigationToViewReports = {backStack.add(Route.PantallaViewReports)}
                 )
             }
             entry<Route.PantallaViewReports> {
@@ -178,7 +183,8 @@ fun MainNavegation() {
                     navigationToExpense = { backStack.add(Route.PantallaExpense) },
                     navegationToBudget = { backStack.add(Route.PantallaBudget) },
                     navegationToCategory = { backStack.add(Route.PantallaCategory) },
-                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) }
+                    navegationToFixedPayment = { backStack.add(Route.PantallaRegisterFixedPayment) },
+                    navigationToViewReports = {backStack.add(Route.PantallaViewReports)}
                 )
             }
         }

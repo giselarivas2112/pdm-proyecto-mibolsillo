@@ -35,6 +35,7 @@ import com.pdm0126.mibolsillo.view.components.common.HeaderSection
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.navigation.HomeBottomBar
 import com.pdm0126.mibolsillo.view.screenspecific.MonthSelectorComponent
+import kotlin.Unit
 
 @Composable
 fun ScreenViewBudgets(navigationBack: () -> Unit,
@@ -43,6 +44,7 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToPerfil: () -> Unit,
+    navigationToViewReports: () -> Unit,
 
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
@@ -75,7 +77,7 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                    // Navegación a reportes en el futuro
+                     navigationToViewReports()
                 },
                 onPerfilClick = {
                     navigationToPerfil()
