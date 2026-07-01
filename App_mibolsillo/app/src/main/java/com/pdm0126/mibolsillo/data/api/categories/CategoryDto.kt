@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CategoryDto(
     val id: String,
-    @SerialName("usuario_id") val usuarioId: String,
+    @SerialName("usuario_id") val usuarioId: String? = null,
     val nombre: String,
     val icono: String
 )

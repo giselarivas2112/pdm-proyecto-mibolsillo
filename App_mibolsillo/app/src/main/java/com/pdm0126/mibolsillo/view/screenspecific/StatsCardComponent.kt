@@ -22,9 +22,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun StatsCardComponent(
-    gastado: String = "$7,400",
-    transacciones: String = "24",
-    mayorGasto: String = "$2,800"
+    gastado: String = "$0.00",
+    mayorGasto: String = "$0.00"
 ) {
     Card(
         modifier = Modifier
@@ -40,23 +39,37 @@ fun StatsCardComponent(
                 .padding(vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(text = "Gastado", color = Color.Gray, fontSize = 12.sp)
-                Text(text = gastado, color = Color(0xFF1A1A1A), fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(
+                    text = gastado,
+                    color = Color(0xFF1A1A1A),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
             }
 
-            Spacer(modifier = Modifier.width(1.dp).height(30.dp). background(Color(0xFFE0E0E0)))
+            Spacer(
+                modifier = Modifier
+                    .width(1.dp)
+                    .height(30.dp)
+                    .background(Color(0xFFE0E0E0))
+            )
 
-            Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "Transacciones", color = Color.Gray, fontSize = 12.sp)
-                Text(text = transacciones, color = Color(0xFF8A2BE2), fontWeight = FontWeight.Bold, fontSize = 18.sp)
-            }
-
-            Spacer(modifier = Modifier.width(1.dp).height(30.dp).background(Color(0xFFE0E0E0)))
-
-            Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(text = "Mayor gasto", color = Color.Gray, fontSize = 12.sp)
-                Text(text = mayorGasto, color = Color(0xFFD32F2F), fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(
+                    text = mayorGasto,
+                    color = Color(0xFFD32F2F),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
             }
         }
     }

@@ -12,6 +12,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -91,6 +92,25 @@ class CategoryApiRepository(
 
             if (response.status.isSuccess()) {
                 Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.body<ErrorResponseDto>().error))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+    override suspend fun getCategoriesByMonth(mes: Int, anio: Int): Result<List<Category>> {
+        return try {
+            val token = sessionManager.getToken()
+
+            val response = KtorClient.client.get("categorias/month") {
+                header("Authorization", "Bearer $token")
+                parameter("mes", mes)
+                parameter("anio", anio)
+            }
+
+            if (response.status.isSuccess()) {
+                Result.success(response.body<List<CategoryDto>>().map { it.toModel() })
             } else {
                 Result.failure(Exception(response.body<ErrorResponseDto>().error))
             }

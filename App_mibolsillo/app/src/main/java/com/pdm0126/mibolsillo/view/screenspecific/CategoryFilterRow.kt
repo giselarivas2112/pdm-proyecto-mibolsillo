@@ -21,11 +21,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CategoryFilterRow(
+    categorias: List<String>,
     categoriaSeleccionada: String = "Todos",
     onCategoriaClick: (String) -> Unit
 ) {
-    val categorias = listOf("Todos", "Comida", "Transporte", "Servicios", "Ocio")
-
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
