@@ -31,14 +31,14 @@ fun ExpenseRow(
     icon: ImageVector,
     category: String,
     amount: String,
-    style: com.pdm0126.mibolsillo.view.components.expenses.ExpenseRowStyle,
+    style: ExpenseRowStyle,
     nombre: String = "",
     date: String? = null,
     iconBgColor: Color = Color(0xFFF3E5F5)
 ) {
     when (style) {
 
-        _root_ide_package_.com.pdm0126.mibolsillo.view.components.expenses.ExpenseRowStyle.SIMPLE -> {
+        ExpenseRowStyle.SIMPLE -> {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -71,7 +71,7 @@ fun ExpenseRow(
             }
         }
 
-        _root_ide_package_.com.pdm0126.mibolsillo.view.components.expenses.ExpenseRowStyle.CARD -> {
+        ExpenseRowStyle.CARD -> {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -114,7 +114,7 @@ fun ExpenseRow(
                     }
 
                     Text(
-                        text = "-$$amount",
+                        text = "-$amount",
                         color = Color(0xFFD32F2F),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
