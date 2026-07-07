@@ -41,10 +41,13 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private val now = java.util.Calendar.getInstance()
     private val mesActual = now.get(java.util.Calendar.MONTH) + 1
     private val anioActual = now.get(java.util.Calendar.YEAR)
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing = _refreshing.asStateFlow()
 
-    fun loadData() {
+    fun loadData(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _loading.value = true
+            if (isRefresh) _refreshing.value = true
+            else _loading.value = true
             _error.value = null
 
             val token = sessionManager.getToken()
@@ -67,7 +70,8 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
                 }
                 .onFailure { e -> _error.value = e.message }
 
-            _loading.value = false
+            if (isRefresh) _refreshing.value = false
+            else _loading.value = false
         }
     }
 }

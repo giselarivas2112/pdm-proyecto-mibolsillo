@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -61,7 +62,9 @@ fun ViewScreenFixedPayments(
     val fixedPayments by viewModel.fixedPayments.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
     val total = fixedPayments.sumOf { it.monto }
+
 
     LaunchedEffect(Unit) {
         viewModel.getFixedPayments()
@@ -114,6 +117,12 @@ fun ViewScreenFixedPayments(
         floatingActionButtonPosition = FabPosition.Center
     ) { padding ->
 
+        PullToRefreshBox(
+            isRefreshing = refreshing,
+            onRefresh = { viewModel.getFixedPayments(isRefresh = true) },
+            modifier = Modifier
+                .fillMaxSize()
+        ){
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -160,10 +169,14 @@ fun ViewScreenFixedPayments(
             item {
                 when {
                     isLoading -> {
-                        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             CircularProgressIndicator()
                         }
                     }
+
                     error != null -> {
                         Text(text = "Error: $error", color = Color.Red)
                     }
@@ -194,6 +207,7 @@ fun ViewScreenFixedPayments(
 
             item {
                 Spacer(modifier = Modifier.height(100.dp))
+                }
             }
         }
     }

@@ -14,6 +14,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -63,6 +64,8 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
     val categoriaFiltro by viewModel.categoriaFiltro.collectAsState()
     val totalGastado by viewModel.totalGastado.collectAsState()
     val mayorGasto by viewModel.mayorGasto.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
+
 
     LaunchedEffect(mes, anio) {
         viewModel.loadData()
@@ -112,6 +115,13 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
         },
         floatingActionButtonPosition = FabPosition.Center
     ) { padding ->
+
+        PullToRefreshBox(
+            isRefreshing = refreshing,
+            onRefresh = { viewModel.loadData(isRefresh = true) },
+            modifier = Modifier
+                .fillMaxSize()
+        ){
 
         LazyColumn(
             modifier = Modifier
@@ -208,6 +218,7 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
 
             item {
                 Spacer(modifier = Modifier.height(32.dp))
+                }
             }
         }
     }

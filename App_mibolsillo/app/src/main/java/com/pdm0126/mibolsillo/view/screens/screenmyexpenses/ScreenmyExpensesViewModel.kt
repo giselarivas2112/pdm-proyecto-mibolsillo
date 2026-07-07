@@ -35,6 +35,8 @@ class ScreenMyExpensesViewModel(application: Application) : AndroidViewModel(app
 
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing = _refreshing.asStateFlow()
 
     private val now = java.util.Calendar.getInstance()
     private val _mes = MutableStateFlow(now.get(java.util.Calendar.MONTH) + 1)
@@ -62,7 +64,7 @@ class ScreenMyExpensesViewModel(application: Application) : AndroidViewModel(app
     val mayorGasto = filteredExpenses.map { it.maxOfOrNull { e -> e.monto } ?: 0.0 }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0.0)
 
-    fun loadData() {
+    fun loadData(isRefresh: Boolean = false) {
         viewModelScope.launch {
             _loading.value = true
             _error.value = null

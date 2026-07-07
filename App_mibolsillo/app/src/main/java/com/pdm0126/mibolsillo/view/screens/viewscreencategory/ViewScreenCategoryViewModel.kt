@@ -25,21 +25,24 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
 
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing = _refreshing.asStateFlow()
 
     init {
         getCategories()
     }
-
-    fun getCategories() {
+    fun getCategories(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _loading.value = true
+            if (isRefresh) _refreshing.value = true
+            else _loading.value = true
             _error.value = null
 
             repository.getCategories()
                 .onSuccess { _categories.value = it }
                 .onFailure { e -> _error.value = e.message }
 
-            _loading.value = false
+            if (isRefresh) _refreshing.value = false
+            else _loading.value = false
         }
     }
 }

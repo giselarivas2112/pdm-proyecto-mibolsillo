@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -48,6 +49,7 @@ fun ScreenDashboard(
     val recentExpenses by viewModel.recentExpenses.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.loadData()
@@ -82,7 +84,13 @@ fun ScreenDashboard(
 
         Box(
             modifier = Modifier.fillMaxSize()
-        ) {
+        )
+        PullToRefreshBox(
+            isRefreshing = refreshing,
+            onRefresh = { viewModel.loadData(isRefresh = true) },
+            modifier = Modifier
+                .fillMaxSize()
+        ){
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize()

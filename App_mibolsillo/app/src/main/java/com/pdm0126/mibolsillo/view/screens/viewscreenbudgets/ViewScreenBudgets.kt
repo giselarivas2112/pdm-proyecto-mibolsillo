@@ -14,6 +14,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -59,6 +60,7 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
     val error by viewModel.error.collectAsState()
     val mes by viewModel.mes.collectAsState()
     val anio by viewModel.anio.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
 
     LaunchedEffect(mes, anio) {
         viewModel.loadData()
@@ -111,6 +113,12 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
         floatingActionButtonPosition = FabPosition.Center
     ) { padding ->
 
+        PullToRefreshBox(
+            isRefreshing = refreshing,
+            onRefresh = { viewModel.loadData(isRefresh = true) },
+            modifier = Modifier
+                .fillMaxSize()
+        ){
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -156,19 +164,26 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
             item {
                 when {
                     isLoading -> {
-                        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             CircularProgressIndicator()
                         }
                     }
+
                     error != null -> {
-                        Text(text = "Error: $error", color = Color.Red,
-                            modifier = Modifier.padding(16.dp))
+                        Text(
+                            text = "Error: $error", color = Color.Red,
+                            modifier = Modifier.padding(16.dp)
+                        )
                     }
                 }
             }
 
             items(summary?.categorias ?: emptyList()) { categoria ->
-                val isAlert = categoria.estado == "cerca_del_limite" || categoria.estado == "excedido"
+                val isAlert =
+                    categoria.estado == "cerca_del_limite" || categoria.estado == "excedido"
                 val statusText = when (categoria.estado) {
                     "excedido" -> "Excedido"
                     "cerca_del_limite" -> "Cerca del límite"
@@ -189,7 +204,11 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
                         statusText = statusText,
                         statusColor = statusColor,
                         isAlert = isAlert,
-                        amountProgress = "$${"%.2f".format(categoria.gastado)} / $${"%.2f".format(categoria.limite)}",
+                        amountProgress = "$${"%.2f".format(categoria.gastado)} / $${
+                            "%.2f".format(
+                                categoria.limite
+                            )
+                        }",
                         remainingText = "Quedan $${"%.2f".format(categoria.disponible)}",
                         remainingColor = Color.Gray,
                         percentage = categoria.porcentajeUsado.toInt(),
@@ -200,6 +219,7 @@ fun ScreenViewBudgets(navigationBack: () -> Unit,
             }
             item {
                 Spacer(modifier = Modifier.height(100.dp))
+                }
             }
         }
     }

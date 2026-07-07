@@ -26,21 +26,24 @@ class FixedPaymentViewModel(application: Application) : AndroidViewModel(applica
 
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing = _refreshing.asStateFlow()
 
     init {
         getFixedPayments()
     }
 
-    fun getFixedPayments() {
+    fun getFixedPayments(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _loading.value = true
-            _error.value = null
+            if (isRefresh) _refreshing.value = true
+            else _loading.value = true
 
             repository.getFixedPayments()
                 .onSuccess { _fixedPayments.value = it }
                 .onFailure { e -> _error.value = e.message }
 
-            _loading.value = false
+            if (isRefresh) _refreshing.value = false
+            else _loading.value = false
         }
     }
 }

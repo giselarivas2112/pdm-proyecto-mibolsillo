@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -62,6 +63,7 @@ fun ScreenViewCategory(
     val categories by viewModel.categories.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
     val filteredCategories = categories.filter { category ->
         category.nombre.contains(searchInput, ignoreCase = true)
     }
@@ -117,7 +119,15 @@ fun ScreenViewCategory(
         },
         floatingActionButtonPosition = FabPosition.Center
     ) { padding ->
-
+        Box(
+            modifier = Modifier.fillMaxSize()
+        )
+        PullToRefreshBox(
+            isRefreshing = refreshing,
+            onRefresh = { viewModel.getCategories(isRefresh = true) },
+            modifier = Modifier
+                .fillMaxSize()
+        ){
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -192,7 +202,7 @@ fun ScreenViewCategory(
                 }
             }
 
-            items(filteredCategories) { category ->
+             items(filteredCategories) { category ->
                 Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
                     CategoryRowCard(
                         emojiIcon = category.icono,
@@ -203,7 +213,8 @@ fun ScreenViewCategory(
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(100.dp)) }
+                item { Spacer(modifier = Modifier.height(100.dp)) }
+            }
         }
     }
 }

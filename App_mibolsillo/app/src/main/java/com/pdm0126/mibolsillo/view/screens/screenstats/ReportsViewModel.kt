@@ -33,6 +33,9 @@ class ReportsViewModel(application: Application) : AndroidViewModel(application)
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
 
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing = _refreshing.asStateFlow()
+
     private val now = java.util.Calendar.getInstance()
     private val _mes = MutableStateFlow(now.get(java.util.Calendar.MONTH) + 1)
     val mes = _mes.asStateFlow()
@@ -40,9 +43,10 @@ class ReportsViewModel(application: Application) : AndroidViewModel(application)
     private val _anio = MutableStateFlow(now.get(java.util.Calendar.YEAR))
     val anio = _anio.asStateFlow()
 
-    fun loadData() {
+    fun loadData(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _loading.value = true
+            if (isRefresh) _refreshing.value = true
+            else _loading.value = true
             _error.value = null
 
             repository.getBudgetSummary(_mes.value, _anio.value)
@@ -57,7 +61,8 @@ class ReportsViewModel(application: Application) : AndroidViewModel(application)
                 .onSuccess { _dailyExpenses.value = it }
                 .onFailure { e -> _error.value = e.message }
 
-            _loading.value = false
+            if (isRefresh) _refreshing.value = false
+            else _loading.value = false
         }
     }
 

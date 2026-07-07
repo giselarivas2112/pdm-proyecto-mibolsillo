@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -57,6 +58,7 @@ fun ScreenReports(
     val error by viewModel.error.collectAsState()
     val mes by viewModel.mes.collectAsState()
     val anio by viewModel.anio.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
 
     LaunchedEffect(mes, anio) {
         viewModel.loadData()
@@ -109,69 +111,77 @@ fun ScreenReports(
         floatingActionButtonPosition = FabPosition.Center
     ) { padding ->
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        PullToRefreshBox(
+            isRefreshing = refreshing,
+            onRefresh = { viewModel.loadData(isRefresh = true) },
+            modifier = Modifier
+                .fillMaxSize()
+        ){
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-            item {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    HeaderSection()
-                    MonthSelectorComponent(
-                        navigationBack = navigationBack,
-                        titulo = "Reportes",
-                        mesActual = "${getNombreMes(mes)} $anio",
-                        onAnteriorMes = { viewModel.mesAnterior() },
-                        onSiguienteMes = { viewModel.mesSiguiente() }
-                    )
-                }
-            }
-
-            item {
-                when {
-                    isLoading -> {
-                        Box(
-                            modifier = Modifier.fillMaxWidth().padding(24.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                    error != null -> {
-                        Text(
-                            text = "Error: $error",
-                            color = Color.Red,
-                            modifier = Modifier.padding(16.dp)
+                item {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        HeaderSection()
+                        MonthSelectorComponent(
+                            navigationBack = navigationBack,
+                            titulo = "Reportes",
+                            mesActual = "${getNombreMes(mes)} $anio",
+                            onAnteriorMes = { viewModel.mesAnterior() },
+                            onSiguienteMes = { viewModel.mesSiguiente() }
                         )
                     }
                 }
-            }
 
-            if (!isLoading && error == null) {
                 item {
-                    Spacer(modifier = Modifier.height(14.dp))
-                    StatsSummaryCards(
-                        totalGastado = summary?.totalGastado ?: 0.0,
-                        totalPresupuestado = summary?.totalPresupuestado ?: 0.0,
-                        totalDisponible = summary?.totalDisponible ?: 0.0
-                    )
+                    when {
+                        isLoading -> {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().padding(24.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
+
+                        error != null -> {
+                            Text(
+                                text = "Error: $error",
+                                color = Color.Red,
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                    }
+                }
+
+                if (!isLoading && error == null) {
+                    item {
+                        Spacer(modifier = Modifier.height(14.dp))
+                        StatsSummaryCards(
+                            totalGastado = summary?.totalGastado ?: 0.0,
+                            totalPresupuestado = summary?.totalPresupuestado ?: 0.0,
+                            totalDisponible = summary?.totalDisponible ?: 0.0
+                        )
+                    }
+
+                    item {
+                        ExpenseDistributionChart(distribution = distribution)
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        DailyExpensesBarChart(dailyExpenses = dailyExpenses)
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        BudgetProgressSection(categorias = summary?.categorias ?: emptyList())
+                    }
                 }
 
                 item {
-                    ExpenseDistributionChart(distribution = distribution)
+                    Spacer(modifier = Modifier.height(100.dp))
+                    }
                 }
-
-                item {
-                    Spacer(modifier = Modifier.height(10.dp))
-                    DailyExpensesBarChart(dailyExpenses = dailyExpenses)
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(10.dp))
-                    BudgetProgressSection(categorias = summary?.categorias ?: emptyList())
-                }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }
-}
