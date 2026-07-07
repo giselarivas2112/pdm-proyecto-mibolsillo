@@ -154,7 +154,13 @@ fun ScreenRegisterFixedPayment(
         item {
             if (diaVencimiento != null && diasRecordatorio != null) {
                 ReminderSection(
-                    diaAviso = (diaVencimiento!! - diasRecordatorio!!).coerceAtLeast(1).toString(),
+                    diaAviso = (
+                            if (diaVencimiento!! - diasRecordatorio!! <= 0) {
+                                31 + (diaVencimiento!! - diasRecordatorio!!)
+                            } else {
+                                diaVencimiento!! - diasRecordatorio!!
+                            }
+                            ).toString(),
                     diasAntes = diasRecordatorio!!.toString()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
