@@ -35,6 +35,10 @@ class ExpenseViewModel(application: Application) : AndroidViewModel(application)
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
 
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing = _refreshing.asStateFlow()
+
+
     private val _success = MutableStateFlow(false)
     val success = _success.asStateFlow()
 
@@ -45,16 +49,18 @@ class ExpenseViewModel(application: Application) : AndroidViewModel(application)
         loadCategories()
     }
 
-    fun loadCategories() {
+    fun loadCategories(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _loadingCategories.value = true
+            if (isRefresh) _refreshing.value = true
+            else _loadingCategories.value = true
             _errorCategories.value = null
 
             categoryRepository.getCategories()
                 .onSuccess { _categories.value = it }
                 .onFailure { e -> _errorCategories.value = e.message }
 
-            _loadingCategories.value = false
+            if (isRefresh) _refreshing.value = false
+            else _loadingCategories.value = false
         }
     }
 

@@ -18,6 +18,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -63,6 +64,7 @@ fun ScreenExpense(
     val success by viewModel.success.collectAsState()
     val alerta by viewModel.alerta.collectAsState()
     var showAlertaDialog by remember { mutableStateOf(false) }
+    val refreshing by viewModel.refreshing.collectAsState()
 
     LaunchedEffect(success) {
         if (success) {
@@ -118,6 +120,13 @@ fun ScreenExpense(
             }
         )
     }
+
+    PullToRefreshBox(
+        isRefreshing = refreshing,
+        onRefresh = { viewModel.loadCategories(isRefresh = true) },
+        modifier = Modifier
+            .fillMaxSize()
+    ){
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
 
@@ -218,8 +227,8 @@ fun ScreenExpense(
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
                     .height(60.dp)
-            )
-
+                )
+            }
         }
     }
 }

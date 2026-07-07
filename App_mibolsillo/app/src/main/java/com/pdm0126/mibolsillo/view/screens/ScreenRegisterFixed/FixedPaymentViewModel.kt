@@ -9,6 +9,7 @@ import com.pdm0126.mibolsillo.data.repositories.fixedpayments.FixedPaymentApiRep
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class FixedPaymentViewModel(application: Application) : AndroidViewModel(application) {
@@ -32,6 +33,9 @@ class FixedPaymentViewModel(application: Application) : AndroidViewModel(applica
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing = _refreshing.asStateFlow()
+
     private val _success = MutableStateFlow(false)
     val success: StateFlow<Boolean> = _success
 
@@ -39,14 +43,18 @@ class FixedPaymentViewModel(application: Application) : AndroidViewModel(applica
         loadCategories()
     }
 
-    fun loadCategories() {
+    fun loadCategories(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _loadingCategories.value = true
+            if (isRefresh) _refreshing.value = true
+            else _loadingCategories.value = true
             _errorCategories.value = null
+
             val result = categoryRepository.getCategories()
             result.onSuccess { _categories.value = it }
             result.onFailure { _errorCategories.value = it.message }
-            _loadingCategories.value = false
+
+            if (isRefresh) _refreshing.value = false
+            else _loadingCategories.value = false
         }
     }
 

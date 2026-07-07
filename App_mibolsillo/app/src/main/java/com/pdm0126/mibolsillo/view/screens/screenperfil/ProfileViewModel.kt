@@ -39,34 +39,49 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     private val _loading = MutableStateFlow(false)
     val loading = _loading.asStateFlow()
 
-    fun loadProfileData() {
-        viewModelScope.launch {
-            _loading.value = true
+    private val _error = MutableStateFlow<String?>(null)
+    val error = _error.asStateFlow()
 
-            val token = sessionManager.getToken() ?: return@launch
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing = _refreshing.asStateFlow()
+
+    fun loadProfileData(isRefresh: Boolean = false) {
+        viewModelScope.launch {
+            if (isRefresh) _refreshing.value = true
+            else _loading.value = true
+            _error.value = null
+
+            val token = sessionManager.getToken() ?: run {
+                _error.value = "Sesión no encontrada"
+                _loading.value = false
+                _refreshing.value = false
+                return@launch
+            }
 
             authRepository.getProfile(token)
                 .onSuccess { _nombreUsuario.value = it.nombre }
+                .onFailure { e -> _error.value = e.message }
 
             categoryRepository.getCategories()
                 .onSuccess { _totalCategorias.value = it.size }
+                .onFailure { e -> _error.value = e.message }
 
             expenseRepository.getExpenses(null, null)
                 .onSuccess { _totalGastos.value = it.size }
+                .onFailure { e -> _error.value = e.message }
 
             budgetRepository.getBudgets(null, null)
                 .onSuccess { _totalPresupuestos.value = it.size }
+                .onFailure { e -> _error.value = e.message }
 
-            _loading.value = false
+            if (isRefresh) _refreshing.value = false
+            else _loading.value = false
         }
     }
 
     fun logout() {
-
         viewModelScope.launch {
-
             sessionManager.clearToken()
-
         }
     }
 }

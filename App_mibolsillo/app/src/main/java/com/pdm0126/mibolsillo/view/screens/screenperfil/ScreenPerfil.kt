@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -70,6 +71,8 @@ fun ScreenProfile(navigationBack: () -> Unit,
     val totalCategorias by viewModel.totalCategorias.collectAsState()
     val totalGastos by viewModel.totalGastos.collectAsState()
     val totalPresupuestos by viewModel.totalPresupuestos.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
+    val error by viewModel.error.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.loadProfileData()
@@ -122,6 +125,12 @@ fun ScreenProfile(navigationBack: () -> Unit,
         floatingActionButtonPosition = FabPosition.Center
     ) { padding->
 
+        PullToRefreshBox(
+            isRefreshing = refreshing,
+            onRefresh = { viewModel.loadProfileData(isRefresh = true) },
+            modifier = Modifier.fillMaxSize()
+        ){
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -167,7 +176,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
                                 .size(85.dp)
                                 .clip(CircleShape)
                                 .background(Color(0xFFE1BEE7))
-                                .border(3.dp,Color.White, CircleShape),
+                                .border(3.dp, Color.White, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
@@ -222,6 +231,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
             }
 
             item { Spacer(modifier = Modifier.height(80.dp)) }
+            }
         }
     }
 }

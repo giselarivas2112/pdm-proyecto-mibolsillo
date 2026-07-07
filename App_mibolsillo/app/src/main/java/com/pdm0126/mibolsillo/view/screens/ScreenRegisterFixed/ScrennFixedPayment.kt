@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ fun ScreenRegisterFixedPayment(
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
     val success by viewModel.success.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
 
     LaunchedEffect(success) {
         if (success) {
@@ -55,6 +57,13 @@ fun ScreenRegisterFixedPayment(
             viewModel.resetState()
         }
     }
+
+    PullToRefreshBox(
+        isRefreshing = refreshing,
+        onRefresh = { viewModel.loadCategories(isRefresh = true) },
+        modifier = Modifier
+            .fillMaxSize()
+    ){
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
 
@@ -202,7 +211,8 @@ fun ScreenRegisterFixedPayment(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(56.dp)
             )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+            }
         }
     }
 }

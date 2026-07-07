@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -60,6 +61,7 @@ fun ScreenBudget(
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
     val success by viewModel.success.collectAsState()
+    val refreshing by viewModel.refreshing.collectAsState()
 
     LaunchedEffect(success) {
         if (success) {
@@ -76,6 +78,13 @@ fun ScreenBudget(
     LaunchedEffect(error) {
         error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
     }
+
+    PullToRefreshBox(
+        isRefreshing = refreshing,
+        onRefresh = { viewModel.loadCategories(isRefresh = true) },
+        modifier = Modifier
+            .fillMaxSize()
+    ){
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
 
@@ -217,7 +226,7 @@ fun ScreenBudget(
                     .height(60.dp)
             )
             Spacer(modifier = Modifier.height(40.dp))
+             }
         }
-
     }
 }
