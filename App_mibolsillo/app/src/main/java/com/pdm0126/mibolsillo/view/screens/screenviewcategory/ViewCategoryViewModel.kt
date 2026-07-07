@@ -28,6 +28,9 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     private val _refreshing = MutableStateFlow(false)
     val refreshing = _refreshing.asStateFlow()
 
+    private val _deleting = MutableStateFlow(false)
+    val deleting = _deleting.asStateFlow()
+
     init {
         getCategories()
     }
@@ -43,6 +46,22 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
 
             if (isRefresh) _refreshing.value = false
             else _loading.value = false
+        }
+    }
+    fun deleteCategory(id: String) {
+        viewModelScope.launch {
+            _deleting.value = true
+            _error.value = null
+
+            repository.deleteCategory(id)
+                .onSuccess {
+                    getCategories()
+                }
+                .onFailure { e ->
+                    _error.value = e.message
+                }
+
+            _deleting.value = false
         }
     }
 }

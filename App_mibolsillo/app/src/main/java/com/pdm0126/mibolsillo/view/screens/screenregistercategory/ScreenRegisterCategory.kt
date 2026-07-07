@@ -257,7 +257,7 @@ fun ScreenRegisterCategory(
             } else {
                 items(categories) { category ->
                     Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
-                        RowCard(
+                        RowCard(modifier = Modifier,
                             emojiIcon = category.icono,
                             iconBgColor = Color(0x268A2BE2),
                             title = category.nombre

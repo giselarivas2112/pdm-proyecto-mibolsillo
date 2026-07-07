@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun RowCard(
+    modifier: Modifier,
     emojiIcon: String? = null,
     icon: ImageVector? = null,
     iconColor: Color = Color(0xFF4A148C),
@@ -42,7 +43,7 @@ fun RowCard(
 ) {
     if (showCard) {
         Card(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .clickable { onCardClick() },
             shape = RoundedCornerShape(20.dp),
@@ -59,7 +60,7 @@ fun RowCard(
         RowCardContent(
             emojiIcon, icon, iconColor, iconBgColor,
             title, subtitle, monto, montoColor,
-            rowModifier = Modifier.padding(vertical = 8.dp)
+            rowModifier = modifier.padding(vertical = 8.dp)
         )
     }
 }

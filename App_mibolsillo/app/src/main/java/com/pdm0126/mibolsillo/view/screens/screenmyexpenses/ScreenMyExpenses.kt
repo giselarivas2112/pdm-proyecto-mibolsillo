@@ -1,11 +1,13 @@
 package com.pdm0126.mibolsillo.view.screens.screenmyexpenses
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pdm0126.mibolsillo.newcomponents.DeleteButton
 import com.pdm0126.mibolsillo.view.components.common.RowCard
 import com.pdm0126.mibolsillo.utils.getNombreMes
 import com.pdm0126.mibolsillo.view.specificcomponents.myexpenses.CategoryFilterRow
@@ -40,19 +43,19 @@ import com.pdm0126.mibolsillo.view.specificcomponents.myexpenses.StatsCardCompon
 import kotlin.Unit
 
 @Composable
-fun ScreenMyExpenses( navigationBack: () -> Unit,
+fun ScreenMyExpenses(
+    navigationBack: () -> Unit,
     navegationToFixedPayment: () -> Unit,
     navigationToExpense: () -> Unit,
     navegationToBudget: () -> Unit,
     navegationToCategory: () -> Unit,
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
-    navigationToPerfil: ()-> Unit,
+    navigationToPerfil: () -> Unit,
     navigationToViewReports: () -> Unit,
     viewModel: MyExpensesViewModel = viewModel()
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val expenses by viewModel.filteredExpenses.collectAsState()
     val expensesGrouped by viewModel.expensesGroupedByDate.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
@@ -62,7 +65,6 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
     val totalGastado by viewModel.totalGastado.collectAsState()
     val mayorGasto by viewModel.mayorGasto.collectAsState()
     val refreshing by viewModel.refreshing.collectAsState()
-
 
     LaunchedEffect(mes, anio) {
         viewModel.loadData()
@@ -81,7 +83,7 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                        navigationToViewReports()
+                    navigationToViewReports()
                 },
                 onPerfilClick = {
                     navigationToPerfil()
@@ -118,105 +120,121 @@ fun ScreenMyExpenses( navigationBack: () -> Unit,
             onRefresh = { viewModel.loadData(isRefresh = true) },
             modifier = Modifier
                 .fillMaxSize()
-        ){
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
         ) {
 
-            item {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
 
-                Box(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
 
-                    HeaderSection()
+                        HeaderSection()
 
-                    MonthSelectorComponent(
-                        navigationBack = navigationBack,
-                        titulo = "Mis gastos",
-                        mesActual = "${getNombreMes(mes)} $anio",
-                        onAnteriorMes = { viewModel.mesAnterior() },
-                        onSiguienteMes = { viewModel.mesSiguiente() }
+                        MonthSelectorComponent(
+                            navigationBack = navigationBack,
+                            titulo = "Mis gastos",
+                            mesActual = "${getNombreMes(mes)} $anio",
+                            onAnteriorMes = { viewModel.mesAnterior() },
+                            onSiguienteMes = { viewModel.mesSiguiente() }
+                        )
+
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    StatsCardComponent(
+                        gastado = "$${"%.2f".format(totalGastado)}",
+                        mayorGasto = "$${"%.2f".format(mayorGasto)}"
                     )
-
                 }
-            }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                StatsCardComponent(
-                    gastado = "$${"%.2f".format(totalGastado)}",
-                    mayorGasto = "$${"%.2f".format(mayorGasto)}"
-                )
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                CategoryFilterRow(
-                    categorias = listOf("Todos") + categories.map { it.nombre },
-                    categoriaSeleccionada = categoriaFiltro,
-                    onCategoriaClick = { viewModel.setCategoriaFiltro(it) }
-                )
-            }
-
-            if (isLoading) {
                 item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 48.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = Color(0xFF8A2BE2))
-                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    CategoryFilterRow(
+                        categorias = listOf("Todos") + categories.map { it.nombre },
+                        categoriaSeleccionada = categoriaFiltro,
+                        onCategoriaClick = { viewModel.setCategoriaFiltro(it) }
+                    )
                 }
-            } else if (expensesGrouped.isEmpty()) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 48.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "No hay gastos para este mes",
-                            color = Color(0xFF8A2BE2),
-                            fontSize = 14.sp
-                        )
-                    }
-                }
-            } else {
-                expensesGrouped.forEach { (fecha, gastosDelDia) ->
-                    item(key = fecha) {
-                        Text(
-                            text = fecha,
-                            color = Color(0xFF8A2BE2),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 13.sp,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                        )
-                    }
-                    items(
-                        items = gastosDelDia,
-                        key = { it.id }
-                    ) { expense ->
-                        RowCard(
-                            icon = Icons.Default.AttachMoney,
-                            iconColor = Color(0xFF8A2BE2),
-                            iconBgColor = Color(0xFFF3E5F5),
-                            title = expense.descripcion ?: expense.categoryName ?: "",
-                            subtitle = expense.categoryName ?: "Sin categoría",
-                            monto = "-$${"%.2f".format(expense.monto)}",
-                            montoColor = Color(0xFFD32F2F)
-                        )
-                    }
-                }
-            }
 
-            item {
-                Spacer(modifier = Modifier.height(32.dp))
+                if (isLoading) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 48.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(color = Color(0xFF8A2BE2))
+                        }
+                    }
+                } else if (expensesGrouped.isEmpty()) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 48.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "No hay gastos para este mes",
+                                color = Color(0xFF8A2BE2),
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
+                } else {
+                    expensesGrouped.forEach { (fecha, gastosDelDia) ->
+                        item(key = fecha) {
+                            Text(
+                                text = fecha,
+                                color = Color(0xFF8A2BE2),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                            )
+                        }
+                        items(
+                            items = gastosDelDia,
+                            key = { it.id }
+                        ) { expense ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                RowCard(
+                                    modifier = Modifier.weight(1f),
+                                    icon = Icons.Default.AttachMoney,
+                                    iconColor = Color(0xFF8A2BE2),
+                                    iconBgColor = Color(0xFFF3E5F5),
+                                    title = expense.descripcion ?: expense.categoryName ?: "",
+                                    subtitle = expense.categoryName ?: "Sin categoría",
+                                    monto = "-$${"%.2f".format(expense.monto)}",
+                                    montoColor = Color(0xFFD32F2F)
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                DeleteButton(
+                                    itemName = "este gasto",
+                                    onConfirmDelete = {
+                                        viewModel.deleteExpense(expense.id)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
             }
         }
