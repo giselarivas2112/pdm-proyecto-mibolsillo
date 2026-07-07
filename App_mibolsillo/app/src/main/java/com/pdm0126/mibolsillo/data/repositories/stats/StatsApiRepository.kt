@@ -6,9 +6,9 @@ import com.pdm0126.mibolsillo.data.api.Stats.DailyExpensesResponseDto
 import com.pdm0126.mibolsillo.data.api.Stats.DistributionResponseDto
 import com.pdm0126.mibolsillo.data.api.Stats.toModel
 import com.pdm0126.mibolsillo.data.session.SessionManager
-import com.pdm0126.mibolsillo.model.BudgetSummary
-import com.pdm0126.mibolsillo.model.DailyExpenses
-import com.pdm0126.mibolsillo.model.Distribution
+import com.pdm0126.mibolsillo.data.model.BudgetSummary
+import com.pdm0126.mibolsillo.data.model.DailyExpenses
+import com.pdm0126.mibolsillo.data.model.Distribution
 import com.tupaquete.mibolsillo.data.api.KtorClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

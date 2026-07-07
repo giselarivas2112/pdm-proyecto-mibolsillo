@@ -1,8 +1,8 @@
 package com.pdm0126.mibolsillo.data.repositories.stats
 
-import com.pdm0126.mibolsillo.model.BudgetSummary
-import com.pdm0126.mibolsillo.model.DailyExpenses
-import com.pdm0126.mibolsillo.model.Distribution
+import com.pdm0126.mibolsillo.data.model.BudgetSummary
+import com.pdm0126.mibolsillo.data.model.DailyExpenses
+import com.pdm0126.mibolsillo.data.model.Distribution
 
 interface StatsRepository {
     suspend fun getBudgetSummary(mes: Int, anio: Int): Result<BudgetSummary>

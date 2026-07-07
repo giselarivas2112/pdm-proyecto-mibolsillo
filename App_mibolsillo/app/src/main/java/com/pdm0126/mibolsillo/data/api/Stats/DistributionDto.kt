@@ -1,7 +1,7 @@
 package com.pdm0126.mibolsillo.data.api.Stats
 
-import com.pdm0126.mibolsillo.model.Distribution
-import com.pdm0126.mibolsillo.model.DistributionItem
+import com.pdm0126.mibolsillo.data.model.Distribution
+import com.pdm0126.mibolsillo.data.model.DistributionItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.collections.map

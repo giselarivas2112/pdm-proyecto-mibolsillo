@@ -1,7 +1,7 @@
 package com.pdm0126.mibolsillo.data.repositories.expense
 
-import com.pdm0126.mibolsillo.model.Expense
-import com.pdm0126.mibolsillo.model.ExpenseCreationResult
+import com.pdm0126.mibolsillo.data.model.Expense
+import com.pdm0126.mibolsillo.data.model.ExpenseCreationResult
 
 interface ExpenseRepository {
 

@@ -1,6 +1,6 @@
 package com.pdm0126.mibolsillo.data.api.Stats
 
-import com.pdm0126.mibolsillo.model.BudgetCategoryResume
+import com.pdm0126.mibolsillo.data.model.BudgetCategoryResume
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

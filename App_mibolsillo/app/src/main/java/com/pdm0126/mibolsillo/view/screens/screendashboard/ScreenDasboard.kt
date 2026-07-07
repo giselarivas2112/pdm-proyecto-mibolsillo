@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.view.components.navigation.FabExpandedMenu
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
-import com.pdm0126.mibolsillo.view.screenspecific.RecentExpensesSection
-import com.pdm0126.mibolsillo.view.screenspecific.SummaryCardsSection
+import com.pdm0126.mibolsillo.view.specificcomponents.dashboard.RecentExpensesSection
+import com.pdm0126.mibolsillo.view.specificcomponents.dashboard.SummaryCardsSection
 
 
 @Composable

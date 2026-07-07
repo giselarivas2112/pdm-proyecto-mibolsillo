@@ -1,6 +1,6 @@
 package com.pdm0126.mibolsillo.data.repositories.categories
 
-import com.pdm0126.mibolsillo.model.Category
+import com.pdm0126.mibolsillo.data.model.Category
 
 interface CategoryRepository {
 

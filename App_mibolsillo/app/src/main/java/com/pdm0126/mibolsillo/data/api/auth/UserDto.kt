@@ -1,8 +1,8 @@
 package com.pdm0126.mibolsillo.data.api.auth
 
 import com.pdm0126.mibolsillo.data.api.auth.login.LoginResponseDto
-import com.pdm0126.mibolsillo.model.Session
-import com.pdm0126.mibolsillo.model.User
+import com.pdm0126.mibolsillo.data.model.Session
+import com.pdm0126.mibolsillo.data.model.User
 import kotlinx.serialization.Serializable
 
 @Serializable

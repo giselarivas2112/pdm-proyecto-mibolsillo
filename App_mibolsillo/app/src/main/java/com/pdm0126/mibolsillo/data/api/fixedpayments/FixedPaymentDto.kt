@@ -1,7 +1,7 @@
 package com.pdm0126.mibolsillo.data.api.fixedpayments
 
-import com.pdm0126.mibolsillo.model.Category
-import com.pdm0126.mibolsillo.model.FixedPayment
+import com.pdm0126.mibolsillo.data.model.Category
+import com.pdm0126.mibolsillo.data.model.FixedPayment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

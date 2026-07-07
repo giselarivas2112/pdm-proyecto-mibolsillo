@@ -1,6 +1,6 @@
 package com.pdm0126.mibolsillo.data.repositories.fixedpayments
 
-import com.pdm0126.mibolsillo.model.FixedPayment
+import com.pdm0126.mibolsillo.data.model.FixedPayment
 
 interface FixedPaymentRepository {
 

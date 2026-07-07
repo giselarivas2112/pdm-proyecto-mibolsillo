@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.pdm0126.mibolsillo.model.Category
+import com.pdm0126.mibolsillo.data.model.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

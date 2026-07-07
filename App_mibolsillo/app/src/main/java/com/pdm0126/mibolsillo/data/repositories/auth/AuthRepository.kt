@@ -1,8 +1,8 @@
 package com.pdm0126.mibolsillo.data.repositories.auth
 
 import com.pdm0126.mibolsillo.data.api.auth.ProfileResponseDto
-import com.pdm0126.mibolsillo.model.Session
-import com.pdm0126.mibolsillo.model.User
+import com.pdm0126.mibolsillo.data.model.Session
+import com.pdm0126.mibolsillo.data.model.User
 
 interface AuthRepository {
 

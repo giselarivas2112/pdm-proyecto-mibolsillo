@@ -4,21 +4,21 @@ import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.pdm0126.mibolsillo.view.screens.ScreenRegisterFixed.ScreenRegisterFixedPayment
-import com.pdm0126.mibolsillo.view.screens.screenbudget.ScreenBudget
-import com.pdm0126.mibolsillo.view.screens.screencategory.ScreenCategory
+import com.pdm0126.mibolsillo.view.screens.screenregisterfixedpayment.ScreenRegisterFixedPayment
+import com.pdm0126.mibolsillo.view.screens.screenregisterbudget.ScreenRegisterBudget
+import com.pdm0126.mibolsillo.view.screens.screenregistercategory.ScreenRegisterCategory
 import com.pdm0126.mibolsillo.view.screens.screendashboard.ScreenDashboard
-import com.pdm0126.mibolsillo.view.screens.screenexpense.ScreenExpense
+import com.pdm0126.mibolsillo.view.screens.screenregisterexpense.ScreenRegisterExpense
 import com.pdm0126.mibolsillo.view.screens.screenhome.ScreenHome
 import com.pdm0126.mibolsillo.view.screens.screenlogin.ScreenAuthCheck
 import com.pdm0126.mibolsillo.view.screens.screenlogin.ScreenLogin
 import com.pdm0126.mibolsillo.view.screens.screenmyexpenses.ScreenMyExpenses
-import com.pdm0126.mibolsillo.view.screens.screenperfil.ScreenProfile
-import com.pdm0126.mibolsillo.view.screens.screenregister.ScreenRegister
-import com.pdm0126.mibolsillo.view.screens.screenstats.ScreenReports
-import com.pdm0126.mibolsillo.view.screens.viewscreenbudgets.ScreenViewBudgets
-import com.pdm0126.mibolsillo.view.screens.viewscreencategory.ScreenViewCategory
-import com.pdm0126.mibolsillo.view.screens.viewscreenfixedpayments.ViewScreenFixedPayments
+import com.pdm0126.mibolsillo.view.screens.screenprofile.ScreenProfile
+import com.pdm0126.mibolsillo.view.screens.screensignup.ScreenSignUp
+import com.pdm0126.mibolsillo.view.screens.screenstats.ScreenStats
+import com.pdm0126.mibolsillo.view.screens.screenviewbudgets.ScreenViewBudgets
+import com.pdm0126.mibolsillo.view.screens.screenviewcategory.ScreenViewCategory
+import com.pdm0126.mibolsillo.view.screens.screenviewfixedpayments.ScreenViewFixedPayments
 
 @Composable
 fun MainNavegation() {
@@ -56,7 +56,7 @@ fun MainNavegation() {
             }
 
             entry<Route.PantallaRegister> {
-                ScreenRegister(
+                ScreenSignUp(
                     navigationToHome = {
                         backStack.clear()
                         backStack.add(Route.PantallaAuthCheck)
@@ -84,17 +84,17 @@ fun MainNavegation() {
                 )
             }
             entry<Route.PantallaExpense> {
-                ScreenExpense(
+                ScreenRegisterExpense(
                     navigationBack = { backStack.removeLastOrNull() }
                 )
             }
             entry<Route.PantallaBudget> {
-                ScreenBudget(
+                ScreenRegisterBudget(
                     navigationBack = { backStack.removeLastOrNull() }
                 )
             }
             entry<Route.PantallaCategory> {
-                ScreenCategory(
+                ScreenRegisterCategory(
                     navigationBack = { backStack.removeLastOrNull() }
                 )
             }
@@ -149,7 +149,7 @@ fun MainNavegation() {
                 )
             }
             entry<Route.PantallaViewFixedPayment> {
-                ViewScreenFixedPayments(
+                ScreenViewFixedPayments(
                     navigationBack = { backStack.removeLastOrNull() },
                     navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
                     navigationToExpenses = { backStack.add(Route.PantallaExpenses) },
@@ -175,7 +175,7 @@ fun MainNavegation() {
                 )
             }
             entry<Route.PantallaViewReports> {
-                ScreenReports(
+                ScreenStats(
                     navigationBack = { backStack.removeLastOrNull() },
                     navigationToDashboard = { backStack.add(Route.PantallaDashboard) },
                     navigationToExpenses = { backStack.add(Route.PantallaExpenses) },

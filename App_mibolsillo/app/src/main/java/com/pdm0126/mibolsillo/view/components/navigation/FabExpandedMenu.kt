@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.pdm0126.mibolsillo.view.components.buttons.MenuButton
 
 @Composable
 fun FabExpandedMenu(
@@ -31,25 +32,25 @@ fun FabExpandedMenu(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            _root_ide_package_.com.pdm0126.mibolsillo.view.components.buttons.MenuButton(
+            MenuButton(
                 "Agregar categoría",
                 Icons.Default.Category,
                 onCategory
             )
 
-            _root_ide_package_.com.pdm0126.mibolsillo.view.components.buttons.MenuButton(
+            MenuButton(
                 "Agregar presupuesto",
                 Icons.Default.AttachMoney,
                 onBudget
             )
 
-            _root_ide_package_.com.pdm0126.mibolsillo.view.components.buttons.MenuButton(
+            MenuButton(
                 "Agregar pago fijo",
                 Icons.Default.DateRange,
                 onFixedPayment
             )
 
-            _root_ide_package_.com.pdm0126.mibolsillo.view.components.buttons.MenuButton(
+            MenuButton(
                 "Agregar gasto",
                 Icons.Default.ShoppingCart,
                 onExpense

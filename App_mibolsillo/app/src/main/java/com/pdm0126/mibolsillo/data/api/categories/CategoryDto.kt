@@ -1,6 +1,6 @@
 package com.pdm0126.mibolsillo.data.api.categories
 
-import com.pdm0126.mibolsillo.model.Category
+import com.pdm0126.mibolsillo.data.model.Category
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

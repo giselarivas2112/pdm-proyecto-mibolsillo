@@ -5,7 +5,7 @@ import com.pdm0126.mibolsillo.data.api.fixedpayments.FixedPaymentDto
 import com.pdm0126.mibolsillo.data.api.fixedpayments.FixedPaymentRequestDto
 import com.pdm0126.mibolsillo.data.api.fixedpayments.FixedPaymentResponseDto
 import com.pdm0126.mibolsillo.data.api.fixedpayments.toModel
-import com.pdm0126.mibolsillo.model.FixedPayment
+import com.pdm0126.mibolsillo.data.model.FixedPayment
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import com.tupaquete.mibolsillo.data.api.KtorClient
 import io.ktor.client.call.body

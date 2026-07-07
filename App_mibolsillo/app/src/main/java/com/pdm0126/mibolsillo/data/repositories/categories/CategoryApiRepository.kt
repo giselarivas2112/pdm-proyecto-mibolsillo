@@ -5,7 +5,7 @@ import com.pdm0126.mibolsillo.data.api.categories.CategoryDto
 import com.pdm0126.mibolsillo.data.api.categories.CategoryRequestDto
 import com.pdm0126.mibolsillo.data.api.categories.CategoryResponseDto
 import com.pdm0126.mibolsillo.data.api.categories.toModel
-import com.pdm0126.mibolsillo.model.Category
+import com.pdm0126.mibolsillo.data.model.Category
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import com.tupaquete.mibolsillo.data.api.KtorClient
 import io.ktor.client.call.body

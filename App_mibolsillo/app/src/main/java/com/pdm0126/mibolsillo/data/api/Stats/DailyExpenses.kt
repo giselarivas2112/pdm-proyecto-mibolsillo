@@ -1,7 +1,7 @@
 package com.pdm0126.mibolsillo.data.api.Stats
 
-import com.pdm0126.mibolsillo.model.DailyExpenses
-import com.pdm0126.mibolsillo.model.DailyExpensesR
+import com.pdm0126.mibolsillo.data.model.DailyExpenses
+import com.pdm0126.mibolsillo.data.model.DailyExpensesR
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

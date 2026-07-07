@@ -9,8 +9,8 @@ import com.pdm0126.mibolsillo.data.api.auth.register.RegisterRequestDto
 import com.pdm0126.mibolsillo.data.api.auth.register.RegisterResponseDto
 import com.pdm0126.mibolsillo.data.api.auth.toModel
 import com.pdm0126.mibolsillo.data.api.auth.toSession
-import com.pdm0126.mibolsillo.model.Session
-import com.pdm0126.mibolsillo.model.User
+import com.pdm0126.mibolsillo.data.model.Session
+import com.pdm0126.mibolsillo.data.model.User
 import com.tupaquete.mibolsillo.data.api.KtorClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -21,7 +21,6 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import io.ktor.http.headers
 import io.ktor.http.isSuccess
 
 class AuthApiRepository : AuthRepository {

@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.onesignal.OneSignal
-import com.pdm0126.mibolsillo.model.Session
+import com.pdm0126.mibolsillo.data.model.Session
 import com.pdm0126.mibolsillo.data.repositories.auth.AuthApiRepository
 import com.pdm0126.mibolsillo.data.repositories.auth.AuthRepository
 import com.pdm0126.mibolsillo.data.session.SessionManager

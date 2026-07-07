@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.pdm0126.mibolsillo.view.screenspecific.LoginCard
+import com.pdm0126.mibolsillo.view.specificcomponents.login.LoginCard
 import androidx.compose.ui.platform.LocalContext
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import androidx.compose.runtime.remember
