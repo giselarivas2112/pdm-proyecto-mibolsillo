@@ -18,5 +18,6 @@ data class BudgetCategoryResume(
     val disponible: Double,
     val porcentajeUsado: Double,
     val alertaPorcentaje: Int,
-    val estado: String
+    val estado: String,
+    val notas: String?
 )
