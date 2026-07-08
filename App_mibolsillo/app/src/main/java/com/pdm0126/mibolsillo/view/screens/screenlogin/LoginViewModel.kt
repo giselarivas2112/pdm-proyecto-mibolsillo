@@ -8,6 +8,7 @@ import com.pdm0126.mibolsillo.data.model.Session
 import com.pdm0126.mibolsillo.data.repositories.auth.AuthApiRepository
 import com.pdm0126.mibolsillo.data.repositories.auth.AuthRepository
 import com.pdm0126.mibolsillo.data.session.SessionManager
+import com.pdm0126.mibolsillo.utils.isValidEmail
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -41,11 +42,30 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         email: String,
         password: String
     ) {
+        _error.value = null
+        when {
+
+            email.isBlank() -> {
+                _error.value = "El correo es obligatorio"
+                return
+            }
+
+            !isValidEmail(email) -> {
+                _error.value = "Ingresa un correo válido"
+                return
+            }
+
+            password.isBlank() -> {
+                _error.value = "La contraseña es obligatoria"
+                return
+            }
+
+        }
+
 
         viewModelScope.launch {
 
             _loading.value = true
-            _error.value = null
 
             repository.login(
                 email,
@@ -87,9 +107,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         session
                 }
                 .onFailure { error ->
+
                     sessionManager.clearToken()
+
                     _error.value =
-                        error.message
+                        error.message ?: "Ocurrió un error. Intenta nuevamente"
                 }
 
             _loading.value = false

@@ -39,6 +39,7 @@ class BudgetViewModel(application: Application) : AndroidViewModel(application) 
             if (isRefresh) _refreshing.value = true
             else _loading.value = true
 
+            _error.value = null
             repository.getBudgetSummary(_mes.value, _anio.value)
                 .onSuccess { _summary.value = it }
                 .onFailure { e -> _error.value = e.message }
@@ -51,11 +52,9 @@ class BudgetViewModel(application: Application) : AndroidViewModel(application) 
     fun mesAnterior() {
         if (_mes.value == 1) { _mes.value = 12; _anio.value -= 1 }
         else _mes.value -= 1
-        loadData()
     }
     fun mesSiguiente() {
         if (_mes.value == 12) { _mes.value = 1; _anio.value += 1 }
         else _mes.value += 1
-        loadData()
     }
 }

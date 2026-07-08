@@ -1,5 +1,5 @@
 import express from 'express'
-import { createBudget, getBudgets, updateBudget, deleteBudget } from '../controllers/budgets_controller.js'
+import { createBudget, getBudgets, deleteBudget } from '../controllers/budgets_controller.js'
 import { verifyToken } from '../middlewares/auth_middleware.js'
 
 const router = express.Router()
@@ -93,55 +93,6 @@ router.post('/', verifyToken, createBudget)
  */
 router.get('/', verifyToken, getBudgets)
 
-/**
- * @swagger
- * /api/presupuestos/{id}:
- *   put:
- *     summary: Actualizar un presupuesto
- *     tags: [Presupuestos]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID del presupuesto
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               categoria_id:
- *                 type: string
- *                 example: uuid-de-categoria
- *               monto_limite:
- *                 type: number
- *                 example: 2500
- *               mes:
- *                 type: integer
- *                 example: 6
- *               anio:
- *                 type: integer
- *                 example: 2026
- *               alerta_porcentaje:
- *                 type: integer
- *                 example: 90
- *               notas:
- *                 type: string
- *                 example: Actualicé el límite
- *     responses:
- *       200:
- *         description: Presupuesto actualizado
- *       401:
- *         description: Token requerido o inválido
- *       500:
- *         description: Error del servidor
- */
-router.put('/:id', verifyToken, updateBudget)
 
 /**
  * @swagger

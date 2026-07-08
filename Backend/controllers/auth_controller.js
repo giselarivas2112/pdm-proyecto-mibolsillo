@@ -32,7 +32,12 @@ export const register = async (req, res) => {
     })
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+
+    console.error(error)
+
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
 }
 
@@ -69,7 +74,12 @@ export const login = async (req, res) => {
     })
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+
+    console.error(error)
+
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
 }
 
@@ -99,8 +109,11 @@ export const saveOneSignalId = async (req, res) => {
     })
 
   } catch (error) {
+
+    console.error(error)
+
     res.status(500).json({
-      error: error.message
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
   }
 }
@@ -123,10 +136,11 @@ export const getProfile = async (req, res) => {
 
   } catch (error) {
 
-    res.status(500).json({
-      error: error.message
-    })
+    console.error(error)
 
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
 
 }

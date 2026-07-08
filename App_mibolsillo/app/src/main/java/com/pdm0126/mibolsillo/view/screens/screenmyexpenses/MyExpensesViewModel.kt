@@ -66,18 +66,37 @@ class MyExpensesViewModel(application: Application) : AndroidViewModel(applicati
 
     fun loadData(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _loading.value = true
+
+            if (isRefresh) {
+                _refreshing.value = true
+            } else {
+                _loading.value = true
+            }
+
             _error.value = null
 
             expenseRepository.getExpenses(_mes.value, _anio.value)
-                .onSuccess { _expenses.value = it }
-                .onFailure { e -> _error.value = e.message }
+                .onSuccess {
+                    _expenses.value = it
+                }
+                .onFailure { error ->
+                    _error.value =
+                        error.message ?: "Ocurrió un error. Intenta nuevamente"
+                }
 
             categoryRepository.getCategoriesByMonth(_mes.value, _anio.value)
-                .onSuccess { _categories.value = it }
-                .onFailure { _categories.value = emptyList() }
+                .onSuccess {
+                    _categories.value = it
+                }
+                .onFailure {
+                    _categories.value = emptyList()
+                }
 
-            _loading.value = false
+            if (isRefresh) {
+                _refreshing.value = false
+            } else {
+                _loading.value = false
+            }
         }
     }
 
@@ -86,14 +105,16 @@ class MyExpensesViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun mesAnterior() {
-        if (_mes.value == 1) { _mes.value = 12; _anio.value -= 1 }
-        else _mes.value -= 1
+        if (_mes.value == 1) {
+            _mes.value = 12; _anio.value -= 1
+        } else _mes.value -= 1
         _categoriaFiltro.value = "Todos"
     }
 
     fun mesSiguiente() {
-        if (_mes.value == 12) { _mes.value = 1; _anio.value += 1 }
-        else _mes.value += 1
+        if (_mes.value == 12) {
+            _mes.value = 1; _anio.value += 1
+        } else _mes.value += 1
         _categoriaFiltro.value = "Todos"
     }
 }

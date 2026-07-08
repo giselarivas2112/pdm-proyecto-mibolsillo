@@ -53,7 +53,10 @@ class RegisterBudgetViewModel(application: Application) : AndroidViewModel(appli
 
             categoryRepository.getCategories()
                 .onSuccess { _categories.value = it }
-                .onFailure { e -> _errorCategories.value = e.message }
+                .onFailure { error ->
+                    _errorCategories.value =
+                        error.message ?: "No se pudieron cargar las categorías"
+                }
 
             if (isRefresh) _refreshing.value = false
             else _loadingCategories.value = false
@@ -70,7 +73,10 @@ class RegisterBudgetViewModel(application: Application) : AndroidViewModel(appli
 
             repository.createBudget(categoriaId, montoLimite, mes, anio, alertaPorcentaje, notas)
                 .onSuccess { _success.value = true }
-                .onFailure { e -> _error.value = e.message }
+                .onFailure { error ->
+                    _error.value =
+                        error.message ?: "Ocurrió un error. Intenta nuevamente"
+                }
 
             _loading.value = false
         }
@@ -78,6 +84,11 @@ class RegisterBudgetViewModel(application: Application) : AndroidViewModel(appli
 
     fun resetState() {
         _success.value = false
+        _error.value = null
+    }
+
+
+    fun resetError() {
         _error.value = null
     }
 }

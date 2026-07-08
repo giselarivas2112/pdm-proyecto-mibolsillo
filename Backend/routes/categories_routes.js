@@ -1,5 +1,5 @@
 import express from 'express'
-import { createCategory, getCategories, updateCategory, deleteCategory, getCategoriesByMonth } from '../controllers/categories_controller.js'
+import { createCategory, getCategories, deleteCategory, getCategoriesByMonth } from '../controllers/categories_controller.js'
 import { verifyToken } from '../middlewares/auth_middleware.js'
 
 const router = express.Router()
@@ -63,43 +63,6 @@ router.post('/', verifyToken, createCategory)
  */
 router.get('/', verifyToken, getCategories)
 
-/**
- * @swagger
- * /api/categorias/{id}:
- *   put:
- *     summary: Actualizar una categoría
- *     tags: [Categorías]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID de la categoría
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               nombre:
- *                 type: string
- *                 example: Transporte
- *               icono:
- *                 type: string
- *                 example: 🚗
- *     responses:
- *       200:
- *         description: Categoría actualizada
- *       401:
- *         description: Token requerido o inválido
- *       500:
- *         description: Error del servidor
- */
-router.put('/:id', verifyToken, updateCategory)
 
 /**
  * @swagger

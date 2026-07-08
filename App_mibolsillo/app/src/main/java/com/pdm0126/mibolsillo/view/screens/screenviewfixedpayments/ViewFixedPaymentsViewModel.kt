@@ -37,7 +37,7 @@ class FixedPaymentViewModel(application: Application) : AndroidViewModel(applica
         viewModelScope.launch {
             if (isRefresh) _refreshing.value = true
             else _loading.value = true
-
+            _error.value = null
             repository.getFixedPayments()
                 .onSuccess { _fixedPayments.value = it }
                 .onFailure { e -> _error.value = e.message }

@@ -36,7 +36,7 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
             if (isRefresh) _refreshing.value = true
             else _loading.value = true
             _error.value = null
-
+            _categories.value = emptyList()
             repository.getCategories()
                 .onSuccess { _categories.value = it }
                 .onFailure { e -> _error.value = e.message }

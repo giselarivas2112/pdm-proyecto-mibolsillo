@@ -85,4 +85,7 @@ class RegisterExpenseViewModel(application: Application) : AndroidViewModel(appl
         _error.value = null
         _alerta.value = null
     }
+    fun resetError() {
+        _error.value = null
+    }
 }

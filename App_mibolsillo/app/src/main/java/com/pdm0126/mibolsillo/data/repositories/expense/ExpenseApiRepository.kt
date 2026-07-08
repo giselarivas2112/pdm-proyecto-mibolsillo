@@ -45,7 +45,9 @@ class ExpenseApiRepository(
                 Result.failure(Exception(response.body<ErrorResponseDto>().error))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(
+                Exception("Ocurrió un error. Intenta recargar")
+            )
         }
     }
 
@@ -65,7 +67,9 @@ class ExpenseApiRepository(
                 Result.failure(Exception(response.body<ErrorResponseDto>().error))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(
+                Exception("Ocurrió un error. Intenta recargar")
+            )
         }
     }
 
@@ -87,7 +91,9 @@ class ExpenseApiRepository(
                 Result.failure(Exception(response.body<ErrorResponseDto>().error))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(
+                Exception("Ocurrió un error. Intenta recargar")
+            )
         }
     }
 
@@ -105,7 +111,9 @@ class ExpenseApiRepository(
                 Result.failure(Exception(response.body<ErrorResponseDto>().error))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(
+                Exception("Ocurrió un error. Intenta recargar")
+            )
         }
     }
 }

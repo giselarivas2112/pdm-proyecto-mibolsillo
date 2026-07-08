@@ -14,6 +14,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +27,7 @@ import com.pdm0126.mibolsillo.view.specificcomponents.login.LoginCard
 import androidx.compose.ui.platform.LocalContext
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.onesignal.OneSignal
 
 
@@ -35,12 +37,14 @@ fun ScreenLogin(
     navegationToRegister: () -> Unit,
     navegationToDashboard: () -> Unit,
     viewModel: LoginViewModel = viewModel()
-){
+) {
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var visible by remember { mutableStateOf(false) }
 
     val session by viewModel.session.collectAsState()
-
     val error by viewModel.error.collectAsState()
-
     val loading by viewModel.loading.collectAsState()
     val context = LocalContext.current
 
@@ -56,18 +60,21 @@ fun ScreenLogin(
 
         }
     }
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0xFFF6F3FA))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF6F3FA))
     ) {
 
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(260.dp)
-            .background(Color(0xFF8A2BE2))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(260.dp)
+                .background(Color(0xFF8A2BE2))
         )
 
-        IconButton(onClick = { navigationToHome() },
+        IconButton(
+            onClick = { navigationToHome() },
             modifier = Modifier
                 .padding(
                     start = 16.dp,
@@ -82,7 +89,8 @@ fun ScreenLogin(
             )
         }
 
-        LazyColumn(modifier = Modifier.fillMaxSize(),
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -90,21 +98,23 @@ fun ScreenLogin(
 
                 Spacer(modifier = Modifier.height(60.dp))
 
-                Box(modifier = Modifier
-                    .size(90.dp)
-                    .background(
-                        Color.White.copy(alpha = 0.15f),
-                        CircleShape
-                    ),
+                Box(
+                    modifier = Modifier
+                        .size(90.dp)
+                        .background(
+                            Color.White.copy(alpha = 0.15f),
+                            CircleShape
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
 
-                    Box(modifier = Modifier
-                        .size(60.dp)
-                        .background(
-                            Color.White.copy(alpha = 0.25f),
-                            CircleShape
-                        ),
+                    Box(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .background(
+                                Color.White.copy(alpha = 0.25f),
+                                CircleShape
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
 
@@ -131,20 +141,27 @@ fun ScreenLogin(
             item {
 
                 LoginCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
+                    email = email,
+                    password = password,
+                    visible = visible,
+
+                    onEmailChange = {
+                        email = it
+                    },
+
+                    onPasswordChange = {
+                        password = it
+                    },
+
+                    onVisibleChange = {
+                        visible = it
+                    },
 
                     error = error,
-
                     loading = loading,
 
-                    onLogin = { email, password ->
-
-                        viewModel.login(
-                            email,
-                            password
-                        )
+                    onLogin = {
+                        viewModel.login(email, password)
                     }
                 )
             }

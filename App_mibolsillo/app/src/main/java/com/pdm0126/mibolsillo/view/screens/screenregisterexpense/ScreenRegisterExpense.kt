@@ -65,6 +65,8 @@ fun ScreenRegisterExpense(
     val alerta by viewModel.alerta.collectAsState()
     var showAlertaDialog by remember { mutableStateOf(false) }
     val refreshing by viewModel.refreshing.collectAsState()
+    val loadingCategories by viewModel.loadingCategories.collectAsState()
+    val errorCategories by viewModel.errorCategories.collectAsState()
 
     LaunchedEffect(success) {
         if (success) {
@@ -85,7 +87,10 @@ fun ScreenRegisterExpense(
     }
 
     LaunchedEffect(error) {
-        error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+        error?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.resetError()
+        }
     }
 
     if (showAlertaDialog && alerta != null) {
@@ -173,10 +178,8 @@ fun ScreenRegisterExpense(
 
         item {
             Spacer(modifier = Modifier.height(20.dp))
-            val loadingCategories by viewModel.loadingCategories.collectAsState()
-            val errorCategories by viewModel.errorCategories.collectAsState()
 
-          CategoryDropdownLoader(
+            CategoryDropdownLoader(
                 categories = categories,
                 loading = loadingCategories,
                 error = errorCategories,

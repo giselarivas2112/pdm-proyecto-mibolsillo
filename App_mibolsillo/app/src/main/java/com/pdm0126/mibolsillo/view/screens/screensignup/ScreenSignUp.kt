@@ -43,7 +43,6 @@ fun ScreenSignUp(
     LaunchedEffect(user) {
         if (user != null) {
             viewModel.clearUser()
-
             navigationToHome()
         }
     }
@@ -113,12 +112,13 @@ fun ScreenSignUp(
                         ),
                     error = error,
                     loading = loading,
-                    onRegister = { nombre, email, password ->
+                    onRegister = { nombre, email, password, confirmPassword ->
 
                         viewModel.register(
                             nombre = nombre,
                             email = email,
-                            password = password
+                            password = password,
+                            confirmPassword = confirmPassword
                         )
                     }
                 )
