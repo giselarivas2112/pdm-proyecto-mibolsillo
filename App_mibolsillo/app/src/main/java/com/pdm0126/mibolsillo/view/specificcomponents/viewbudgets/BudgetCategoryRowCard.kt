@@ -36,6 +36,7 @@ fun BudgetCategoryRowCard(
     iconBgColor: Color,
     iconColor: Color,
     categoryName: String,
+    notes: String?,
     statusText: String,
     statusColor: Color,
     isAlert: Boolean,
@@ -66,65 +67,80 @@ fun BudgetCategoryRowCard(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 14.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(46.dp)
-                        .clip(CircleShape)
-                        .background(iconBgColor),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = categoryName,
-                        tint = iconColor,
-                        modifier = Modifier.size(22.dp)
-                    )
-                }
 
-                Spacer(modifier = Modifier.width(14.dp))
-
-                Column(
-                    modifier = Modifier.weight(1f)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = categoryName,
-                        color = Color(0xFF4A148C),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = if (isAlert) "alert " else "correct ",
-                            fontSize = 11.sp,
-                            color = statusColor
+
+                    Box(
+                        modifier = Modifier
+                            .size(46.dp)
+                            .clip(CircleShape)
+                            .background(iconBgColor),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = categoryName,
+                            tint = iconColor,
+                            modifier = Modifier.size(22.dp)
                         )
+                    }
+
+                    Spacer(modifier = Modifier.width(14.dp))
+
+                    Column {
                         Text(
-                            text = statusText,
-                            color = statusColor,
-                            fontSize = 12.sp,
+                            text = categoryName,
+                            color = Color(0xFF4A148C),
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
+
+                        notes?.let {
+                            Text(
+                                text = it,
+                                color = Color.Gray,
+                                fontSize = 11.sp,
+                                maxLines = 1
+                            )
+                        }
                     }
                 }
 
-                Column(horizontalAlignment = Alignment.End) {
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = amountProgress,
+                    color = Color(0xFF4A148C),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = remainingText,
+                    color = remainingColor,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = amountProgress,
-                        color = Color(0xFF4A148C),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold
+                        text = if (isAlert) "alert " else "correct ",
+                        fontSize = 11.sp,
+                        color = statusColor
                     )
-                    Spacer(modifier = Modifier.height(2.dp))
+
                     Text(
-                        text = remainingText,
-                        color = remainingColor,
+                        text = statusText,
+                        color = statusColor,
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }

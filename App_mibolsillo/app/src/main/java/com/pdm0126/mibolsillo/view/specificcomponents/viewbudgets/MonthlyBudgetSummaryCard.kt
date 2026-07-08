@@ -41,11 +41,11 @@ fun MonthlyBudgetSummaryCard(
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
+
+                // Presupuesto total arriba
                 Column {
                     Text(
                         text = "Presupuesto total del mes",
@@ -53,42 +53,56 @@ fun MonthlyBudgetSummaryCard(
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Normal
                     )
+
                     Spacer(modifier = Modifier.height(4.dp))
+
                     Text(
                         text = totalBudget,
                         color = Color.White,
-                        fontSize = 28.sp,
+                        fontSize = 32.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
 
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+
+                // Gastado y disponible abajo en fila
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(horizontalAlignment = Alignment.End) {
+
+                    Column {
                         Text(
                             text = "Gastado",
                             color = Color.White.copy(alpha = 0.8f),
                             fontSize = 12.sp
                         )
+
                         Text(
                             text = spent,
                             color = Color.White,
-                            fontSize = 15.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
 
-                    Column(horizontalAlignment = Alignment.End) {
+
+                    Column(
+                        horizontalAlignment = Alignment.End
+                    ) {
                         Text(
                             text = "Disponible",
                             color = Color.White.copy(alpha = 0.8f),
                             fontSize = 12.sp
                         )
+
                         Text(
                             text = available,
                             color = Color(0xFFE1BEE7),
-                            fontSize = 15.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }

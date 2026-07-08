@@ -13,7 +13,8 @@ data class BudgetCategoryResumeDto(
     @SerialName("disponible") val disponible: Double,
     @SerialName("porcentaje_usado") val porcentajeUsado: Double,
     @SerialName("alerta_porcentaje") val alertaPorcentaje: Int,
-    @SerialName("estado") val estado: String
+    @SerialName("estado") val estado: String,
+    @SerialName("notas") val notas: String?
 )
 
 @Serializable
@@ -32,5 +33,6 @@ fun BudgetCategoryResumeDto.toModel() = BudgetCategoryResume(
     disponible = disponible,
     porcentajeUsado = porcentajeUsado,
     alertaPorcentaje = alertaPorcentaje,
-    estado = estado
+    estado = estado,
+    notas = notas
 )

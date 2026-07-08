@@ -123,6 +123,7 @@ fun ScreenMyExpenses(
             onRefresh = { viewModel.loadData(isRefresh = true) },
             modifier = Modifier
                 .fillMaxSize()
+                .padding(bottom = padding.calculateBottomPadding())
         ) {
 
             LazyColumn(
