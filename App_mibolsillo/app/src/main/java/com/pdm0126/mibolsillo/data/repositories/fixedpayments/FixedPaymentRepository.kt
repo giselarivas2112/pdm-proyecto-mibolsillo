@@ -14,14 +14,5 @@ interface FixedPaymentRepository {
 
     suspend fun getFixedPayments(): Result<List<FixedPayment>>
 
-    suspend fun updateFixedPayment(
-        id: String,
-        nombre: String,
-        categoriaId: String,
-        monto: Double,
-        diaVencimiento: Int,
-        diasRecordatorio: Int
-    ): Result<FixedPayment>
-
     suspend fun deleteFixedPayment(id: String): Result<Unit>
 }

@@ -71,31 +71,6 @@ class BudgetApiRepository(
         }
     }
 
-    override suspend fun updateBudget(
-        id: String, categoriaId: String, montoLimite: Double, mes: Int, anio: Int,
-        alertaPorcentaje: Int, notas: String?
-    ): Result<Budget> {
-        return try {
-            val token = sessionManager.getToken()
-
-            val response = KtorClient.client.put("presupuestos/$id") {
-                header("Authorization", "Bearer $token")
-                contentType(ContentType.Application.Json)
-                setBody(BudgetRequestDto(categoriaId, montoLimite, mes, anio, alertaPorcentaje, notas))
-            }
-
-            if (response.status.isSuccess()) {
-                Result.success(response.body<BudgetResponseDto>().budget.toModel())
-            } else {
-                Result.failure(Exception(response.body<ErrorResponseDto>().error))
-            }
-        } catch (e: Exception) {
-            Result.failure(
-                Exception("Ocurrió un error. Intenta recargar")
-            )
-        }
-    }
-
     override suspend fun deleteBudget(id: String): Result<Unit> {
         return try {
             val token = sessionManager.getToken()
