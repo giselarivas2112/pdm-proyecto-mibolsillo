@@ -126,6 +126,37 @@ router.put('/:id', verifyToken, updateCategory)
  */
 router.delete('/:id', verifyToken, deleteCategory)
 
+/**
+ * @swagger
+ * /api/categorias/month:
+ *   get:
+ *     summary: Obtener categorías del usuario por mes y año
+ *     tags: [Categorías]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: mes
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Mes a consultar (1-12)
+ *         example: 6
+ *       - in: query
+ *         name: anio
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Año a consultar
+ *         example: 2026
+ *     responses:
+ *       200:
+ *         description: Lista de categorías correspondientes al mes y año indicados
+ *       401:
+ *         description: Token requerido o inválido
+ *       500:
+ *         description: Error del servidor
+ */
 router.get('/month', verifyToken, getCategoriesByMonth)
 
 export default router

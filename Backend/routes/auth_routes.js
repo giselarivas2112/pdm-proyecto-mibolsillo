@@ -78,8 +78,52 @@ router.post('/register', register)
  */
 router.post('/login', login)
 
+/**
+ * @swagger
+ * /api/auth/onesignal:
+ *   put:
+ *     summary: Guardar o actualizar el OneSignal ID del usuario
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - onesignal_id
+ *             properties:
+ *               onesignal_id:
+ *                 type: string
+ *                 example: 12345678-abcd-1234-abcd-1234567890ab
+ *     responses:
+ *       200:
+ *         description: OneSignal ID guardado correctamente
+ *       401:
+ *         description: Token requerido o inválido
+ *       500:
+ *         description: Error del servidor
+ */
 router.put('/onesignal', verifyToken, saveOneSignalId)
 
+/**
+ * @swagger
+ * /api/auth/profile:
+ *   get:
+ *     summary: Obtener el perfil del usuario autenticado
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil del usuario obtenido correctamente
+ *       401:
+ *         description: Token requerido o inválido
+ *       500:
+ *         description: Error del servidor
+ */
 router.get('/profile', verifyToken, getProfile)
 
 export default router
