@@ -157,7 +157,7 @@ fun ScreenViewBudgets(
                 item {
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                        text = "CATEGORÍAS (${summary?.categorias?.size ?: 0})",
+                        text = "PRESUPUESTOS (${summary?.categorias?.size ?: 0})",
                         color = Color(0xFF8A2BE2),
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp,
@@ -202,10 +202,15 @@ fun ScreenViewBudgets(
                         else -> Color(0xFF4DB6AC)
                     }
 
-                    Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
+                    Box(
+                        modifier = Modifier.padding(
+                            horizontal = 16.dp,
+                            vertical = 8.dp
+                        )
+                    ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.Top
                         ) {
                             BudgetCategoryRowCard(
                                 modifier = Modifier.weight(1f),
@@ -213,6 +218,7 @@ fun ScreenViewBudgets(
                                 iconBgColor = Color(0xFFF3E5F5),
                                 iconColor = Color(0xFF8A2BE2),
                                 categoryName = categoria.categoriaNombre,
+                                notes = categoria.notas,
                                 statusText = statusText,
                                 statusColor = statusColor,
                                 isAlert = isAlert,
@@ -228,7 +234,7 @@ fun ScreenViewBudgets(
                                 limitLabel = "límite: $${"%.2f".format(categoria.limite)}"
                             )
 
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(12.dp))
 
                             DeleteButton(
                                 itemName = "el presupuesto de \"${categoria.categoriaNombre}\"",
