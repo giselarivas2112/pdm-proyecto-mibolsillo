@@ -73,30 +73,6 @@ class ExpenseApiRepository(
         }
     }
 
-    override suspend fun updateExpense(
-        id: String, categoriaId: String?, monto: Double, fecha: String, descripcion: String?
-    ): Result<Expense> {
-        return try {
-            val token = sessionManager.getToken()
-
-            val response = KtorClient.client.put("gastos/$id") {
-                header("Authorization", "Bearer $token")
-                contentType(ContentType.Application.Json)
-                setBody(ExpenseRequestDto(categoriaId, monto, fecha, descripcion))
-            }
-
-            if (response.status.isSuccess()) {
-                Result.success(response.body<ExpenseUpdateResponseDto>().expense.toModel())
-            } else {
-                Result.failure(Exception(response.body<ErrorResponseDto>().error))
-            }
-        } catch (e: Exception) {
-            Result.failure(
-                Exception("Ocurrió un error. Intenta recargar")
-            )
-        }
-    }
-
     override suspend fun deleteExpense(id: String): Result<Unit> {
         return try {
             val token = sessionManager.getToken()

@@ -73,39 +73,6 @@ class FixedPaymentApiRepository(
         }
     }
 
-    override suspend fun updateFixedPayment(
-        id: String,
-        nombre: String,
-        categoriaId: String,
-        monto: Double,
-        diaVencimiento: Int,
-        diasRecordatorio: Int
-    ): Result<FixedPayment> {
-        return try {
-            val token = sessionManager.getToken()
-            val response = KtorClient.client.put("pagos-fijos/$id") {
-                header("Authorization", "Bearer $token")
-                contentType(ContentType.Application.Json)
-                setBody(FixedPaymentRequestDto(
-                    nombre = nombre,
-                    categoriaId = categoriaId,
-                    monto = monto,
-                    diaVencimiento = diaVencimiento,
-                    diasRecordatorio = diasRecordatorio
-                ))
-            }
-            if (response.status.isSuccess()) {
-                Result.success(response.body<FixedPaymentResponseDto>().pago.toModel())
-            } else {
-                Result.failure(Exception(response.body<ErrorResponseDto>().error))
-            }
-        } catch (e: Exception) {
-            Result.failure(
-                Exception("Ocurrió un error. Intenta recargar")
-            )
-        }
-    }
-
     override suspend fun deleteFixedPayment(id: String): Result<Unit> {
         return try {
             val token = sessionManager.getToken()

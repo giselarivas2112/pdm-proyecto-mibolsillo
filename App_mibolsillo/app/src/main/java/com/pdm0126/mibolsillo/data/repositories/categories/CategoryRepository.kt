@@ -8,8 +8,6 @@ interface CategoryRepository {
 
     suspend fun getCategories(): Result<List<Category>>
 
-    suspend fun updateCategory(id: String, nombre: String, icono: String): Result<Category>
-
     suspend fun deleteCategory(id: String): Result<Unit>
 
     suspend fun getCategoriesByMonth(mes: Int, anio: Int): Result<List<Category>>

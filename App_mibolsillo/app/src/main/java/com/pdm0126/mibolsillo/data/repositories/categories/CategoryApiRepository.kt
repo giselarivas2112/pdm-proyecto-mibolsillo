@@ -66,28 +66,6 @@ class CategoryApiRepository(
         }
     }
 
-    override suspend fun updateCategory(id: String, nombre: String, icono: String): Result<Category> {
-        return try {
-            val token = sessionManager.getToken()
-
-            val response = KtorClient.client.put("categorias/$id") {
-                header("Authorization", "Bearer $token")
-                contentType(ContentType.Application.Json)
-                setBody(CategoryRequestDto(nombre = nombre, icono = icono))
-            }
-
-            if (response.status.isSuccess()) {
-                Result.success(response.body<CategoryResponseDto>().category.toModel())
-            } else {
-                Result.failure(Exception(response.body<ErrorResponseDto>().error))
-            }
-        } catch (e: Exception) {
-            Result.failure(
-                Exception("Ocurrió un error. Intenta recargar")
-            )
-        }
-    }
-
     override suspend fun deleteCategory(id: String): Result<Unit> {
         return try {
             val token = sessionManager.getToken()
