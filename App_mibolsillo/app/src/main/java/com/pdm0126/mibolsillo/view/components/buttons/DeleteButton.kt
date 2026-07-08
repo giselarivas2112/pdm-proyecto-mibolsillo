@@ -1,4 +1,4 @@
-package com.pdm0126.mibolsillo.newcomponents
+package com.pdm0126.mibolsillo.view.components.buttons
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -16,6 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -23,7 +25,7 @@ fun DeleteButton(
     itemName: String = "este elemento",
     onConfirmDelete: () -> Unit,
     iconTint: Color = Color(0xFFE53935),
-    iconSize: androidx.compose.ui.unit.Dp = 22.dp,
+    iconSize: Dp = 22.dp,
     modifier: Modifier = Modifier
 ) {
     var showDialog by remember { mutableStateOf(false) }
@@ -46,7 +48,7 @@ fun DeleteButton(
             title = {
                 Text(
                     text = "¿Eliminar $itemName?",
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                    fontWeight = FontWeight.Bold
                 )
             },
             text = {
