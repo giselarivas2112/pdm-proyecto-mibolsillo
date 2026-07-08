@@ -70,8 +70,8 @@ export const getCategoriesByMonth = async (req, res) => {
 
   } catch (error) {
 
-    return res.status(500).json({
-      error: error.message
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
 
   }
@@ -93,46 +93,12 @@ export const getCategories = async (req, res) => {
     return res.json(data)
 
   } catch (error) {
-    return res.status(500).json({
-      error: error.message
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
   }
 }
 
-export const updateCategory = async (req, res) => {
-  const { id } = req.params
-
-  const { nombre, icono } = req.body
-
-  const usuario_id = req.user.id
-
-  try {
-    const { data, error } = await supabase
-      .from('categorias')
-      .update({
-        nombre: nombre,
-        icono: icono
-      })
-      .eq('id', id)
-      .eq('usuario_id', usuario_id)
-      .select()
-      .single()
-
-    if (error) {
-      throw error
-    }
-
-    return res.json({
-      message: 'Categoría actualizada',
-      category: data
-    })
-
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message
-    })
-  }
-}
 
 export const deleteCategory = async (req, res) => {
   const { id } = req.params

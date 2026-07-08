@@ -36,7 +36,7 @@ fun ScreenDashboard(
     navegationToBudget: () -> Unit,
     navegationToCategory: () -> Unit,
     navegationToFixedPayment: () -> Unit,
-    navigationToPerfil: ()-> Unit,
+    navigationToPerfil: () -> Unit,
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToViewReports: () -> Unit,
@@ -90,7 +90,7 @@ fun ScreenDashboard(
             onRefresh = { viewModel.loadData(isRefresh = true) },
             modifier = Modifier
                 .fillMaxSize()
-        ){
+        ) {
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -143,6 +143,7 @@ fun ScreenDashboard(
                                 CircularProgressIndicator(color = Color(0xFF8A2BE2))
                             }
                         }
+
                         error != null -> {
                             Text(
                                 text = "Error: $error",
@@ -150,6 +151,7 @@ fun ScreenDashboard(
                                 modifier = Modifier.padding(16.dp)
                             )
                         }
+
                         else -> {
                             SummaryCardsSection(
                                 totalGastado = "$${"%.2f".format(summary?.totalGastado ?: 0.0)}",

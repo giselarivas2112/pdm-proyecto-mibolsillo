@@ -69,7 +69,10 @@ class AuthApiRepository : AuthRepository {
 
         } catch (e: Exception) {
 
-            Result.failure(e)
+            Result.failure(
+                Exception("Ocurrió un error. Intenta nuevamente")
+            )
+
         }
     }
 
@@ -116,7 +119,10 @@ class AuthApiRepository : AuthRepository {
 
         } catch (e: Exception) {
 
-            Result.failure(e)
+            Result.failure(
+                Exception("Ocurrió un error. Intenta nuevamente")
+            )
+
         }
     }
 
@@ -163,7 +169,10 @@ class AuthApiRepository : AuthRepository {
 
         } catch (e: Exception) {
 
-            Result.failure(e)
+            Result.failure(
+                Exception("Ocurrió un error. Intenta nuevamente")
+            )
+
         }
 
     }
@@ -204,7 +213,10 @@ class AuthApiRepository : AuthRepository {
 
         } catch (e: Exception) {
 
-            Result.failure(e)
+            Result.failure(
+                Exception("Ocurrió un error. Intenta nuevamente")
+            )
+
         }
     }
 }

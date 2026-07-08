@@ -15,18 +15,24 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pdm0126.mibolsillo.view.components.buttons.LoadingButton
 
 @Composable
 fun LoginCard(
     modifier: Modifier = Modifier,
+    email: String,
+    password: String,
+    visible: Boolean,
+
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onVisibleChange: (Boolean) -> Unit,
+
     error: String?,
     loading: Boolean,
-    onLogin: (String, String) -> Unit
-) {
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var visible by remember { mutableStateOf(false) }
+    onLogin: () -> Unit
+) {
 
     Card(modifier = modifier,
         shape = RoundedCornerShape(30.dp),
@@ -58,7 +64,7 @@ fun LoginCard(
 
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = onEmailChange,
                     placeholder = {
                         Text("correo")
                     },
@@ -87,7 +93,7 @@ fun LoginCard(
 
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = onPasswordChange,
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     shape = RoundedCornerShape(15.dp),
@@ -99,7 +105,7 @@ fun LoginCard(
                     trailingIcon = {
                         IconButton(
                             onClick = {
-                                visible = !visible
+                                onVisibleChange(!visible)
                             }
                         ) {
                             Icon(
@@ -131,37 +137,11 @@ fun LoginCard(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
-                onClick = {
-                    onLogin(
-                        email,
-                        password
-                    )
-                },
-                enabled = !loading,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(55.dp),
-                shape = RoundedCornerShape(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFA020F0)
-                )
-            ) {
-                if (loading) {
-
-                    CircularProgressIndicator(
-                        strokeWidth = 2.dp
-                    )
-
-                } else {
-
-                Text(
-                    text = "Entrar",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            }
+            LoadingButton(
+                text = "Entrar",
+                loading = loading,
+                onClick = onLogin
+            )
             if (error != null) {
 
                 Spacer(

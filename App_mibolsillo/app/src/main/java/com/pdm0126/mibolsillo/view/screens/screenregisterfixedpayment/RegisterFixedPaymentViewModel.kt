@@ -19,25 +19,27 @@ class RegisterFixedPaymentViewModel(application: Application) : AndroidViewModel
     private val categoryRepository = CategoryApiRepository(sessionManager)
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
-    val categories: StateFlow<List<Category>> = _categories
+    val categories = _categories.asStateFlow()
+
 
     private val _loadingCategories = MutableStateFlow(false)
-    val loadingCategories: StateFlow<Boolean> = _loadingCategories
+    val loadingCategories = _loadingCategories.asStateFlow()
 
     private val _errorCategories = MutableStateFlow<String?>(null)
-    val errorCategories: StateFlow<String?> = _errorCategories
+    val errorCategories = _errorCategories.asStateFlow()
 
     private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading
+    val loading = _loading.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error
+    val error = _error.asStateFlow()
 
     private val _refreshing = MutableStateFlow(false)
     val refreshing = _refreshing.asStateFlow()
 
     private val _success = MutableStateFlow(false)
-    val success: StateFlow<Boolean> = _success
+    val success = _success.asStateFlow()
+
 
     init {
         loadCategories()
@@ -83,6 +85,9 @@ class RegisterFixedPaymentViewModel(application: Application) : AndroidViewModel
 
     fun resetState() {
         _success.value = false
+        _error.value = null
+    }
+    fun resetError() {
         _error.value = null
     }
 }

@@ -68,10 +68,6 @@ fun ScreenViewFixedPayments(
 
     val total = fixedPayments.sumOf { it.monto }
 
-    LaunchedEffect(Unit) {
-        viewModel.getFixedPayments()
-    }
-
     Scaffold(
         containerColor = Color(0xFFF7F9FC),
 

@@ -70,9 +70,6 @@ fun ScreenViewCategory(
         category.nombre.contains(searchInput, ignoreCase = true)
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.getCategories()
-    }
 
     Scaffold(
         containerColor = Color(0xFFF7F9FC),

@@ -19,7 +19,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pdm0126.mibolsillo.data.model.Category
 import com.pdm0126.mibolsillo.view.components.buttons.LoadingButton
+import com.pdm0126.mibolsillo.view.components.common.HeaderSection
+import com.pdm0126.mibolsillo.view.components.forms.AmountCard
 import com.pdm0126.mibolsillo.view.components.forms.CategoryDropdownLoader
+import com.pdm0126.mibolsillo.view.components.forms.NameSection
 import com.pdm0126.mibolsillo.view.specificcomponents.registerfixedpayment.ReminderSection
 
 @Composable
@@ -47,14 +50,14 @@ fun ScreenRegisterFixedPayment(
         if (success) {
             Toast.makeText(context, "Pago fijo registrado exitosamente", Toast.LENGTH_SHORT).show()
             viewModel.resetState()
-            navigationBack()
+
         }
     }
 
     LaunchedEffect(error) {
         error?.let {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-            viewModel.resetState()
+            viewModel.resetError()
         }
     }
 
@@ -69,7 +72,7 @@ fun ScreenRegisterFixedPayment(
 
         item {
             Box(modifier = Modifier.fillMaxWidth()) {
-                _root_ide_package_.com.pdm0126.mibolsillo.view.components.common.HeaderSection()
+                HeaderSection()
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,7 +103,7 @@ fun ScreenRegisterFixedPayment(
         }
 
         item {
-            _root_ide_package_.com.pdm0126.mibolsillo.view.components.forms.NameSection(
+            NameSection(
                 name = nombrePago,
                 onNameChange = { nombrePago = it },
                 title = "NOMBRE DEL PAGO",
@@ -124,7 +127,7 @@ fun ScreenRegisterFixedPayment(
 
         // Monto
         item {
-            _root_ide_package_.com.pdm0126.mibolsillo.view.components.forms.AmountCard(
+            AmountCard(
                 amount = montoPago,
                 onAmountChange = { montoPago = it },
                 title = "MONTO DEL PAGO FIJO"

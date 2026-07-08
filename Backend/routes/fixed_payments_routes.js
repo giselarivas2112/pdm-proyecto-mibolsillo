@@ -1,10 +1,9 @@
 import express from 'express'
 import {
   createFixedPayment,
-  getFixedPayments,
-  updateFixedPayment,
   deleteFixedPayment,
-  getProximosVencimientos
+  getProximosVencimientos,
+  getFixedPayments
 } from '../controllers/fixed_payments_controller.js'
 import { verifyToken } from '../middlewares/auth_middleware.js'
 import { sendPushNotification } from '../services/notification_service.js'
@@ -102,55 +101,6 @@ router.get('/', verifyToken, getFixedPayments)
  *         description: Error del servidor
  */
 router.get('/proximos', verifyToken, getProximosVencimientos)
-
-/**
- * @swagger
- * /api/pagos-fijos/{id}:
- *   put:
- *     summary: Actualizar un pago fijo
- *     tags: [Pagos Fijos]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID del pago fijo
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               nombre:
- *                 type: string
- *                 example: Spotify
- *               categoria_id:
- *                 type: string
- *                 example: uuid-de-categoria
- *               monto:
- *                 type: number
- *                 example: 99.00
- *               dia_vencimiento:
- *                 type: integer
- *                 example: 15
- *               dias_recordatorio:
- *                 type: integer
- *                 example: 2
- *     responses:
- *       200:
- *         description: Pago fijo actualizado
- *       400:
- *         description: Valores inválidos
- *       401:
- *         description: Token requerido o inválido
- *       500:
- *         description: Error del servidor
- */
-router.put('/:id', verifyToken, updateFixedPayment)
 
 /**
  * @swagger
