@@ -59,7 +59,7 @@ fun ScreenRegisterExpense(
     var selectedDate by rememberSaveable { mutableStateOf(
         SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
     ) }
-    var selectedCategory by rememberSaveable { mutableStateOf<Category?>(null) }
+    var selectedCategory by remember { mutableStateOf<Category?>(null) }
 
     val categories by viewModel.categories.collectAsState()
     val loading by viewModel.loading.collectAsState()

@@ -101,7 +101,13 @@ fun MainNavegation() {
             entry<Route.PantallaRegisterFixedPayment> {
 
                 ScreenRegisterFixedPayment(
-                    navigationBack = { backStack.removeLastOrNull() }
+                    navigationBack = {
+                        println("STACK ANTES: ${backStack.toList()}")
+
+                        backStack.removeLastOrNull()
+
+                        println("STACK DESPUÉS: ${backStack.toList()}")
+                    }
                 )
             }
             entry<Route.PantallaExpenses> {

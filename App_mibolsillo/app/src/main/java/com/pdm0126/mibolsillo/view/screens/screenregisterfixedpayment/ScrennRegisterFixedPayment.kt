@@ -35,7 +35,7 @@ fun ScreenRegisterFixedPayment(
 
     var nombrePago by rememberSaveable { mutableStateOf("") }
     var montoPago by rememberSaveable { mutableStateOf("") }
-    var categoriaSeleccionada by rememberSaveable { mutableStateOf<Category?>(null) }
+    var categoriaSeleccionada by remember{ mutableStateOf<Category?>(null) }
     var diaVencimiento by rememberSaveable { mutableStateOf<Int?>(null) }
     var diasRecordatorio by rememberSaveable { mutableStateOf<Int?>(null) }
 
