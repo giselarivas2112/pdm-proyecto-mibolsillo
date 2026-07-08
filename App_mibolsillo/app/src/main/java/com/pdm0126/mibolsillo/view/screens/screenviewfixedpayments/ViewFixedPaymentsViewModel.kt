@@ -29,6 +29,9 @@ class FixedPaymentViewModel(application: Application) : AndroidViewModel(applica
     private val _refreshing = MutableStateFlow(false)
     val refreshing = _refreshing.asStateFlow()
 
+    private val _deleting = MutableStateFlow(false)
+    val deleting = _deleting.asStateFlow()
+
     init {
         getFixedPayments()
     }
@@ -44,6 +47,24 @@ class FixedPaymentViewModel(application: Application) : AndroidViewModel(applica
 
             if (isRefresh) _refreshing.value = false
             else _loading.value = false
+        }
+    }
+    fun deleteFixedPayment(id: String) {
+        viewModelScope.launch {
+            _deleting.value = true
+            _error.value = null
+
+            repository.deleteFixedPayment(id)
+                .onSuccess {
+                    repository.getFixedPayments()
+                        .onSuccess { _fixedPayments.value = it }
+                        .onFailure { e -> _error.value = e.message }
+                }
+                .onFailure { e ->
+                    _error.value = e.message
+                }
+
+            _deleting.value = false
         }
     }
 }

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun BudgetCategoryRowCard(
+    modifier: Modifier,
     icon: ImageVector,
     iconBgColor: Color,
     iconColor: Color,
@@ -53,8 +54,7 @@ fun BudgetCategoryRowCard(
     }
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .then(borderStroke)
             .clickable { onCardClick() },
         shape = RoundedCornerShape(20.dp),

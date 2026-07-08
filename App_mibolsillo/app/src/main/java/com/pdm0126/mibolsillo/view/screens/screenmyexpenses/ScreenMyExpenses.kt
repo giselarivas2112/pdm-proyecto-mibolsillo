@@ -1,11 +1,13 @@
 package com.pdm0126.mibolsillo.view.screens.screenmyexpenses
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pdm0126.mibolsillo.newcomponents.DeleteButton
 import com.pdm0126.mibolsillo.view.components.common.RowCard
 import com.pdm0126.mibolsillo.utils.getNombreMes
 import com.pdm0126.mibolsillo.view.specificcomponents.myexpenses.CategoryFilterRow
@@ -64,7 +67,6 @@ fun ScreenMyExpenses(
     val mayorGasto by viewModel.mayorGasto.collectAsState()
     val refreshing by viewModel.refreshing.collectAsState()
     val error by viewModel.error.collectAsState()
-
 
     LaunchedEffect(mes, anio) {
         viewModel.loadData()
@@ -212,15 +214,32 @@ fun ScreenMyExpenses(
                             items = gastosDelDia,
                             key = { it.id }
                         ) { expense ->
-                            RowCard(
-                                icon = Icons.Default.AttachMoney,
-                                iconColor = Color(0xFF8A2BE2),
-                                iconBgColor = Color(0xFFF3E5F5),
-                                title = expense.descripcion ?: expense.categoryName ?: "",
-                                subtitle = expense.categoryName ?: "Sin categoría",
-                                monto = "-$${"%.2f".format(expense.monto)}",
-                                montoColor = Color(0xFFD32F2F)
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                RowCard(
+                                    modifier = Modifier.weight(1f),
+                                    icon = Icons.Default.AttachMoney,
+                                    iconColor = Color(0xFF8A2BE2),
+                                    iconBgColor = Color(0xFFF3E5F5),
+                                    title = expense.descripcion ?: expense.categoryName ?: "",
+                                    subtitle = expense.categoryName ?: "Sin categoría",
+                                    monto = "-$${"%.2f".format(expense.monto)}",
+                                    montoColor = Color(0xFFD32F2F)
+                                )
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                DeleteButton(
+                                    itemName = "este gasto",
+                                    onConfirmDelete = {
+                                        viewModel.deleteExpense(expense.id)
+                                    }
+                                )
+                            }
                         }
                     }
                 }

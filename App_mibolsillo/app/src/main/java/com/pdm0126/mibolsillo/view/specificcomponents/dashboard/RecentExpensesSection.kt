@@ -52,7 +52,7 @@ fun RecentExpensesSection(
                 )
             } else {
                 expenses.forEach { expense ->
-                    RowCard(
+                    RowCard(modifier = Modifier,
                         icon = Icons.Default.AttachMoney,
                         iconColor = Color(0xFF8A2BE2),
                         iconBgColor = Color(0xFFEDE7F6),

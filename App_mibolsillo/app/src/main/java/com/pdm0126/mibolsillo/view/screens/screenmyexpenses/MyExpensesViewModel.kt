@@ -35,8 +35,12 @@ class MyExpensesViewModel(application: Application) : AndroidViewModel(applicati
 
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
+
     private val _refreshing = MutableStateFlow(false)
     val refreshing = _refreshing.asStateFlow()
+
+    private val _deleting = MutableStateFlow(false)
+    val deleting = _deleting.asStateFlow()
 
     private val now = java.util.Calendar.getInstance()
     private val _mes = MutableStateFlow(now.get(java.util.Calendar.MONTH) + 1)
@@ -99,11 +103,23 @@ class MyExpensesViewModel(application: Application) : AndroidViewModel(applicati
             }
         }
     }
+    fun deleteExpense(id: String) {
+        viewModelScope.launch {
+            _deleting.value = true
+            _error.value = null
 
+            expenseRepository.deleteExpense(id)
+                .onSuccess {
+                    _expenses.value = _expenses.value.filter { it.id != id }
+                }
+                .onFailure { e -> _error.value = e.message }
+
+            _deleting.value = false
+        }
+    }
     fun setCategoriaFiltro(categoria: String) {
         _categoriaFiltro.value = categoria
     }
-
     fun mesAnterior() {
         if (_mes.value == 1) {
             _mes.value = 12; _anio.value -= 1

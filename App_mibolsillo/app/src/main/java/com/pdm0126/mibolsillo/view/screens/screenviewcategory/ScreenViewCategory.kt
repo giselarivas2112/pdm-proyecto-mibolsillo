@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pdm0126.mibolsillo.newcomponents.DeleteButton
 import com.pdm0126.mibolsillo.view.specificcomponents.viewcategory.CategorySearchInputField
 import com.pdm0126.mibolsillo.view.components.common.RowCard
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
@@ -46,7 +48,6 @@ fun ScreenViewCategory(
     navigationBack: () -> Unit,
     viewModel: CategoryViewModel = viewModel(),
 
-
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
     navigationToPerfil: () -> Unit,
@@ -57,13 +58,14 @@ fun ScreenViewCategory(
     navegationToCategory: () -> Unit,
     navegationToFixedPayment: () -> Unit,
 
-) {
+    ) {
     var expanded by remember { mutableStateOf(false) }
     var searchInput by remember { mutableStateOf("") }
     val categories by viewModel.categories.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
     val refreshing by viewModel.refreshing.collectAsState()
+    val deleting by viewModel.deleting.collectAsState()
     val filteredCategories = categories.filter { category ->
         category.nombre.contains(searchInput, ignoreCase = true)
     }
@@ -121,92 +123,107 @@ fun ScreenViewCategory(
         PullToRefreshBox(
             isRefreshing = refreshing,
             onRefresh = { viewModel.getCategories(isRefresh = true) },
-            modifier = Modifier
-                .fillMaxSize()
-        ){
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
 
-            item {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    HeaderSection()
+                item {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        HeaderSection()
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .statusBarsPadding()
-                            .padding(horizontal = 4.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        IconButton(onClick = navigationBack) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Regresar",
-                                tint = Color.White
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .statusBarsPadding()
+                                .padding(horizontal = 4.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            IconButton(onClick = navigationBack) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "Regresar",
+                                    tint = Color.White
+                                )
+                            }
+                        }
+
+                        Column(
+                            modifier = Modifier.align(Alignment.Center),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Mis categorías",
+                                color = Color.White,
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${categories.size} categorías creadas",
+                                color = Color.White.copy(alpha = 0.7f),
+                                fontSize = 15.sp
                             )
                         }
                     }
+                }
 
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Mis categorías",
-                            color = Color.White,
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "${categories.size} categorías creadas",
-                            color = Color.White.copy(alpha = 0.7f),
-                            fontSize = 15.sp
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        CategorySearchInputField(
+                            value = searchInput,
+                            onValueChange = { searchInput = it }
                         )
                     }
                 }
-            }
 
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
-                    CategorySearchInputField(
-                        value = searchInput,
-                        onValueChange = { searchInput = it }
-                    )
-                }
-            }
+                item {
+                    when {
+                        isLoading -> {
+                            Box(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
 
-            item {
-                when {
-                    isLoading -> {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
+                        error != null -> {
+                            Text(text = "Error: $error", color = Color.Red)
                         }
                     }
+                }
 
-                    error != null -> {
-                        Text(text = "Error: $error", color = Color.Red)
+                items(
+                    items = filteredCategories,
+                    key = { it.id }
+                ) { category ->
+                    Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RowCard(
+                                emojiIcon = category.icono,
+                                iconBgColor = Color(0x268A2BE2),
+                                title = category.nombre,
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            DeleteButton(
+                                itemName = "la categoría \"${category.nombre}\"",
+                                onConfirmDelete = {
+                                    viewModel.deleteCategory(category.id)
+                                }
+                            )
+                        }
                     }
                 }
-            }
-
-            items(filteredCategories) { category ->
-                Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
-                    RowCard(
-                        emojiIcon = category.icono,
-                        iconBgColor = Color(0x268A2BE2),
-                        title = category.nombre
-                    )
-                }
-            }
 
                 item { Spacer(modifier = Modifier.height(100.dp)) }
             }
