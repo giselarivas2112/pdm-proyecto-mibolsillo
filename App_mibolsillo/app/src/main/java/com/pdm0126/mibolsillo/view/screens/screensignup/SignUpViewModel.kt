@@ -104,4 +104,7 @@ class SignUpViewModel : ViewModel() {
         _user.value = null
     }
 
+    fun clearError() {
+        _error.value = null
+    }
 }

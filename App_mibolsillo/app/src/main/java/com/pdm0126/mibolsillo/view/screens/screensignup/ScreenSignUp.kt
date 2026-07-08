@@ -40,6 +40,10 @@ fun ScreenSignUp(
     val error by viewModel.error.collectAsState()
     val loading by viewModel.loading.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.clearError()
+    }
+
     LaunchedEffect(user) {
         if (user != null) {
             viewModel.clearUser()

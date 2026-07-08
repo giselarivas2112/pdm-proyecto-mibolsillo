@@ -51,14 +51,14 @@ fun ScreenLogin(
 
     val sessionManager = remember { SessionManager(context) }
 
+    LaunchedEffect(Unit) {
+        viewModel.clearError()
+    }
+
     LaunchedEffect(session) {
         session?.let {
-
-            sessionManager.saveToken(it.token)
             OneSignal.Notifications.requestPermission(false)
             navegationToDashboard()
-
-
         }
     }
     Box(

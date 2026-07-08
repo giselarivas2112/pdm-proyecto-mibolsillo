@@ -117,4 +117,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             _loading.value = false
         }
     }
+
+    fun clearError() {
+        _error.value = null
+    }
 }

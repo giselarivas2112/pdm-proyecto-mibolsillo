@@ -142,7 +142,7 @@ fun ScreenHome(navigationToLogin: () -> Unit, navigationToRegister: () -> Unit) 
                     )
                 ) {
                     Text(
-                        text = "Comenzar",
+                        text = "Iniciar sesión",
                         fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Color(0xFFFFFFFF)
@@ -154,7 +154,7 @@ fun ScreenHome(navigationToLogin: () -> Unit, navigationToRegister: () -> Unit) 
                 Spacer(modifier = Modifier.height(16.dp))
                 TextButton(onClick = { navigationToRegister() }) {
                     Text(
-                        text = "¿Ya tienes cuenta? Registrate",
+                        text = "¿No tienes cuenta? Registate",
                         fontSize = 14.sp,
                         color = Color(0xFFD1D5DB)
                     )

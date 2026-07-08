@@ -126,14 +126,7 @@ fun LoginCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = "¿Olvidaste tu contraseña?",
-                color = Color(0xFF8A2BE2),
-                fontSize = 12.sp,
-                modifier = Modifier.align(Alignment.End)
-            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
