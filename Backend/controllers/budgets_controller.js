@@ -25,6 +25,24 @@ export const createBudget = async (req, res) => {
     })
   }
 
+  // Verificar si ya existe un presupuesto para esa categoría en ese mes/año
+  const { data: existente } = await supabase
+    .from('presupuestos')
+    .select('id')
+    .eq('usuario_id', usuario_id)
+    .eq('categoria_id', categoria_id)
+    .eq('mes', mes)
+    .eq('anio', anio)
+    .single()
+
+  if (existente) {
+    return res.status(400).json({
+      error: 'Ya existe un presupuesto para esta categoría en este mes'
+    })
+  }
+
+
+
   try {
     const { data, error } = await supabase
       .from('presupuestos')
@@ -52,8 +70,8 @@ export const createBudget = async (req, res) => {
     })
 
   } catch (error) {
-    return res.status(500).json({
-      error: error.message
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
   }
 }
@@ -88,55 +106,8 @@ export const getBudgets = async (req, res) => {
     return res.json(data)
 
   } catch (error) {
-    return res.status(500).json({
-      error: error.message
-    })
-  }
-}
-
-// Actualizar presupuesto
-export const updateBudget = async (req, res) => {
-  const { id } = req.params
-
-  const {
-    categoria_id,
-    monto_limite,
-    mes,
-    anio,
-    alerta_porcentaje,
-    notas
-  } = req.body
-
-  const usuario_id = req.user.id
-
-  try {
-    const { data, error } = await supabase
-      .from('presupuestos')
-      .update({
-        categoria_id: categoria_id,
-        monto_limite: monto_limite,
-        mes: mes,
-        anio: anio,
-        alerta_porcentaje: alerta_porcentaje,
-        notas: notas
-      })
-      .eq('id', id)
-      .eq('usuario_id', usuario_id)
-      .select(`*,categorias (id,nombre,icono)`)
-      .single()
-
-    if (error) {
-      throw error
-    }
-
-    return res.json({
-      message: 'Presupuesto actualizado',
-      budget: data
-    })
-
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
   }
 }
@@ -163,8 +134,8 @@ export const deleteBudget = async (req, res) => {
     })
 
   } catch (error) {
-    return res.status(500).json({
-      error: error.message
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
   }
 }

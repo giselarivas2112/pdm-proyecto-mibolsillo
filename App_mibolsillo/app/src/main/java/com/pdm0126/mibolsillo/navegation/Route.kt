@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 sealed class Route : NavKey {
 
     @Serializable
+    data object PantallaAuthCheck : Route()
+    @Serializable
     data object PantallaLogin : Route()
 
     @Serializable
@@ -20,5 +22,23 @@ sealed class Route : NavKey {
 
     @Serializable
     data object PantallaBudget : Route()
+    @Serializable
+    data object PantallaCategory : Route()
+    @Serializable
+    data object PantallaRegisterFixedPayment : Route()
+    @Serializable
+    data object PantallaExpenses : Route()
+    @Serializable
+    data object PantallaProfile : Route()
+    @Serializable
+    data object PantallaViewCategory : Route()
+    @Serializable
+    data object PantallaViewFixedPayment : Route()
+    @Serializable
+    data object PantallaViewbudgets : Route ()
+
+    @Serializable
+    data object PantallaViewReports : Route()
 }
+
 

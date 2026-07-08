@@ -34,6 +34,49 @@ export const createCategory = async (req, res) => {
   }
 }
 
+export const getCategoriesByMonth = async (req, res) => {
+
+  const usuario_id = req.user.id
+  const { mes, anio } = req.query
+
+  if (!mes || !anio) {
+    return res.status(400).json({
+      error: 'El mes y el año son requeridos'
+    })
+  }
+
+  try {
+
+    const { data, error } = await supabase
+      .from('presupuestos')
+      .select(`
+        categorias (
+          id,
+          nombre,
+          icono
+        )
+      `)
+      .eq('usuario_id', usuario_id)
+      .eq('mes', mes)
+      .eq('anio', anio)
+
+    if (error) {
+      throw error
+    }
+
+    const categorias = data.map(item => item.categorias)
+
+    return res.json(categorias)
+
+  } catch (error) {
+
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
+
+  }
+}
+
 export const getCategories = async (req, res) => {
   const usuario_id = req.user.id
 
@@ -50,46 +93,12 @@ export const getCategories = async (req, res) => {
     return res.json(data)
 
   } catch (error) {
-    return res.status(500).json({
-      error: error.message
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
   }
 }
 
-export const updateCategory = async (req, res) => {
-  const { id } = req.params
-
-  const { nombre, icono } = req.body
-
-  const usuario_id = req.user.id
-
-  try {
-    const { data, error } = await supabase
-      .from('categorias')
-      .update({
-        nombre: nombre,
-        icono: icono
-      })
-      .eq('id', id)
-      .eq('usuario_id', usuario_id)
-      .select()
-      .single()
-
-    if (error) {
-      throw error
-    }
-
-    return res.json({
-      message: 'Categoría actualizada',
-      category: data
-    })
-
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message
-    })
-  }
-}
 
 export const deleteCategory = async (req, res) => {
   const { id } = req.params

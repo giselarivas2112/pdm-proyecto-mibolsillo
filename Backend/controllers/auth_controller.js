@@ -32,7 +32,12 @@ export const register = async (req, res) => {
     })
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+
+    console.error(error)
+
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
 }
 
@@ -69,6 +74,73 @@ export const login = async (req, res) => {
     })
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+
+    console.error(error)
+
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
+}
+
+export const saveOneSignalId = async (req, res) => {
+  const usuario_id = req.user.id
+  const { onesignal_id } = req.body
+
+  if (!onesignal_id) {
+    return res.status(400).json({
+      error: 'onesignal_id es requerido'
+    })
+  }
+
+  try {
+
+    const { error } = await supabase
+      .from('usuarios')
+      .update({
+        onesignal_id
+      })
+      .eq('id', usuario_id)
+
+    if (error) throw error
+
+    res.json({
+      message: 'OneSignal ID guardado correctamente'
+    })
+
+  } catch (error) {
+
+    console.error(error)
+
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
+  }
+}
+
+export const getProfile = async (req, res) => {
+
+  const usuario_id = req.user.id
+
+  try {
+
+    const { data, error } = await supabase
+      .from('usuarios')
+      .select('id, nombre, email')
+      .eq('id', usuario_id)
+      .single()
+
+    if (error) throw error
+
+    res.json(data)
+
+  } catch (error) {
+
+    console.error(error)
+
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
+  }
+
 }

@@ -15,9 +15,9 @@ export const getResumenMensual = async (req, res) => {
 
     try {
 
-    
+
         // OBTENER PRESUPUESTOS
-      
+
 
         const resultadoPresupuestos = await supabase
             .from('presupuestos')
@@ -33,9 +33,9 @@ export const getResumenMensual = async (req, res) => {
             throw errorPresupuestos
         }
 
-     
+
         // CALCULAR FECHAS DEL MES
-      
+
 
         const mesPadded = String(mes).padStart(2, '0')
 
@@ -45,9 +45,9 @@ export const getResumenMensual = async (req, res) => {
 
         const fechaFin = `${anio}-${mesPadded}-${ultimoDia}`
 
-      
+
         // OBTENER GASTOS
-       
+
         const resultadoGastos = await supabase
             .from('gastos')
             .select('categoria_id, monto')
@@ -62,9 +62,9 @@ export const getResumenMensual = async (req, res) => {
             throw errorGastos
         }
 
-     
+
         // SUMAR GASTOS POR CATEGORÍA
-     
+
 
         const gastosPorCategoria = {}
 
@@ -73,27 +73,27 @@ export const getResumenMensual = async (req, res) => {
             const categoria_id = gasto.categoria_id
             const monto = gasto.monto
 
-            const gastoActual =gastosPorCategoria[categoria_id] || 0
+            const gastoActual = gastosPorCategoria[categoria_id] || 0
 
-            const montoNumerico =parseFloat(monto)
+            const montoNumerico = parseFloat(monto)
 
-            gastosPorCategoria[categoria_id] =gastoActual + montoNumerico
+            gastosPorCategoria[categoria_id] = gastoActual + montoNumerico
         })
 
         // GENERAR RESUMEN
-      
+
 
         const categorias = presupuestos.map((presupuesto) => {
 
-            const gastado =gastosPorCategoria[presupuesto.categoria_id] || 0
+            const gastado = gastosPorCategoria[presupuesto.categoria_id] || 0
 
-            const limite =parseFloat(presupuesto.monto_limite)
+            const limite = parseFloat(presupuesto.monto_limite)
 
-            const disponible =limite - gastado
+            const disponible = limite - gastado
 
-            const operacionPorcentaje =(gastado / limite) * 100
+            const operacionPorcentaje = (gastado / limite) * 100
 
-            const porcentaje =parseFloat(operacionPorcentaje.toFixed(2))
+            const porcentaje = parseFloat(operacionPorcentaje.toFixed(2))
 
             let estado
 
@@ -125,28 +125,28 @@ export const getResumenMensual = async (req, res) => {
             }
         })
 
-     
+
         // CALCULAR TOTALES
-        
+
 
         let total_presupuestado = 0
 
-        for (let i = 0;i < presupuestos.length;i++) {
+        for (let i = 0; i < presupuestos.length; i++) {
 
-            total_presupuestado =total_presupuestado +Number(presupuestos[i].monto_limite)
+            total_presupuestado = total_presupuestado + Number(presupuestos[i].monto_limite)
         }
 
         let total_gastado = 0
 
         for (const categoria in gastosPorCategoria) {
 
-            total_gastado =total_gastado +gastosPorCategoria[categoria]
+            total_gastado = total_gastado + gastosPorCategoria[categoria]
         }
 
-        const porcentajeGlobal =parseFloat(((total_gastado / total_presupuestado) * 100).toFixed(2))
+        const porcentajeGlobal = parseFloat(((total_gastado / total_presupuestado) * 100).toFixed(2))
 
         // RESPUESTA
-      
+
         res.json({
 
             mes: parseInt(mes),
@@ -159,7 +159,7 @@ export const getResumenMensual = async (req, res) => {
 
                 total_gastado: total_gastado,
 
-                total_disponible:total_presupuestado - total_gastado,
+                total_disponible: total_presupuestado - total_gastado,
 
                 porcentaje_global: porcentajeGlobal
             },
@@ -170,7 +170,7 @@ export const getResumenMensual = async (req, res) => {
     } catch (error) {
 
         res.status(500).json({
-            error: error.message
+            error: 'Ocurrió un error en el servidor. Intenta nuevamente'
         })
     }
 }
@@ -195,13 +195,13 @@ export const getDistribucion = async (req, res) => {
 
     try {
 
-        const mesPadded =String(mes).padStart(2, '0')
+        const mesPadded = String(mes).padStart(2, '0')
 
         const fechaInicio = `${anio}-${mesPadded}-01`
 
-        const ultimoDia =new Date(anio, mes, 0).getDate()
+        const ultimoDia = new Date(anio, mes, 0).getDate()
 
-        const fechaFin =`${anio}-${mesPadded}-${ultimoDia}`
+        const fechaFin = `${anio}-${mesPadded}-${ultimoDia}`
 
         const resultado = await supabase
             .from('gastos')
@@ -223,17 +223,17 @@ export const getDistribucion = async (req, res) => {
 
         gastos.forEach((gasto) => {
 
-            const monto =parseFloat(gasto.monto)
+            const monto = parseFloat(gasto.monto)
 
-            let nombreCategoria ='Sin categoría'
+            let nombreCategoria = 'Sin categoría'
 
             let icono = null
 
             if (gasto.categorias) {
 
-                nombreCategoria =gasto.categorias.nombre
+                nombreCategoria = gasto.categorias.nombre
 
-                icono =gasto.categorias.icono
+                icono = gasto.categorias.icono
             }
 
             if (!agrupado[nombreCategoria]) {
@@ -245,24 +245,24 @@ export const getDistribucion = async (req, res) => {
                 }
             }
 
-            agrupado[nombreCategoria].total =agrupado[nombreCategoria].total + monto
+            agrupado[nombreCategoria].total = agrupado[nombreCategoria].total + monto
 
-            totalGastado =totalGastado + monto
+            totalGastado = totalGastado + monto
         })
 
-        const distribucion =Object.values(agrupado).map((categoria) => {
+        const distribucion = Object.values(agrupado).map((categoria) => {
 
-                const porcentaje =parseFloat(((categoria.total / totalGastado) * 100).toFixed(2))
+            const porcentaje = parseFloat(((categoria.total / totalGastado) * 100).toFixed(2))
 
-                return {
-                    nombre: categoria.nombre,
-                    icono: categoria.icono,
-                    total: parseFloat(
-                        categoria.total.toFixed(2)
-                    ),
-                    porcentaje: porcentaje
-                }
-            })
+            return {
+                nombre: categoria.nombre,
+                icono: categoria.icono,
+                total: parseFloat(
+                    categoria.total.toFixed(2)
+                ),
+                porcentaje: porcentaje
+            }
+        })
 
         distribucion.sort((a, b) => {
             return b.total - a.total
@@ -283,7 +283,7 @@ export const getDistribucion = async (req, res) => {
     } catch (error) {
 
         res.status(500).json({
-            error: error.message
+            error: 'Ocurrió un error en el servidor. Intenta nuevamente'
         })
     }
 }
@@ -308,13 +308,13 @@ export const getGastosDiarios = async (req, res) => {
 
     try {
 
-        const mesPadded =String(mes).padStart(2, '0')
+        const mesPadded = String(mes).padStart(2, '0')
 
         const fechaInicio = `${anio}-${mesPadded}-01`
 
-        const ultimoDia =new Date(anio, mes, 0).getDate()
+        const ultimoDia = new Date(anio, mes, 0).getDate()
 
-        const fechaFin =`${anio}-${mesPadded}-${ultimoDia}`
+        const fechaFin = `${anio}-${mesPadded}-${ultimoDia}`
 
         const resultado = await supabase
             .from('gastos')
@@ -334,17 +334,17 @@ export const getGastosDiarios = async (req, res) => {
 
         gastos.forEach((gasto) => {
 
-            const fecha =gasto.fecha
+            const fecha = gasto.fecha
 
-            const monto =parseFloat(gasto.monto)
+            const monto = parseFloat(gasto.monto)
 
-            const partesFecha =fecha.split('-')
+            const partesFecha = fecha.split('-')
 
-            const dia =parseInt(partesFecha[2])
+            const dia = parseInt(partesFecha[2])
 
-            const gastoActual =gastosPorDia[dia] || 0
+            const gastoActual = gastosPorDia[dia] || 0
 
-            gastosPorDia[dia] =gastoActual + monto
+            gastosPorDia[dia] = gastoActual + monto
         })
 
         const dias = []
@@ -369,7 +369,7 @@ export const getGastosDiarios = async (req, res) => {
     } catch (error) {
 
         res.status(500).json({
-            error: error.message
+            error: 'Ocurrió un error en el servidor. Intenta nuevamente'
         })
     }
 }
