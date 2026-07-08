@@ -70,7 +70,7 @@ fun ScreenRegisterExpense(
     val refreshing by viewModel.refreshing.collectAsState()
     val loadingCategories by viewModel.loadingCategories.collectAsState()
     val errorCategories by viewModel.errorCategories.collectAsState()
-
+    
     LaunchedEffect(success) {
         if (success) {
             Toast.makeText(context, "¡Gasto guardado exitosamente!", Toast.LENGTH_SHORT).show()
