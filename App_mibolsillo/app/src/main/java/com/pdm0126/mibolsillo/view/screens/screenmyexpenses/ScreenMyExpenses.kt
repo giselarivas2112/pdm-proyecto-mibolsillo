@@ -56,6 +56,7 @@ fun ScreenMyExpenses(
     viewModel: MyExpensesViewModel = viewModel()
 ) {
     var expanded by remember { mutableStateOf(false) }
+
     val expensesGrouped by viewModel.expensesGroupedByDate.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
@@ -65,6 +66,7 @@ fun ScreenMyExpenses(
     val totalGastado by viewModel.totalGastado.collectAsState()
     val mayorGasto by viewModel.mayorGasto.collectAsState()
     val refreshing by viewModel.refreshing.collectAsState()
+    val error by viewModel.error.collectAsState()
 
     LaunchedEffect(mes, anio) {
         viewModel.loadData()
@@ -128,6 +130,7 @@ fun ScreenMyExpenses(
             ) {
 
                 item {
+
                     Box(
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -161,7 +164,15 @@ fun ScreenMyExpenses(
                         onCategoriaClick = { viewModel.setCategoriaFiltro(it) }
                     )
                 }
-
+                if (error != null) {
+                    item {
+                        Text(
+                            text = error!!,
+                            color = Color.Red,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                }
                 if (isLoading) {
                     item {
                         Box(

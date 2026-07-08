@@ -60,19 +60,31 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
             authRepository.getProfile(token)
                 .onSuccess { _nombreUsuario.value = it.nombre }
-                .onFailure { e -> _error.value = e.message }
+                .onFailure { error ->
+                    _error.value =
+                        error.message ?: "Ocurrió un error. Intenta nuevamente"
+                }
 
             categoryRepository.getCategories()
                 .onSuccess { _totalCategorias.value = it.size }
-                .onFailure { e -> _error.value = e.message }
+                .onFailure { error ->
+                    _error.value =
+                        error.message ?: "Ocurrió un error. Intenta nuevamente"
+                }
 
             expenseRepository.getExpenses(null, null)
                 .onSuccess { _totalGastos.value = it.size }
-                .onFailure { e -> _error.value = e.message }
+                .onFailure { error ->
+                    _error.value =
+                        error.message ?: "Ocurrió un error. Intenta nuevamente"
+                }
 
             budgetRepository.getBudgets(null, null)
                 .onSuccess { _totalPresupuestos.value = it.size }
-                .onFailure { e -> _error.value = e.message }
+                .onFailure { error ->
+                    _error.value =
+                        error.message ?: "Ocurrió un error. Intenta nuevamente"
+                }
 
             if (isRefresh) _refreshing.value = false
             else _loading.value = false
@@ -84,4 +96,5 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             sessionManager.clearToken()
         }
     }
+
 }

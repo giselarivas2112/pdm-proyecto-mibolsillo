@@ -76,7 +76,10 @@ fun ScreenRegisterCategory(
     }
 
     LaunchedEffect(error) {
-        error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+        error?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.resetError()
+        }
     }
 
     PullToRefreshBox(
@@ -208,15 +211,7 @@ fun ScreenRegisterCategory(
                                 }
                             }
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(
-                                text = "+ Ver más íconos",
-                                color = Color(0xFF8A2BE2),
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.clickable {
-                                    Toast.makeText(context, "Próximamente más íconos", Toast.LENGTH_SHORT).show()
-                                }
-                            )
+
                         }
                     }
                 }
@@ -231,39 +226,6 @@ fun ScreenRegisterCategory(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(56.dp)
                 )
                 Spacer(modifier = Modifier.height(24.dp))
-            }
-
-            item {
-                Text(
-                    text = "MIS CATEGORÍAS (${categories.size})",
-                    color = Color(0xFF8A2BE2),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
-
-            if (categories.isEmpty() && !loading) {
-                item {
-                    Text(
-                        text = "No tienes categorías creadas aún",
-                        color = Color.Gray,
-                        fontSize = 14.sp,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            } else {
-                items(categories) { category ->
-                    Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
-                        RowCard(modifier = Modifier,
-                            emojiIcon = category.icono,
-                            iconBgColor = Color(0x268A2BE2),
-                            title = category.nombre
-                        )
-                    }
-                }
             }
 
             item {

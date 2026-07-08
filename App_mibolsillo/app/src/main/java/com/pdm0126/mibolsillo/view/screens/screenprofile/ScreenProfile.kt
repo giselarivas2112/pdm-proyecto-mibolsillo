@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,7 +48,8 @@ import kotlin.Unit
 
 
 @Composable
-fun ScreenProfile(navigationBack: () -> Unit,
+fun ScreenProfile(
+    navigationBack: () -> Unit,
 
     navigationToDashboard: () -> Unit,
     navigationToExpenses: () -> Unit,
@@ -67,11 +69,13 @@ fun ScreenProfile(navigationBack: () -> Unit,
 
 ) {
     var expanded by remember { mutableStateOf(false) }
+
     val nombreUsuario by viewModel.nombreUsuario.collectAsState()
     val totalCategorias by viewModel.totalCategorias.collectAsState()
     val totalGastos by viewModel.totalGastos.collectAsState()
     val totalPresupuestos by viewModel.totalPresupuestos.collectAsState()
     val refreshing by viewModel.refreshing.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -91,7 +95,7 @@ fun ScreenProfile(navigationBack: () -> Unit,
                     navigationToExpenses()
                 },
                 onReportesClick = {
-                navigationToViewReports()
+                    navigationToViewReports()
                 },
                 onPerfilClick = {
                     navigationToPerfil()
@@ -123,114 +127,151 @@ fun ScreenProfile(navigationBack: () -> Unit,
             )
         },
         floatingActionButtonPosition = FabPosition.Center
-    ) { padding->
+    ) { padding ->
 
         PullToRefreshBox(
             isRefreshing = refreshing,
             onRefresh = { viewModel.loadProfileData(isRefresh = true) },
             modifier = Modifier.fillMaxSize()
-        ){
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
         ) {
 
-            item {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    HeaderSection()
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .statusBarsPadding()
-                            .padding(horizontal = 4.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(onClick = navigationBack) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Regresar",
-                                tint = Color.White
+                item {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        HeaderSection()
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .statusBarsPadding()
+                                .padding(horizontal = 4.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            IconButton(onClick = navigationBack) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "Regresar",
+                                    tint = Color.White
+                                )
+                            }
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 55.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Mi perfil",
+                                color = Color.White,
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Spacer(modifier = Modifier.height(14.dp))
+
+                            Box(
+                                modifier = Modifier
+                                    .size(85.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(0xFFE1BEE7))
+                                    .border(3.dp, Color.White, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Person,
+                                    contentDescription = null,
+                                    tint = Color(0xFF8A2BE2),
+                                    modifier = Modifier.size(50.dp)
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = nombreUsuario,
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
                             )
                         }
                     }
+                }
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 55.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Mi perfil",
-                            color = Color.White,
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                item {
 
-                        Spacer(modifier = Modifier.height(14.dp))
+                    if (isLoading) {
 
                         Box(
                             modifier = Modifier
-                                .size(85.dp)
-                                .clip(CircleShape)
-                                .background(Color(0xFFE1BEE7))
-                                .border(3.dp, Color.White, CircleShape),
+                                .fillMaxWidth()
+                                .padding(32.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Person,
-                                contentDescription = null,
-                                tint = Color(0xFF8A2BE2),
-                                modifier = Modifier.size(50.dp)
+                            CircularProgressIndicator(
+                                color = Color(0xFF8A2BE2)
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                    } else {
+
+                        ProfileStatsRow(
+                            gastosTotales = totalGastos.toString(),
+                            totalCategorias = totalCategorias.toString(),
+                            totalPresupuestos = totalPresupuestos.toString()
+                        )
+
+                    }
+
+                }
+
+                if (error != null) {
+
+                    item {
 
                         Text(
-                            text = nombreUsuario,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                            text = error!!,
+                            color = Color.Red,
+                            modifier = Modifier.padding(16.dp)
                         )
+
                     }
+
                 }
-            }
 
-            item {
-                ProfileStatsRow(
-                    gastosTotales = totalGastos.toString(),
-                    totalCategorias = totalCategorias.toString(),
-                    totalPresupuestos = totalPresupuestos.toString()
-                )
-            }
+                item {
 
-            item {
-                ProfileActionsList(
+                    ProfileActionsList(
 
-                    onVerPresupuestos = {
-                        navegationToViewbudgets()
-                    },
+                        onVerPresupuestos = {
+                            navegationToViewbudgets()
+                        },
 
-                    onVerCategorias = {
-                        navegationToViewCategory()
-                    },
+                        onVerCategorias = {
+                            navegationToViewCategory()
+                        },
 
-                    onVerPagosFijos = {
-                        navegationToViewFixedPayment()
-                    },
+                        onVerPagosFijos = {
+                            navegationToViewFixedPayment()
+                        },
 
-                    onCerrarSesion = {
-                        viewModel.logout()
-                        navigationToHome()
-                    }
-                )
+                        onCerrarSesion = {
+                            viewModel.logout()
+                            navigationToHome()
+                        }
 
-            }
+                    )
 
-            item { Spacer(modifier = Modifier.height(80.dp)) }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(80.dp))
+                }
             }
         }
     }

@@ -37,15 +37,29 @@ class RegisterCategoryViewModel(application: Application) : AndroidViewModel(app
 
     fun getCategories(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            if (isRefresh) _refreshing.value = true
-            else _loading.value = true
+
+            if (isRefresh) {
+                _refreshing.value = true
+            } else {
+                _loading.value = true
+            }
+
+            _error.value = null
 
             repository.getCategories()
-                .onSuccess { _categories.value = it }
-                .onFailure { e -> _error.value = e.message }
+                .onSuccess {
+                    _categories.value = it
+                }
+                .onFailure { e ->
+                    _error.value = e.message ?: "No se pudieron cargar las categorías"
+                }
 
-            if (isRefresh) _refreshing.value = false
-            else _loading.value = false
+
+            if (isRefresh) {
+                _refreshing.value = false
+            } else {
+                _loading.value = false
+            }
         }
     }
 
@@ -59,7 +73,10 @@ class RegisterCategoryViewModel(application: Application) : AndroidViewModel(app
                     _success.value = true
                     getCategories()
                 }
-                .onFailure { e -> _error.value = e.message }
+                .onFailure { error ->
+                    _error.value =
+                        error.message ?: "Ocurrió un error. Intenta nuevamente"
+                }
 
             _loading.value = false
         }
@@ -67,6 +84,9 @@ class RegisterCategoryViewModel(application: Application) : AndroidViewModel(app
 
     fun resetState() {
         _success.value = false
+        _error.value = null
+    }
+    fun resetError() {
         _error.value = null
     }
 }

@@ -41,7 +41,9 @@ export const createFixedPayment = async (req, res) => {
     })
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
 }
 
@@ -61,44 +63,13 @@ export const getFixedPayments = async (req, res) => {
     res.json(data)
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
-  }
-}
-
-// Actualizar pago fijo
-export const updateFixedPayment = async (req, res) => {
-  const { id } = req.params
-  const { categoria_id, nombre, monto, dia_vencimiento, dias_recordatorio } = req.body
-  const usuario_id = req.user.id
-
-  if (dia_vencimiento && (dia_vencimiento < 1 || dia_vencimiento > 31)) {
-    return res.status(400).json({ error: 'El día de vencimiento debe ser entre 1 y 31' })
-  }
-
-  if (dias_recordatorio && (dias_recordatorio < 1 || dias_recordatorio > 3)) {
-    return res.status(400).json({ error: 'El recordatorio máximo es 3 días antes' })
-  }
-
-  try {
-    const { data, error } = await supabase
-      .from('pagos_fijos')
-      .update({ categoria_id, nombre, monto, dia_vencimiento, dias_recordatorio })
-      .eq('id', id)
-      .eq('usuario_id', usuario_id)
-      .select('*, categorias (id, nombre, icono)')
-      .single()
-
-    if (error) throw error
-
-    res.json({
-      message: 'Pago fijo actualizado',
-      pago: data
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
-
-  } catch (error) {
-    res.status(500).json({ error: error.message })
   }
 }
+
+
 
 // Eliminar pago fijo
 export const deleteFixedPayment = async (req, res) => {
@@ -117,7 +88,9 @@ export const deleteFixedPayment = async (req, res) => {
     res.json({ message: 'Pago fijo eliminado' })
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
 }
 
@@ -151,6 +124,8 @@ export const getProximosVencimientos = async (req, res) => {
     res.json(proximosVencer)
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
 }

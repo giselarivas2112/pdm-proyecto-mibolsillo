@@ -1,5 +1,5 @@
 import express from 'express'
-import { createExpense, getExpenses, updateExpense, deleteExpense } from '../controllers/expenses_controller.js'
+import { createExpense, getExpenses,  deleteExpense } from '../controllers/expenses_controller.js'
 import { verifyToken } from '../middlewares/auth_middleware.js'
 
 const router = express.Router()
@@ -84,49 +84,6 @@ router.post('/', verifyToken, createExpense)
  */
 router.get('/', verifyToken, getExpenses)
 
-/**
- * @swagger
- * /api/gastos/{id}:
- *   put:
- *     summary: Actualizar un gasto
- *     tags: [Gastos]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID del gasto
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               categoria_id:
- *                 type: string
- *                 example: uuid-de-categoria
- *               monto:
- *                 type: number
- *                 example: 200.00
- *               fecha:
- *                 type: string
- *                 example: 2026-06-09
- *               descripcion:
- *                 type: string
- *                 example: Descripción actualizada
- *     responses:
- *       200:
- *         description: Gasto actualizado
- *       401:
- *         description: Token requerido o inválido
- *       500:
- *         description: Error del servidor
- */
-router.put('/:id', verifyToken, updateExpense)
 
 /**
  * @swagger

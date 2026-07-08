@@ -126,8 +126,8 @@ export const createExpense = async (req, res) => {
     })
 
   } catch (error) {
-    return res.status(500).json({
-      error: error.message
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
     })
   }
 }
@@ -160,62 +160,12 @@ export const getExpenses = async (req, res) => {
     res.json(data)
 
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({
+      error: 'Ocurrió un error en el servidor. Intenta nuevamente'
+    })
   }
 }
 
-export const updateExpense = async (req, res) => {
-  const { id } = req.params
-  const { categoria_id, monto, fecha, descripcion } = req.body
-  const usuario_id = req.user.id
-
-  try {
-
-    // Verificar que exista presupuesto para la categoría
-    if (categoria_id) {
-
-      const fechaGasto = new Date(fecha)
-
-      const mes = fechaGasto.getMonth() + 1
-      const anio = fechaGasto.getFullYear()
-
-      const { data: presupuesto, error: errorPresupuesto } = await supabase
-        .from('presupuestos')
-        .select('id')
-        .eq('usuario_id', usuario_id)
-        .eq('categoria_id', categoria_id)
-        .eq('mes', mes)
-        .eq('anio', anio)
-        .maybeSingle()
-
-      if (errorPresupuesto) {
-        throw errorPresupuesto
-      }
-
-      if (!presupuesto) {
-        return res.status(400).json({
-          error: 'Debes crear un presupuesto para esta categoría antes de registrar un gasto en este mes.'
-        })
-      }
-    }
-
-    const { data, error } = await supabase
-      .from('gastos')
-      .update({ categoria_id, monto, fecha, descripcion })
-      .eq('id', id)
-      .eq('usuario_id', usuario_id)
-      .select(`*, categorias (id, nombre, icono)
-      `)
-      .single()
-
-    if (error) throw error
-
-    res.json({ message: 'Gasto actualizado', expense: data })
-
-  } catch (error) {
-    res.status(500).json({ error: error.message })
-  }
-}
 
 export const deleteExpense = async (req, res) => {
   const { id } = req.params

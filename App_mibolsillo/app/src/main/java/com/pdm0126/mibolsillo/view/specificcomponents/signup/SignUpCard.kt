@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.CircularProgressIndicator
+import com.pdm0126.mibolsillo.view.components.buttons.LoadingButton
 
 @Composable
 fun SignUpCard(
@@ -36,7 +37,8 @@ fun SignUpCard(
     onRegister: (
         nombre: String,
         email: String,
-        password: String
+        password: String,
+        confirmPassword: String
     ) -> Unit
 ) {
 
@@ -44,7 +46,6 @@ fun SignUpCard(
     var correo by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    var passwordError by remember { mutableStateOf<String?>(null) }
 
     var visiblePassword by remember { mutableStateOf(false) }
     var visibleConfirm by remember { mutableStateOf(false) }
@@ -200,65 +201,23 @@ fun SignUpCard(
                 )
             }
 
-            if (passwordError != null) {
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = passwordError!!,
-                    color = Color.Red
-                )
-            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            LoadingButton(
+                text = "Crear mi cuenta",
+                loading = loading,
                 onClick = {
-                    if (password != confirmPassword) {
 
-                        passwordError = "Las contraseñas no coinciden"
-                        return@Button
-
-                    }
-
-                    passwordError = null
-
-                    if (
-                        nombre.isNotBlank() &&
-                        correo.isNotBlank() &&
-                        password.isNotBlank()
-                    ) {
-
-                        onRegister(
-                            nombre,
-                            correo,
-                            password
-                        )
-                    }
-                },
-                enabled = !loading,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(55.dp),
-                shape = RoundedCornerShape(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFA020F0)
-                )
-            ) {
-
-                if (loading) {
-
-                    CircularProgressIndicator()
-
-                } else {
-
-                    Text(
-                        text = "Crear mi cuenta",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                    onRegister(
+                        nombre,
+                        correo,
+                        password,
+                        confirmPassword
                     )
+
                 }
-            }
+            )
         }
     }
 }

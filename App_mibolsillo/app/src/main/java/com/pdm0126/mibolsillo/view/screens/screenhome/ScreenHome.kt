@@ -25,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pdm0126.mibolsillo.R
+
 @Composable
 fun ScreenHome(navigationToLogin: () -> Unit, navigationToRegister: () -> Unit) {
 
@@ -89,7 +90,12 @@ fun ScreenHome(navigationToLogin: () -> Unit, navigationToRegister: () -> Unit) 
                 Spacer(modifier = Modifier.height(32.dp))
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(SpanStyle(fontStyle = FontStyle.Italic, fontWeight = FontWeight.Black)) {
+                        withStyle(
+                            SpanStyle(
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Black
+                            )
+                        ) {
                             append("MiBolsillo")
                         }
                     },

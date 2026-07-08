@@ -62,6 +62,8 @@ fun ScreenRegisterBudget(
     val error by viewModel.error.collectAsState()
     val success by viewModel.success.collectAsState()
     val refreshing by viewModel.refreshing.collectAsState()
+    val loadingCategories by viewModel.loadingCategories.collectAsState()
+    val errorCategories by viewModel.errorCategories.collectAsState()
 
     LaunchedEffect(success) {
         if (success) {
@@ -76,7 +78,10 @@ fun ScreenRegisterBudget(
     }
 
     LaunchedEffect(error) {
-        error?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+        error?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.resetError()
+        }
     }
 
     PullToRefreshBox(
@@ -133,10 +138,7 @@ fun ScreenRegisterBudget(
         }
 
         item {
-            val loadingCategories by viewModel.loadingCategories.collectAsState()
-            val errorCategories by viewModel.errorCategories.collectAsState()
-
-           CategoryDropdownLoader(
+            CategoryDropdownLoader(
                 categories = categories,
                 loading = loadingCategories,
                 error = errorCategories,
