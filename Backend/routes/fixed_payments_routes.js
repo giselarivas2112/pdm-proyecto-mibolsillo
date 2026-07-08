@@ -2,7 +2,8 @@ import express from 'express'
 import {
   createFixedPayment,
   deleteFixedPayment,
-  getProximosVencimientos
+  getProximosVencimientos,
+  getFixedPayments
 } from '../controllers/fixed_payments_controller.js'
 import { verifyToken } from '../middlewares/auth_middleware.js'
 import { sendPushNotification } from '../services/notification_service.js'
