@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import com.pdm0126.mibolsillo.view.components.common.RowCard
 import com.pdm0126.mibolsillo.view.components.buttons.LoadingButton
 import com.pdm0126.mibolsillo.view.components.common.HeaderSection
@@ -55,8 +56,8 @@ fun ScreenRegisterCategory(
     navigationBack: () -> Unit,
     viewModel: RegisterCategoryViewModel = viewModel()
 ) {
-    var categoryName by remember { mutableStateOf("") }
-    var selectedIcon by remember { mutableStateOf("🍔") }
+    var categoryName by rememberSaveable { mutableStateOf("") }
+    var selectedIcon by rememberSaveable{ mutableStateOf("🍔") }
     val context = LocalContext.current
     val iconList = listOf("🍔", "🚗", "🏠", "⚡", "🎬", "🛒", "💊", "📚", "✈️", "🐾")
 

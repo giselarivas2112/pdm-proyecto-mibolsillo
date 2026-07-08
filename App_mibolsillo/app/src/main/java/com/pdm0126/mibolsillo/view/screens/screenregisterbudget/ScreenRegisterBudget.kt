@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,11 +51,11 @@ fun ScreenRegisterBudget(
     viewModel: RegisterBudgetViewModel = viewModel()
 ) {
 
-    var budgetAmount by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf<Category?>(null) }
-    var alertThreshold by remember { mutableStateOf(0.8f) }
-    var budgetNotes by remember { mutableStateOf("") }
-    var selectedMesAnio by remember { mutableStateOf<MesAnio?>(null) }
+    var budgetAmount by rememberSaveable { mutableStateOf("") }
+    var selectedCategory by rememberSaveable { mutableStateOf<Category?>(null) }
+    var alertThreshold by rememberSaveable { mutableStateOf(0.8f) }
+    var budgetNotes by rememberSaveable { mutableStateOf("") }
+    var selectedMesAnio by rememberSaveable { mutableStateOf<MesAnio?>(null) }
     val context = LocalContext.current
 
     val categories by viewModel.categories.collectAsState()

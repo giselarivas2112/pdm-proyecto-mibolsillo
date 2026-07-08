@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +51,7 @@ fun ScreenStats(
     navegationToCategory: () -> Unit,
     navegationToFixedPayment: () -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
     val summary by viewModel.summary.collectAsState()
     val distribution by viewModel.distribution.collectAsState()
     val dailyExpenses by viewModel.dailyExpenses.collectAsState()

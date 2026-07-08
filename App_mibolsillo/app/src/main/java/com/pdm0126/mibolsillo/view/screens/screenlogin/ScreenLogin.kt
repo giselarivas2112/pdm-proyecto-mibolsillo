@@ -27,6 +27,7 @@ import com.pdm0126.mibolsillo.view.specificcomponents.login.LoginCard
 import androidx.compose.ui.platform.LocalContext
 import com.pdm0126.mibolsillo.data.session.SessionManager
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.onesignal.OneSignal
 
@@ -39,9 +40,9 @@ fun ScreenLogin(
     viewModel: LoginViewModel = viewModel()
 ) {
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var visible by remember { mutableStateOf(false) }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var visible by rememberSaveable { mutableStateOf(false) }
 
     val session by viewModel.session.collectAsState()
     val error by viewModel.error.collectAsState()

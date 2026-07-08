@@ -8,6 +8,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,11 +33,11 @@ fun ScreenRegisterFixedPayment(
 ) {
     val context = LocalContext.current
 
-    var nombrePago by remember { mutableStateOf("") }
-    var montoPago by remember { mutableStateOf("") }
-    var categoriaSeleccionada by remember { mutableStateOf<Category?>(null) }
-    var diaVencimiento by remember { mutableStateOf<Int?>(null) }
-    var diasRecordatorio by remember { mutableStateOf<Int?>(null) }
+    var nombrePago by rememberSaveable { mutableStateOf("") }
+    var montoPago by rememberSaveable { mutableStateOf("") }
+    var categoriaSeleccionada by rememberSaveable { mutableStateOf<Category?>(null) }
+    var diaVencimiento by rememberSaveable { mutableStateOf<Int?>(null) }
+    var diasRecordatorio by rememberSaveable { mutableStateOf<Int?>(null) }
 
     val categories by viewModel.categories.collectAsState()
     val loadingCategories by viewModel.loadingCategories.collectAsState()

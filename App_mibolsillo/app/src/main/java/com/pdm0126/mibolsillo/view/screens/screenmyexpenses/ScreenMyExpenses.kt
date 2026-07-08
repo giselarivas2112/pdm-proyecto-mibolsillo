@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +56,7 @@ fun ScreenMyExpenses(
     navigationToViewReports: () -> Unit,
     viewModel: MyExpensesViewModel = viewModel()
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
 
     val expensesGrouped by viewModel.expensesGroupedByDate.collectAsState()
     val categories by viewModel.categories.collectAsState()

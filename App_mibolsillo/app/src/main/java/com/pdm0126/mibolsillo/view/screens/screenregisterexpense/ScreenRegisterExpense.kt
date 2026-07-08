@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,17 +54,19 @@ fun ScreenRegisterExpense(
 ) {
 
     val context = LocalContext.current
-    var amount by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf<Category?>(null) }
-    var selectedDate by remember { mutableStateOf(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())) }
+    var amount by rememberSaveable { mutableStateOf("") }
+    var description by rememberSaveable { mutableStateOf("") }
+    var selectedDate by rememberSaveable { mutableStateOf(
+        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+    ) }
+    var selectedCategory by rememberSaveable { mutableStateOf<Category?>(null) }
 
     val categories by viewModel.categories.collectAsState()
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
     val success by viewModel.success.collectAsState()
     val alerta by viewModel.alerta.collectAsState()
-    var showAlertaDialog by remember { mutableStateOf(false) }
+    var showAlertaDialog by rememberSaveable { mutableStateOf(false) }
     val refreshing by viewModel.refreshing.collectAsState()
     val loadingCategories by viewModel.loadingCategories.collectAsState()
     val errorCategories by viewModel.errorCategories.collectAsState()
